@@ -1,0 +1,52 @@
+---
+---
+
+<tr>
+<td class="col-md-3"><a href='{{ entry._link }}' target='_blank'><img src="{{ entry._image }}" onerror="this.style.display='none'"/></a> </td>
+<td>
+    <strong>{{ entry.title }}</strong><br>
+
+    {% assign etal = false %}
+    {% assign lastindex = entry.author_array | size | minus:1 %}
+    {% if entry.author_array[lastindex].last == 'others' %}
+      {% assign etal = true %}
+    {% endif %}
+    
+    {% for author in entry.author_array %}
+      {% if forloop.first %}
+        {% if author.last == site.scholar.last_name and author.first == site.scholar.first_name %}
+          <strong>{{author.first | slice: 0 }}. {{author.last}}</strong>{% if forloop.length > 1 %},{% endif %}
+        {% else %}
+          {{ author.first | slice: 0 }} {{author.last}}{% if forloop.length > 1 %},{% endif %}
+        {% endif %}
+      {% elsif forloop.last %}
+        {% if author.last == site.scholar.last_name and author.first == site.scholar.first_name %}
+          <strong>{{author.first | slice: 0 }}. {{author.last}}</strong>
+        {% elsif author.last == 'others' %}
+          et. al.
+        {% else %}
+          and {{author.first | slice: 0 }}. {{author.last}}
+        {% endif %}
+      {% else %}
+        {% if author.last == site.scholar.last_name and author.first == site.scholar.first_name %}
+          <strong>{{author.first | slice: 0 }}. {{author.last}}</strong>{% if forloop.index == lastindex and etal == true %}{% else %},{% endif %}
+        {% else %}
+          {{author.first | slice: 0 }}. {{author.last}}{% if forloop.index == lastindex and etal == true %}{% else %},{% endif %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    <br>
+    {% if entry._venue %}
+      {{entry._venue}} {{entry.year}}<br>
+    {% endif %}
+
+[<a href='javascript:;'
+    onclick='$("#abs_{{ entry.key }}").toggle()'>abs</a>] [<a href='{{ entry._link }}' target='_blank'>pdf</a>]  [<a href='{{ entry.code }}' target='_blank'>code</a>] <br>
+
+<div id="abs_{{ entry.key }}" style="text-align: justify; display: none" markdown="1">
+{{ entry.abstract }}
+</div>
+
+</td>
+</tr>

@@ -1,7 +1,8 @@
-name: Brandon Amos
-url: http://bamos.github.io
+name: Prateek Gupta
+host_address: http://github.com/pg2455/pg2455.github.io
+url: http://pg2455.github.io
 destination: ./_site
-twitter: brandondamos
+twitter: pg_2455
 lsi: false
 port: 4000
 markdown: kramdown
@@ -11,8 +12,10 @@ kramdown:
   syntax_highlighter: rouge
 permalink: pretty
 #paginate: 5
-gems:
+
+plugins:
   - jekyll-sitemap
+  - jekyll/scholar
 
 exclude:
   - .travis.yml
@@ -24,3 +27,34 @@ exclude:
   - update-vendor-deps.sh
   - vendor/bundle
   - vendor/bower.json
+
+
+usernames:
+  github: pg2455
+  twitter: pg_2455
+  google_scholar: fvn0COgAAAAJ
+  google_analytics: UA-187458159-1
+  linkedin: link2prateek
+
+user_name: Prateek Gupta
+
+scholar:
+
+  last_name: Gupta
+  first_name: Prateek
+
+  style: apa
+  locale: en
+
+  source: /_bibliography/
+  bibliography: publications.bib
+  bibliography_template: bibtemplate
+
+  replace_strings: true
+  join_strings: true
+
+  details_dir: bibliography
+  details_layout: bibtex.html
+  details_link: Details
+
+  query: "@*"
