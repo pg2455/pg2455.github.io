@@ -11,7 +11,7 @@
     {% if entry.author_array[lastindex].last == 'others' %}
       {% assign etal = true %}
     {% endif %}
-    
+
     {% for author in entry.author_array %}
       {% if forloop.first %}
         {% if author.last == site.scholar.last_name and author.first == site.scholar.first_name %}
@@ -37,16 +37,56 @@
     {% endfor %}
 
     <br>
+
     {% if entry._venue %}
       {{entry._venue}} {{entry.year}}<br>
     {% endif %}
 
-[<a href='javascript:;'
-    onclick='$("#abs_{{ entry.key }}").toggle()'>abs</a>] [<a href='{{ entry._link }}' target='_blank'>pdf</a>]  [<a href='{{ entry.code }}' target='_blank'>code</a>] <br>
+    <span>[<a href='javascript:;' onclick='$("#abs_{{ entry.key }}").toggle()'>abs</a>]</span>
+    <span>[<a href='{{ entry._link }}' target='_blank'>pdf</a>]</span>
 
-<div id="abs_{{ entry.key }}" style="text-align: justify; display: none" markdown="1">
-{{ entry.abstract }}
-</div>
+    {% if entry.code %}
+      <span>[<a href='{{ entry.code }}' target='_blank'>code</a>]</span>
+    {% endif %}
+
+    {% if entry.doi %}
+        <span>[<a href="{{ entry.doi | prepend: 'http://doi.org/' }}"  target="_blank">doi</a>]</span>
+    {% endif %}
+
+    {% if entry._slides %}
+      {% if entry._slides contains '://' %}
+        {% assign x = entry._slides %}
+      {% else %}
+        {% assign x = entry._slides | prepend: '/assets/pdf/' | relative_url %}
+      {% endif %}
+      <span>[<a href='{{ x }}' target='_blank'>slides</a>]</span>
+    {% endif %}
+
+    {% if entry._poster %}
+      {% if entry._poster contains '://' %}
+        {% assign x = entry._poster %}
+      {% else %}
+        {% assign x = entry._poster | prepend: '/assets/pdf/' | relative_url %}
+      {% endif %}
+      <span>[<a href='{{ x }}' target='_blank'>poster</a>]</span>
+    {% endif %}
+
+    {% if entry.blog %}
+      <span>[<a href="{{ entry.blog }}" target="_blank">blog</a>]</span>
+    {% endif %}
+
+
+    {% if entry.website %}
+      <span>[<a href="{{ entry.website }}" target="_blank">website</a>]</span>
+    {% endif %}
+
+    <span>[<a href='javascript:;' onclick='$("#bib_{{ entry.key }}").toggle()'>bibtex</a>]</span>
+    <span><br></span>
+
+    <div id="abs_{{ entry.key }}" style="text-align: justify; display: none" markdown="1">
+      {{ entry.abstract }}
+    </div>
+
 
 </td>
 </tr>
