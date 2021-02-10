@@ -1,6 +1,7 @@
 ---
 layout: singlePage
 title: "Blog Posts"
+permalink: /blog/
 ---
 
 # Blog Posts
