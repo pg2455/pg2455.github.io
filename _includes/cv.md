@@ -89,7 +89,7 @@
 <tr>
   <td class='col-md-2'>2017 - 2022</td>
   <td>
-    The Alan Turing Institute Doctoral Scholarship
+    The Alan Turing Institute Doctoral Scholarship<br>
   </td>
 </tr>
 <tr>
@@ -113,11 +113,42 @@ C/C++, Python, R, Javascript, vim, git, tmux, bash
 <tr>
   <td class='col-md-2'>Frameworks</td>
   <td>
-NumPy, Pandas, PyTorch, SciPy, TensorFlow, SimPy, D3, jQuery
+NumPy, Pandas, PyTorch, SciPy, TensorFlow, SimPy, D3, jQuery, Flask
   </td>
 </tr>
 </table>
 
+## <i class="fa fa-chevron-right"></i> Miscellaneous
+<table class="table table-hover">
+<tr>
+  <td class="col-md-2"> Non-Formal Education </td>
+  <td>
+  (2020-2021) <a href="https://www.mpls.ox.ac.uk/training/courses/scientific-entrepreneurship" target="_blank">Scientific Entrepreneurship</a>, University of Oxford, U.K <p style="color:grey;font-size:1.2rem">(based on Harvard Business Cases)</p>
+  (2018) <a href="https://www.microsoft.com/en-us/research/event/ai-summer-school-2018/" target="_blank" style="text-decoration: none;">Microsoft Research AI Summer School</a>, Cambridge, U.K <span style="color:grey;font-size:1.2rem">(acceptance with funding)</span><br>
+  (2018) <a href="http://humanaligned.ai/index-2018.html" target="_blank">Human-aligned AI Summer School</a>, Prague, Czech Republic <span style="color:grey;font-size:1.2rem">(acceptance with funding)</span><br>
+
+  </td>
+</tr>
+<tr>
+  <td class="col-md-2"> Competitions  </td>
+  <td>
+    (2019) Winner, HKBU Entrepreneurship Pitching Competition, Hong Kong<p style="color:grey;font-size:1.2rem">(AI enabled retrospective synthesis for drugs)</p>  
+    (2015) Winner, Cornell Tech Hackathon, New York City, U.S <p style="color:grey;font-size:1.2rem">(Estimating solar potential using satellite images)</p>
+  </td>
+</tr>
+<tr>
+  <td class="col-md-2"> AI Mentorship </td>
+  <td>
+    <a href="https://www.linkedin.com/company/gepeto-interactive/?originalSubdomain=ca" target="_blank">Gepeto Interactive</a>, <a href="https://areix-ai.com/" target="_blank">Aerix</a>
+  </td>
+</tr>
+<tr>
+  <td class="col-md-2"> Sports  </td>
+  <td>
+    Rowing <a href="https://www.youtube.com/watch?v=lSCp5OEOxMM&list=PLc8JVUxbV5ZCozBc-8Cvf2aASAgdKGd2M&index=1" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true" style="color:#FF0000;"></i></a>, Table Tennis, Crossfit, Gymnastics, Olympic Lifting
+  </td>
+</tr>
+</table>
 
 ## <i class="fa fa-chevron-right"></i> Publications <a href="{{ site.host_address }}/_bibliography/publications.bib"><i class="fa fa-code-fork" aria-hidden="true"></i></a>
 

@@ -58,3 +58,6 @@ scholar:
   details_link: Details
 
   query: "@*"
+
+fontawesome:
+  - version: 5.14.0
