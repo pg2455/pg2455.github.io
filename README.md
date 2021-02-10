@@ -12,3 +12,6 @@ Simon Sigurdhsson wrote the
 available in the public domain by the CC0 license,
 and the modifications here are also available in the public domain
 by the CC0 license.
+
+
+** NOTE ** This is a fork of [Brandon Amos's Personal Website](http://github.com/bamos/bamos.github.io/) adapted for my needs.
