@@ -3,3 +3,22 @@
   color: black;
   padding: 25px;
 }
+
+.hidden-content {
+  overflow: hidden;
+  text-align: justify;
+  -webkit-transition: 0.15s ease;
+  -moz-transition: 0.15s ease;
+  -ms-transition: 0.15s ease;
+  -o-transition: 0.15s ease;
+  transition: all 0.15s ease;
+}
+
+
+.hidden-content pre {
+  font-size: 0.75em;
+  line-height: 1.4em;
+  padding: 10px;
+  white-space: pre-wrap;
+
+}

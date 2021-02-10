@@ -19,7 +19,9 @@
     },
     booktitle={Proceedings of the ASME 2013 International Design Engineering Technical Conferences and Computers and Information in Engineering Conference. Volume 3B: 39th Design Automation Conference},
     _venue={39th Design Automation Conference, ASME 2013},
-    _link={https://www.researchgate.net/profile/Farrokh_Mistree/publication/245437216_Robust_Design_of_Gears_With_Material_and_Load_Uncertainties/links/53fa20780cf2e3cbf562cfa7.pdf}
+    _link={https://www.researchgate.net/profile/Farrokh_Mistree/publication/245437216_Robust_Design_of_Gears_With_Material_and_Load_Uncertainties/links/53fa20780cf2e3cbf562cfa7.pdf},
+    _image={images/publications/gearDesign.png}
+
 }
 
 @inproceedings{Gupta20hybrid,
@@ -28,10 +30,11 @@
   year={2020},
   arxiv={https://arxiv.org/abs/2006.15212},
   code={https://github.com/pg2455/Hybrid-learn2branch},
-  _venue={NeurIPS},
   abstract={A recent Graph Neural Network (GNN) approach for learning to branch has been shown to successfully reduce the running time of branch-and-bound algorithms for Mixed Integer Linear Programming (MILP). While the GNN relies on a GPU for inference, MILP solvers are purely CPU-based. This severely limits its application as many practitioners may not have access to high-end GPUs. In this work, we ask two key questions. First, in a more realistic setting where only a CPU is available, is the GNN model still competitive? Second, can we devise an alternate computationally inexpensive model that retains the predictive power of the GNN architecture? We answer the first question in the negative, and address the second question by proposing a new hybrid architecture for efficient branching on CPU machines. The proposed architecture combines the expressive power of GNNs with computationally inexpensive multi-layer perceptrons (MLP) for branching. We evaluate our methods on four classes of MILP problems, and show that they lead to up to 26% reduction in solver running time compared to state-of-the-art methods without a GPU, while extrapolating to harder problems than it was trained on. },
   booktitle={Advances in Neural Information Processing Systems 33},
-  _link={https://arxiv.org/abs/2006.15212}
+  _link={https://arxiv.org/abs/2006.15212},
+  _venue={NeurIPS},
+  _image={images/publications/gupta2020hybrid.png}
 }
 
 @article{gupta2020covi,
@@ -44,7 +47,9 @@
   The rapid global spread of COVID-19 has led to an unprecedented demand for effective methods to mitigate the spread of the disease, and various digital contact tracing (DCT) methods have emerged as a component of the solution. In order to make informed public health choices, there is a need for tools which allow evaluation and comparison of DCT methods. We introduce an agent-based compartmental simulator we call COVI-AgentSim, integrating detailed consideration of virology, disease progression, social contact networks, and mobility patterns, based on parameters derived from empirical research. We verify by comparing to real data that COVI-AgentSim is able to reproduce realistic COVID-19 spread dynamics, and perform a sensitivity analysis to verify that the relative performance of contact tracing methods are consistent across a range of settings. We use COVI-AgentSim to perform cost-benefit analyses comparing no DCT to: 1) standard binary contact tracing (BCT) that assigns binary recommendations based on binary test results; and 2) a rule-based method for feature-based contact tracing (FCT) that assigns a graded level of recommendation based on diverse individual features. We find all DCT methods consistently reduce the spread of the disease, and that the advantage of FCT over BCT is maintained over a wide range of adoption rates. Feature-based methods of contact tracing avert more disability-adjusted life years (DALYs) per socioeconomic cost (measured by productive hours lost). Our results suggest any DCT method can help save lives, support re-opening of economies, and prevent second-wave outbreaks, and that FCT methods are a promising direction for enriching BCT using self-reported symptoms, yielding earlier warning signals and a significantly reduced spread of the virus per socioeconomic cost.
   },
   code={https://github.com/mila-iqia/COVI-AgentSim},
-  _link={https://arxiv.org/abs/2010.16004}
+  _link={https://arxiv.org/abs/2010.16004},
+  _website={https://mila.quebec/en/project/covi/},
+  _image={images/publications/episimSeries.png}
 }
 
 @article{alsdurf2020covi,
@@ -53,7 +58,9 @@
   arxiv={https://arxiv.org/abs/2005.08502},
   year={2020},
   abstract={The SARS-CoV-2 (Covid-19) pandemic has caused significant strain on public health institutions around the world. Contact tracing is an essential tool to change the course of the Covid-19 pandemic. Manual contact tracing of Covid-19 cases has significant challenges that limit the ability of public health authorities to minimize community infections. Personalized peer-to-peer contact tracing through the use of mobile apps has the potential to shift the paradigm. Some countries have deployed centralized tracking systems, but more privacy-protecting decentralized systems offer much of the same benefit without concentrating data in the hands of a state authority or for-profit corporations. Machine learning methods can circumvent some of the limitations of standard digital tracing by incorporating many clues and their uncertainty into a more graded and precise estimation of infection risk. The estimated risk can provide early risk awareness, personalized recommendations and relevant information to the user. Finally, non-identifying risk data can inform epidemiological models trained jointly with the machine learning predictor. These models can provide statistical evidence for the importance of factors involved in disease transmission. They can also be used to monitor, evaluate and optimize health policy and (de)confinement scenarios according to medical and economic productivity indicators. However, such a strategy based on mobile apps and machine learning should proactively mitigate potential ethical and privacy risks, which could have substantial impacts on society (not only impacts on health but also impacts such as stigmatization and abuse of personal data). Here, we present an overview of the rationale, design, ethical considerations and privacy strategy of `COVI,' a Covid-19 public peer-to-peer contact tracing and risk awareness mobile application developed in Canada.},
-  _link={https://arxiv.org/abs/2005.08502}
+  _link={https://arxiv.org/abs/2005.08502},
+  _website={https://mila.quebec/en/project/covi/},
+  _image={images/publications/alsdurf2020covi.png}
 }
 
 @inproceedings{roth2020revisiting,
@@ -65,12 +72,12 @@
   Deep Metric Learning (DML) is arguably one of the most influential lines of research for learning visual similarities with many proposed approaches every year. Although the field benefits from the rapid progress, the divergence in training protocols, architectures, and parameter choices make an unbiased comparison difficult. To provide a consistent reference point, we revisit the most widely used DML objective functions and conduct a study of the crucial parameter choices as well as the commonly neglected mini-batch sampling process. Under consistent comparison, DML objectives show much higher saturation than indicated by literature. Further based on our analysis, we uncover a correlation between the embedding space density and compression to the generalization performance of DML models. Exploiting these insights, we propose a simple, yet effective, training regularization to reliably boost the performance of ranking-based DML models on various standard benchmark datasets.
   },
   code={https://github.com/Confusezius/Revisiting_Deep_Metric_Learning_PyTorch},
-  _venue={ICML},
   booktitle={International Conference on Machine Learning},
   pages={8242--8252},
   year={2020},
   organization={PMLR},
-  _link={https://arxiv.org/abs/2002.08473}
+  _link={https://arxiv.org/abs/2002.08473},
+  _venue={NeurIPS},
 }
 
 @inproceedings{bengio2020predicting,
@@ -78,9 +85,11 @@
   author={Bengio, Yoshua and Gupta, Prateek and Maharaj, Tegan and Rahaman, Nasim and Weiss, Martin and Deleu, Tristan and Muller, Eilif and Qu, Meng and Schmidt, Victor and St-Charles, Pierre-Luc and others},
   year={2021},
   arxiv={https://arxiv.org/abs/2010.12536},
-  _venue={ICLR},
   booktitle={International Conference on Learning Representation},
   abstract={The COVID-19 pandemic has spread rapidly worldwide, overwhelming manual contact tracing in many countries and resulting in widespread lockdowns for emergency containment. Large-scale digital contact tracing (DCT) has emerged as a potential solution to resume economic and social activity while minimizing spread of the virus. Various DCT methods have been proposed, each making trade-offs between privacy, mobility restrictions, and public health. The most common approach, binary contact tracing (BCT), models infection as a binary event, informed only by an individual's test results, with corresponding binary recommendations that either all or none of the individual's contacts quarantine. BCT ignores the inherent uncertainty in contacts and the infection process, which could be used to tailor messaging to high-risk individuals, and prompt proactive testing or earlier warnings. It also does not make use of observations such as symptoms or pre-existing medical conditions, which could be used to make more accurate infectiousness predictions. In this paper, we use a recently-proposed COVID-19 epidemiological simulator to develop and test methods that can be deployed to a smartphone to locally and proactively predict an individual's infectiousness (risk of infecting others) based on their contact history and other information, while respecting strong privacy constraints. Predictions are used to provide personalized recommendations to the individual via an app, as well as to send anonymized messages to the individual's contacts, who use this information to better predict their own infectiousness, an approach we call proactive contact tracing (PCT). We find a deep-learning based PCT method which improves over BCT for equivalent average mobility, suggesting PCT could help in safe re-opening and second-wave prevention.},
   code={https://github.com/mila-iqia/COVI-ML},
-  _link={https://arxiv.org/abs/2010.12536}
+  _link={https://arxiv.org/abs/2010.12536},
+  _venue={ICLR},
+  _website={https://mila.quebec/en/project/covi/},
+  _image={images/publications/pctOverview.png}
 }

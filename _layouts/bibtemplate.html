@@ -75,18 +75,20 @@
       <span>[<a href="{{ entry.blog }}" target="_blank">blog</a>]</span>
     {% endif %}
 
-
-    {% if entry.website %}
-      <span>[<a href="{{ entry.website }}" target="_blank">website</a>]</span>
+    {% if entry._website %}
+      <span>[<a href="{{ entry._website }}" target="_blank">website</a>]</span>
     {% endif %}
 
     <span>[<a href='javascript:;' onclick='$("#bib_{{ entry.key }}").toggle()'>bibtex</a>]</span>
     <span><br></span>
 
-    <div id="abs_{{ entry.key }}" style="text-align: justify; display: none" markdown="1">
-      {{ entry.abstract }}
+    <div id="abs_{{ entry.key }}" class="hidden-content" style="text-align: justify; display: none">
+      <p>{{ entry.abstract }}</p>
     </div>
 
+    <div id="bib_{{ entry.key }}" class="hidden-content" style="text-align: justify; display: none">
+      <pre>{{ entry.bibtex }}</pre>
+    </div>
 
 </td>
 </tr>
