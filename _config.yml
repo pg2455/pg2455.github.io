@@ -1,3 +1,4 @@
+description: Prateek Gupta | Personal Website
 name: Prateek Gupta
 host_address: http://github.com/pg2455/pg2455.github.io
 url: http://pg2455.github.io
@@ -16,6 +17,8 @@ permalink: pretty
 plugins:
   - jekyll-sitemap
   - jekyll/scholar
+
+include: ['_pages']
 
 exclude:
   - .travis.yml
