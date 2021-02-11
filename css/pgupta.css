@@ -44,16 +44,3 @@
 .fa-rss {
   color: #EE802F !important;
 }
-
-/* news */
-.news {
-  margin-top: 10px;
-}
-
-.news table td {
-  font-size: 1rem;
-}
-
-.news table th {
-  width: 120px;
-}
