@@ -14,9 +14,20 @@ kramdown:
 permalink: pretty
 #paginate: 5
 
+collections:
+  news:
+    defaults:
+      layout: post
+    output: false
+    permalink: /news/:path/
+
+
+news_limit: 10
+
 plugins:
   - jekyll-sitemap
   - jekyll/scholar
+  - jemoji
 
 include: ['_pages']
 

@@ -20,5 +20,40 @@
   line-height: 1.4em;
   padding: 10px;
   white-space: pre-wrap;
+}
 
+/* icons */
+
+.fa-github {
+  color: #333 !important;
+}
+
+.fa-linkedin-square {
+  color: #2867B2 !important;
+}
+
+.fa-twitter {
+  color: #55ACEE!important;
+  background: transparent!important ;
+}
+
+.ai-google-scholar {
+  color: #4782e0 !important;
+}
+
+.fa-rss {
+  color: #EE802F !important;
+}
+
+/* news */
+.news {
+  margin-top: 10px;
+}
+
+.news table td {
+  font-size: 1rem;
+}
+
+.news table th {
+  width: 120px;
 }
