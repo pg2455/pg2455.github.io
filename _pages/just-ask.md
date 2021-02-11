@@ -4,6 +4,8 @@ permalink: /just-ask/
 title: Just ask!
 ---
 <br>
+## Just ask!
+<br>
 Career choices are tough.
 These are also the choices what decides whether one will end up hating or loving their day-to-day activities.
 Having gone through several of these moments myself, I find it extremely useful to talk to others about their career path and their world view.
