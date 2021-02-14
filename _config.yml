@@ -3,16 +3,25 @@ name: Prateek Gupta
 host_address: http://github.com/pg2455/pg2455.github.io
 url: http://pg2455.github.io
 destination: ./_site
-twitter: pg_2455
 lsi: false
 port: 4000
-markdown: kramdown
-future: true
-kramdown:
-  parse_block_html: true
-  syntax_highlighter: rouge
 permalink: pretty
-#paginate: 5
+timezone: Europe/London
+
+# -----------------------------------------------------------------------------
+# Social integration
+# -----------------------------------------------------------------------------
+
+usernames:
+  github: pg2455
+  twitter: pg_2455
+  google_scholar: fvn0COgAAAAJ
+  google_analytics: UA-187458159-1
+  linkedin: link2prateek
+
+# -----------------------------------------------------------------------------
+# Collections
+# -----------------------------------------------------------------------------
 
 collections:
   news:
@@ -24,10 +33,22 @@ collections:
 
 news_limit: 10
 
+
+# -----------------------------------------------------------------------------
+# Jekyll settings
+# -----------------------------------------------------------------------------
+future: true
+
+markdown: kramdown
+kramdown:
+  parse_block_html: true
+  syntax_highlighter: rouge
+
 plugins:
   - jekyll-sitemap
   - jekyll/scholar
   - jemoji
+  - jekyll-github-metadata
 
 include: ['_pages']
 
@@ -43,14 +64,9 @@ exclude:
   - vendor/bower.json
 
 
-usernames:
-  github: pg2455
-  twitter: pg_2455
-  google_scholar: fvn0COgAAAAJ
-  google_analytics: UA-187458159-1
-  linkedin: link2prateek
-
-user_name: Prateek Gupta
+# -----------------------------------------------------------------------------
+# Jekyll scholar
+# -----------------------------------------------------------------------------
 
 scholar:
 

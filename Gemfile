@@ -1,11 +1,15 @@
 source 'https://rubygems.org'
-gem 'colorize', '0.8.1'
-gem 'github-pages'
-gem 'html5_validator', '~> 1.0'
-gem 'w3c_validators', '~> 1.2'
-gem 'html-proofer', '~> 3.0.6'
-gem 'jekyll-scholar'
-gem 'jemoji'
+group :jekyll_plugins do
+    gem 'github-pages'
+    gem 'jekyll'
+    gem 'jemoji'
+    gem 'jekyll-scholar'
+    gem 'jekyll-github-metadata'
+end
 
+gem 'colorize'
+gem 'html5_validator'
+gem 'w3c_validators'
+gem 'html-proofer'
 gem "kramdown"
 gem "bibtex-ruby"

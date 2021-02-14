@@ -7,7 +7,7 @@ title: Just ask!
 ## Just ask!
 <br>
 Career choices are tough.
-These are also the choices what decides whether one will end up hating or loving their day-to-day activities.
+These are also the choices that decides whether one will end up hating or loving their day-to-day activities.
 Having gone through several of these moments myself, I find it extremely useful to talk to others about their career path and their world view.
 
 I have been extremely lucky to have met people at colleges, workplaces, or labs to help in this process.
