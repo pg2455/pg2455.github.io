@@ -1,9 +1,10 @@
 {
-    "name": "bamos.github.io",
+    "name": "pg2455.github.io",
     "version": "0.0.0",
-    "homepage": "https://github.com/bamos/bamos.github.io",
+    "homepage": "https://github.com/pg2455/pg2455.github.io",
     "authors": [
-        "Brandon Amos <bamos@cs.cmu.edu>"
+        "Brandon Amos <bamos@cs.cmu.edu>",
+        "Prateek Gupta <pgupta@robots.ox.ac.uk"
     ],
     "license": "Apache",
     "ignore": [
