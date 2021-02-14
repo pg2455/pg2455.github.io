@@ -316,14 +316,16 @@ PLATFORMS
 
 DEPENDENCIES
   bibtex-ruby
-  colorize (= 0.8.1)
+  colorize
   github-pages
-  html-proofer (~> 3.0.6)
-  html5_validator (~> 1.0)
+  html-proofer
+  html5_validator
+  jekyll
+  jekyll-github-metadata
   jekyll-scholar
   jemoji
   kramdown
-  w3c_validators (~> 1.2)
+  w3c_validators
 
 BUNDLED WITH
    2.2.9
