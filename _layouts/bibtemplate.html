@@ -42,8 +42,17 @@
       {{entry._venue}} {{entry.year}}<br>
     {% endif %}
 
-    <span>[<a href='javascript:;' onclick='$("#abs_{{ entry.key }}").toggle()'>abs</a>]</span>
-    <span>[<a href='{{ entry._link }}' target='_blank'>pdf</a>]</span>
+    {% if entry.abstract %}
+      <span>[<a href='javascript:;' onclick='$("#abs_{{ entry.key }}").toggle()'>abs</a>]</span>
+    {% endif %}
+
+    {% if entry._link %}
+      <span>[<a href='{{ entry._link }}' target='_blank'>pdf</a>]</span>
+    {% endif %}
+
+    {% if entry.arxiv %}
+      <span>[<a href="http://arxiv.org/abs/{{ entry.arxiv }}" target="_blank">arXiv</a>]</span>
+    {% endif %}
 
     {% if entry.code %}
       <span>[<a href='{{ entry.code }}' target='_blank'>code</a>]</span>

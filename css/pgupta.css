@@ -44,3 +44,21 @@
 .fa-rss {
   color: #EE802F !important;
 }
+
+
+.blogpost {
+  font-family: "Times New Roman", Baskerville, "Baskerville Old Face", "Hoefler Text", Garamond, "Times New Roman", serif;
+  font-size: 1.25em;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 200;
+  line-height: 26.4px;
+}
+
+.caption {
+  font-size: 0.9em;
+  margin-top: 0.75rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: gray;
+}
