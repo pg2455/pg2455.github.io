@@ -26,13 +26,13 @@ layout: base
       <hr style="margin-top: 0;">
       {{ content }}
 
-      <div style="display:inline-block">
+      <div style="display:inline-block; font-size: large;">
         {% if page.series and page.previous %}
-          <span style="float:left"><a href="/blog/{{ page.date | date: "%Y" }}/{{ page.series.name }}-{{ page.series.id | minus: 1 }}"><i class="fas fa-arrow-left"></i> {{ page.previous.title }}</a></span>
+          <span style="float:left"><a style="text-decoration: none" href="/blog/{{ page.date | date: "%Y" }}/{{ page.series.name }}-{{ page.series.id | minus: 1 }}"><em><i class="fas fa-2x fa-arrow-left"></i> &thinsp; {{ page.previous.title }}</a></em></span>
         {% endif %}
 
         {% if page.series and page.next %}
-          <span style="float:right"><a href="/blog/{{ page.date | date: "%Y" }}/{{ page.series.name }}-{{ page.series.id | plus: 1 }}">{{ page.next.title }} <i class="fas fa-arrow-right"></i></a></span>
+          <span style="float:right"><a style="text-decoration: none" href="/blog/{{ page.date | date: "%Y" }}/{{ page.series.name }}-{{ page.series.id | plus: 1 }}"><em>{{ page.next.title }} &thinsp; <i class="fas fa-2x fa-arrow-right"></i></a></em></span>
         {% endif %}
       </div>
 

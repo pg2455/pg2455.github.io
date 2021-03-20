@@ -21,10 +21,10 @@ permalink: /blog/
             {% if forloop.first %}
             <tr>
               <td class="col-md-3 align-middle"><a href="{{ post.url }}"><i class="{{ post.icon }}"></i></a></td>
-              <td style="vertical-align:middle;"><a href="{{ post.url }}" style="color: black;"><strong>{{ post.title }}</strong></a>
-              <ul>
+              <td style="vertical-align:middle;"><a href="{{ post.url }}"><strong style="margin: 0 0 5px 0;">{{ post.title }}</strong></a>
+              <ul style="margin: 10px 0 0 0">
             {% else %}
-              <li><a href="{{ post.url }}"><strong>{{ post.title }}</strong></a></li>
+              <li style="margin: 0 0 5px 0;"><a href="{{ post.url }}"><strong>{{ post.title }}</strong></a></li>
             {% endif %}
             {% if forloop.last %}
             </ul>
