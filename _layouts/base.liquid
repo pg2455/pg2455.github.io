@@ -46,6 +46,13 @@
   <script src="{{ '/vendor/js/distillpub/template.v2.js' | relative_url }}"></script>
   <script src="{{ '/vendor/js/distillpub/transforms.v2.js' | relative_url }}"></script>
   {% endif %}
+
+  {% if page._styles %}
+  <style type="text/css">
+    {{ page._styles }}
+  </style>
+  {% endif %}
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>

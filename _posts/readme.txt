@@ -7,3 +7,16 @@
 distill: true
 mathjax: true
 bibliography: yy.bib
+
+
+>> To add aditional styles to distillPost use _styles attribrute
+
+>> To use maths inline : \\( math_expression \\)
+
+>> To use full line expression:
+\\[
+full maths expression here
+\\]
+
+
+>> Mathjax is currently not working in <li></li> environments. 
