@@ -43,23 +43,23 @@
     {% endif %}
 
     {% if entry.abstract %}
-      <span>[<a href='javascript:;' onclick='$("#abs_{{ entry.key }}").toggle()'>abs</a>]</span>
+      <span> [<a href='javascript:;' onclick='$("#abs_{{ entry.key }}").toggle()'>abs</a>] </span>
     {% endif %}
 
     {% if entry._link %}
-      <span>[<a href='{{ entry._link }}' target='_blank'>pdf</a>]</span>
+      <span> [<a href='{{ entry._link }}' target='_blank'>pdf</a>] </span>
     {% endif %}
 
     {% if entry.arxiv %}
-      <span>[<a href="http://arxiv.org/abs/{{ entry.arxiv }}" target="_blank">arXiv</a>]</span>
+      <span> [<a href="http://arxiv.org/abs/{{ entry.arxiv }}" target="_blank">arXiv</a>] </span>
     {% endif %}
 
     {% if entry.code %}
-      <span>[<a href='{{ entry.code }}' target='_blank'>code</a>]</span>
+      <span> [<a href='{{ entry.code }}' target='_blank'>code</a>] </span>
     {% endif %}
 
     {% if entry.doi %}
-        <span>[<a href="{{ entry.doi | prepend: 'http://doi.org/' }}"  target="_blank">doi</a>]</span>
+        <span> [<a href="{{ entry.doi | prepend: 'http://doi.org/' }}"  target="_blank">doi</a>] </span>
     {% endif %}
 
     {% if entry._slides %}
@@ -68,7 +68,7 @@
       {% else %}
         {% assign x = entry._slides | prepend: '/assets/pdf/' | relative_url %}
       {% endif %}
-      <span>[<a href='{{ x }}' target='_blank'>slides</a>]</span>
+      <span> [<a href='{{ x }}' target='_blank'>slides</a>] </span>
     {% endif %}
 
     {% if entry._poster %}
@@ -77,18 +77,18 @@
       {% else %}
         {% assign x = entry._poster | prepend: '/assets/pdf/' | relative_url %}
       {% endif %}
-      <span>[<a href='{{ x }}' target='_blank'>poster</a>]</span>
+      <span> [<a href='{{ x }}' target='_blank'>poster</a>] </span>
     {% endif %}
 
     {% if entry.blog %}
-      <span>[<a href="{{ entry.blog }}" target="_blank">blog</a>]</span>
+      <span> [<a href="{{ entry.blog }}" target="_blank">blog</a>] </span>
     {% endif %}
 
     {% if entry._website %}
-      <span>[<a href="{{ entry._website }}" target="_blank">website</a>]</span>
+      <span> [<a href="{{ entry._website }}" target="_blank">website</a>] </span>
     {% endif %}
 
-    <span>[<a href='javascript:;' onclick='$("#bib_{{ entry.key }}").toggle()'>bibtex</a>]</span>
+    <span> [<a href='javascript:;' onclick='$("#bib_{{ entry.key }}").toggle()'>bibtex</a>] </span>
     <span><br></span>
 
     <div id="abs_{{ entry.key }}" class="hidden-content" style="text-align: justify; display: none">
