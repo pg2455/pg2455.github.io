@@ -1,7 +1,7 @@
-I am a Ph.D. student at the <a href="https://www.ox.ac.uk/" target="_blank">University of Oxford</a>, supervised by <a href="http://mpawankumar.info/" target="_blank">Prof. M. Pawan Kumar</a> and co-supervised by <a href="https://cerc-datascience.polymtl.ca/person/dr-andrea-lodi/" target="_blank">Prof. Andrea Lodi</a> and <a href="https://yoshuabengio.org/profile/" target="_blank">Prof. Yoshua Bengio</a>.  My Ph.D. is fully sponsored by <a href="https://turing.ac.uk" target="_blank">The Alan Turing Institute</a>. I have also been fortunate enough to work for a year and a half as a visiting researcher at <a href="https://mila.quebec/en/" target="_blank">Montréal Institute of Learning Algorithms (Mila)</a>, Montréal, Canada.<br><br>
-My primary research focuses on improving combinatorial optimization using deep learning (e.g., automated heuristics in discrete solvers) or improving deep learning reasoning using optimization layers.<br><br>
-I am also excited about using technology or AI for societally impactful problems. As a result, at the beginning of the pandemic, I, along with several other researchers in various disciplines, took a detour to improve contact tracing applications. Along with defining a peer-to-peer protocol, <a href="https://mila.quebec/en/project/covi/" target="_blank">COVI</a>, necessary to improve decision making in contact tracing applications, we were able to determine a <a href="https://arxiv.org/abs/2010.12536" target="_blank">suitable framework</a> to infuse rule-based or machine learning-based decision making in such applications.<br><br>
+I am a Ph.D. student at the <a href="https://www.ox.ac.uk/" target="_blank">University of Oxford</a>, supervised by <a href="http://mpawankumar.info/" target="_blank">Prof. Pawan Kumar</a>, <a href="https://cerc-datascience.polymtl.ca/person/dr-andrea-lodi/" target="_blank">Prof. Andrea Lodi</a>, and <a href="https://yoshuabengio.org/profile/" target="_blank">Prof. Yoshua Bengio</a>.  My Ph.D. is fully sponsored by <a href="https://turing.ac.uk" target="_blank">The Alan Turing Institute</a>. I have also been fortunate enough to work for a year and a half as a visiting researcher at <a href="https://mila.quebec/en/" target="_blank">Montréal Institute of Learning Algorithms (Mila)</a>, Montréal, Canada.<br><br>
+My primary research focuses on improving combinatorial optimization using deep learning (e.g., automated heuristics in discrete solvers). I am also excited about using technology or AI for societally impactful problems. As a result, at the beginning of the pandemic, I joined a multi-disciplinary team of researchers to improve contact tracing applications. Along with defining a peer-to-peer protocol, <a href="https://mila.quebec/en/project/covi/" target="_blank">COVI</a>, necessary to improve decision making in contact tracing applications, we were able to determine a <a href="https://arxiv.org/abs/2010.12536" target="_blank">suitable framework</a> to infuse rule-based or machine learning-based decision making in such applications.<br><br>
 Before my Ph.D., I took a broad array of Operations Research courses at <a href="https://www.columbia.edu/" target="_blank">Columbia University</a>. I also learned about industrial, manufacturing, and mechanical engineering in my undergraduate courses at <a href="https://home.iitd.ac.in/" target="_blank">IIT Delhi</a>.<br><br>
+I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a> as a faculty at <a href="https://www.cambridgespark.com/" target="_blank">CambridgeSpark</a>, collaborating with other researchers to tackle socially relevant problems, or competing in various <a href="#-miscellaneous">sports</a>. <br><br>
 
 ## <i class="fa fa-chevron-right"></i> Education
 
@@ -14,7 +14,7 @@ Before my Ph.D., I took a broad array of Operations Research courses at <a href=
       University of Oxford | Oxford, United Kingdom
       <br> The Alan Turing Institute | London, United Kingdom
         <p style='margin-top:-1em;margin-bottom:0em' markdown='1'>
-        <br> Advisors: [M. Pawan Kumar](http://mpawankumar.info/); Co-Advisors: [Andrea Lodi](https://cerc-datascience.polymtl.ca/person/dr-andrea-lodi/),  [Yoshua Bengio](https://yoshuabengio.org/profile/)
+        <br> Advisors: [Pawan Kumar](http://mpawankumar.info/), [Andrea Lodi](https://cerc-datascience.polymtl.ca/person/dr-andrea-lodi/),  [Yoshua Bengio](https://yoshuabengio.org/profile/)
         </p>
     </td>
   </tr>
@@ -50,7 +50,7 @@ Before my Ph.D., I took a broad array of Operations Research courses at <a href=
 <tr>
   <td class='col-md-3'>June 2018 - Oct. 2020</td>
   <td>
-    <strong>Research Intern</strong> | MILA | Montréal, Canada
+    <strong>Visiting Researcher</strong> | MILA | Montréal, Canada
   </td>
 </tr>
 <tr>
@@ -83,6 +83,28 @@ Before my Ph.D., I took a broad array of Operations Research courses at <a href=
     <strong>Research Intern</strong> | Innovation Labs, Tata Consultancy Services | Pune, India
   </td>
 </tr>
+</table>
+
+## <i class="fa fa-chevron-right"></i> Voluntary Service / Non-research Experience
+<table class="table table-hover">
+  <tr>
+    <td class='col-md-3'><b>Reviewer</b></td>
+    <td>
+      NeurIPS 2021
+    </td>
+  </tr>
+  <tr>
+    <td class='col-md-3'><b>Faculty</b></td>
+    <td>
+      CambridgeSpark <span style="color:grey;font-size:1.2rem">(part-time content creator: April, '21 - Present)</span>
+    </td>
+  </tr>
+  <tr>
+    <td class='col-md-3'><b>Consultant</b></td>
+    <td>
+      Careers Service, University of Oxford <span style="color:grey;font-size:1.2rem">(Mar, '21 - Jun, '21)</span>
+    </td>
+  </tr>
 </table>
 
 
@@ -137,12 +159,6 @@ NumPy, Pandas, PyTorch, SciPy, TensorFlow, SimPy, D3, jQuery, Flask
     (2019) Winner, HKBU Entrepreneurship Pitching Competition, Hong Kong<p style="color:grey;font-size:1.2rem">(AI enabled retrospective synthesis for drugs)</p>  
     (2015) Winner, Cornell Tech Hackathon, New York City, U.S <p style="color:grey;font-size:1.2rem">(Estimating solar potential using satellite images)</p>
     (2012) 3rd place,<a href="https://astronautical.org/2012/06/11/2012-cansat-competition-winners/" target="_blank"> CanSat Competition </a>, Texas, U.S<p style="color:grey;font-size:1.2rem">(Design of can-sized satellites to accomplish mission while descending)</p>
-  </td>
-</tr>
-<tr>
-  <td class="col-md-2"> AI Mentorship </td>
-  <td>
-    <a href="https://www.linkedin.com/company/gepeto-interactive/?originalSubdomain=ca" target="_blank">Gepeto Interactive</a>, <a href="https://areix-ai.com/" target="_blank">Aerix</a>
   </td>
 </tr>
 <tr>

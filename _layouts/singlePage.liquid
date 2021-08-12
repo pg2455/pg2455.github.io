@@ -9,4 +9,19 @@ layout: base
   {{ content }}
 </div>
 </div>
+
+  <script type="text/javascript">
+
+    var elems = document.querySelectorAll("ol.bibliography");
+    for (var i = 0; i < elems.length; i++) {
+       elems[i].remove();
+    }
+
+    var elems = document.querySelectorAll("li:empty");
+    for (var i = 0; i < elems.length; i++) {
+       elems[i].remove();
+    }
+
+
+  </script>
 </div>

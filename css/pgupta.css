@@ -62,3 +62,31 @@
   text-align: center;
   color: gray;
 }
+
+h1.resources-headline {
+  font-size: 20px;
+  line-height: 1em;
+  color: black;
+}
+
+h1.resources-headline:after {
+  content: ' ';
+  display: block;
+  border:1px solid gray;
+
+}
+
+
+h1.resources-headline span.h1-links {
+  font-size: 15px;
+  color: blue;
+  float: right;
+  padding: 0 1em 0 1em;
+}
+
+
+/* h1.resources-headline pre.h1-links {
+  font-size: 15px;
+  color: blue;
+  float: right;
+} */

@@ -1,0 +1,30 @@
+---
+---
+
+<tr>
+  <td class="col-md-3"><img src="{{ entry.image }}" onerror="this.style.display='none'"/></td>
+  <td>
+    <strong>{{ entry.title }}</strong><br>
+
+    {% if entry.content %}
+      <span> [<a href='javascript:;' onclick='$("#lessons_{{ entry.key }}").toggle()'>Topics</a>] </span>
+    {% endif %}
+
+    {% if entry.practical %}
+      <span> [<a href='javascript:;' onclick='$("#practical_{{ entry.key }}").toggle()'>Practical</a>] </span>
+    {% endif %}
+
+    {% if entry.objective %}
+      <p>{{ entry.objective }}</p>
+    {% endif %}
+
+    <div id="lessons_{{ entry.key }}" class="hidden-content" style="text-align: justify; display: none">
+      <p>{{ entry.content }}</p>
+    </div>
+
+    <div id="practical_{{ entry.key }}" class="hidden-content" style="text-align: justify; display: none">
+      <p>{{ entry.practical }}</p>
+    </div>
+
+  </td>
+</tr>
