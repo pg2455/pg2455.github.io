@@ -9,7 +9,7 @@ I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a
   <tr>
     <td class="col-md-3">Sept. 2017 - Present</td>
     <td>
-        <strong>D.Phil in Engineering Science</strong>
+        <strong>PhD in Machine Learning</strong>
         <br>
       University of Oxford | Oxford, United Kingdom
       <br> The Alan Turing Institute | London, United Kingdom
@@ -96,15 +96,17 @@ I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a
   <tr>
     <td class='col-md-3'><b>Faculty</b></td>
     <td>
-      CambridgeSpark <span style="color:grey;font-size:1.2rem">(part-time content creator: April, '21 - Present)</span>
+      CambridgeSpark <span style="color:grey;font-size:1.2rem">(part-time: April '21 - Present)</span>
     </td>
   </tr>
   <tr>
-    <td class='col-md-3'><b>Consultant</b></td>
+    <td class='col-md-3'><b>Others</b></td>
     <td>
-      Careers Service, University of Oxford <span style="color:grey;font-size:1.2rem">(Mar, '21 - Jun, '21)</span>
+      Strategy Consultant @ Careers Service, University of Oxford <span style="color:grey;font-size:1.2rem">(Mar '21 - Jun '21)</span><br>
+      Technology & Data Operations @ COVIRest <span style="color:grey;font-size:1.2rem">(Mar '21 - May '21)<br>(A free hotline to connect volunteer global doctors to patients in India looking for COVID diagnosis)</span>
     </td>
   </tr>
+
 </table>
 
 
