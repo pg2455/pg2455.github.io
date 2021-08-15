@@ -103,7 +103,7 @@ I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a
     <td class='col-md-3'><b>Others</b></td>
     <td>
       Strategy Consultant @ Careers Service, University of Oxford <span style="color:grey;font-size:1.2rem">(Mar '21 - Jun '21)</span><br>
-      Technology & Data Operations @ COVIRest <span style="color:grey;font-size:1.2rem">(Mar '21 - May '21)<br>(A free hotline to connect volunteer global doctors to patients in India looking for COVID diagnosis)</span>
+      Co-Convenor / Technology & Data Operations @ COVIRest <span style="color:grey;font-size:1.2rem">(Mar '21 - May '21)<br>(A free hotline to connect volunteer global doctors to patients in India looking for COVID diagnosis)</span>
     </td>
   </tr>
 
