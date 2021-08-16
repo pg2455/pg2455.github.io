@@ -1,52 +1,8 @@
 ---
 ---
-@course{nr,
-    title = {Noise {R}eduction in {M}achine {L}earning},
-    content = {
-    <h1 class="resources-headline">Topics
-      <span class="h1-links"><a href="https://nbviewer.jupyter.org/github/pg2455/ml_resources/blob/master/courses/noise-reduction/lessons/noise-reduction-slides-interactive.ipynb" target="_blank">[ Slides/Notebook ]</a></span>
-    </h1>
-    <ul>
-      <li>Sources of noise</li>
-      <li>Impact of noise</li>
-      <li>Examples of noise</li>
-      <li>Noise reduction techniques</li>
-      <ul>
-        <li>Rolling Window</li>
-        <li>Convolution</li>
-        <li>Digital Filters</li>
-        <li>Machine Learning Fitlers</li>
-        <li>Denoising Autoencoders</li>
-      </ul>
-    </ul>
-    },
-    practical = {
-    <h1 class="resources-headline">Practical
-      <span class="h1-links"><a href="https://nbviewer.jupyter.org/github/pg2455/ml_resources/blob/master/courses/noise-reduction/practical/noise-reduction-practical.ipynb" target="_blank">  [ Notebook (DIY) ] </a></span>
-      <span class="h1-links"><a href="https://nbviewer.jupyter.org/github/pg2455/ml_resources/blob/master/courses/noise-reduction/practical/noise-reduction-practical-solution.ipynb" target="_blank"> [ Notebook (Soln.) ] </a></span>
-    </h1>
-    <b>Task</b>: Denoise corrupted images<br>
-    <b>Dataset</b>: <a href="https://github.com/zalandoresearch/fashion-mnist" target="_blank">Fashion MNIST</a><br>
-    <b>Libraries</b>: PyTorch, torchvision <br><br>
-    <b>Learning objectives</b>:
-    <ul>
-      <li>Build a simple Denoising Autoencoder (DAE) for images</li>
-      <li>Train such a DAE on images with a given corrupted noise </li>
-      <li>Visualize the quality of reconstruction</li>
-    </ul>
-
-    },
-
-    image={../images/resources/watermarks.png}
-
-}
-
 @course{dae,
     title = {Deep {A}utoencoders and {V}ariational {A}utoencoders},
     content = {
-    <h1 class="resources-headline">Topics
-      <span class="h1-links"><a href="https://nbviewer.jupyter.org/github/pg2455/ml_resources/blob/master/courses/deep-autoencoders/lessons/deep-autoencoders-slides-interactive.ipynb" target="_blank">[ Slides/Notebook ]</a></span>
-    </h1>
     <ul>
       <li>Autoencoders: Motivation & History</li>
       <li>Autoencoders: Loss function</li>
@@ -57,12 +13,7 @@
       <li>Applications of Autoencoders</li>
     </ul>
     },
-
     practical = {
-    <h1 class="resources-headline">Practical
-      <span class="h1-links"><a href="https://nbviewer.jupyter.org/github/pg2455/ml_resources/blob/master/courses/deep-autoencoders/practical/deep-autoencoders-pratical.ipynb" target="_blank">  [ Notebook (DIY) ] </a></span>
-      <span class="h1-links"><a href="https://nbviewer.jupyter.org/github/pg2455/ml_resources/blob/master/courses/deep-autoencoders/practical/deep-autoencoders-pratical-solution.ipynb" target="_blank"> [ Notebook (Soln.) ] </a></span>
-    </h1>
     <b>Task</b>: Explore the use of autoencoders for
     <ul>
       <li>Data compression</li>
@@ -88,12 +39,41 @@
 
 }
 
+@course{nr,
+    title = {Noise {R}eduction in {M}achine {L}earning},
+    content = {
+    <ul>
+      <li>Sources of noise</li>
+      <li>Impact of noise</li>
+      <li>Examples of noise</li>
+      <li>Noise reduction techniques</li>
+      <ul>
+        <li>Rolling Window</li>
+        <li>Convolution</li>
+        <li>Digital Filters</li>
+        <li>Machine Learning Fitlers</li>
+        <li>Denoising Autoencoders</li>
+      </ul>
+    </ul>
+    },
+    practical = {
+    <b>Task</b>: Denoise corrupted images<br>
+    <b>Dataset</b>: <a href="https://github.com/zalandoresearch/fashion-mnist" target="_blank">Fashion MNIST</a><br>
+    <b>Libraries</b>: PyTorch, torchvision <br><br>
+    <b>Learning objectives</b>:
+    <ul>
+      <li>Build a simple Denoising Autoencoder (DAE) for images</li>
+      <li>Train such a DAE on images with a given corrupted noise </li>
+      <li>Visualize the quality of reconstruction</li>
+    </ul>
+    },
+    image={../images/resources/watermarks.png}
+
+}
+
 @course{mna,
     title = {Advanced {C}onvolutional {N}eural {N}etwork {A}rchitectures (2012 - 2018)},
     content = {
-    <h1 class="resources-headline">Topics
-      <span class="h1-links"><a href="https://nbviewer.jupyter.org/github/pg2455/ml_resources/blob/master/courses/mna/lessons/mna-interactive.ipynb" target="_blank">[ Slides/Notebook ]</a></span>
-    </h1>
     <ul>
       <li>History of vision architectures (1998-2012)</li>
       <li>Network in Network (2014)</li>
@@ -108,10 +88,6 @@
     </ul>
     },
     practical = {
-    <h1 class="resources-headline">Practical
-      <span class="h1-links"><a href="https://nbviewer.jupyter.org/github/pg2455/ml_resources/blob/master/courses/mna/practical/mna-practical.ipynb" target="_blank">  [ Notebook (DIY) ] </a></span>
-      <span class="h1-links"><a href="https://nbviewer.jupyter.org/github/pg2455/ml_resources/blob/master/courses/mna/practical/mna-practical-solution.ipynb" target="_blank"> [ Notebook (Soln.) ] </a></span>
-    </h1>
     <b>Task</b>: Build an image classifier<br>
     <b>Dataset</b>: <a href="https://www.cs.toronto.edu/~kriz/cifar.html" target="_blank"> CIFAR-10</a><br>
     <b>Libraries</b>: PyTorch, torchvision <br><br>

@@ -15,15 +15,42 @@
     {% endif %}
 
     {% if entry.objective %}
-      <p>{{ entry.objective }}</p>
+      <p>
+        <h1 class="resources-headline">&nbsp;
+          {% if entry.link_diy %}
+            <span class="h1-links"><a href="{{ entry.link_diy }}" target="_blank">  [ Notebook (DIY) ] </a></span>
+          {% endif %}
+          {% if entry.link_sol %}
+            <span class="h1-links"><a href="{{ entry.link_sol }}" target="_blank"> [ Notebook (Soln.) ] </a></span>
+          {% endif %}
+        </h1>
+      </p>
+        {{ entry.objective }}
     {% endif %}
 
     <div id="lessons_{{ entry.key }}" class="hidden-content" style="text-align: justify; display: none">
-      <p>{{ entry.content }}</p>
+      <p>
+        <h1 class="resources-headline">Topics
+          {% if entry.content_link %}
+            <span class="h1-links"><a href="{{ entry.content_link }}" target="_blank">[ Slides/Notebook ]</a></span>
+          {% endif %}
+        </h1>
+        {{ entry.content }}
+      </p>
     </div>
 
     <div id="practical_{{ entry.key }}" class="hidden-content" style="text-align: justify; display: none">
-      <p>{{ entry.practical }}</p>
+      <p>
+        <h1 class="resources-headline">Practical
+          {% if entry.practical_link_diy %}
+            <span class="h1-links"><a href="{{ entry.practical_link_diy }}" target="_blank">  [ Notebook (DIY) ] </a></span>
+          {% endif %}
+          {% if entry.practical_link_sol %}
+            <span class="h1-links"><a href="{{ entry.practical_link_sol }}" target="_blank"> [ Notebook (Soln.) ] </a></span>
+          {% endif %}
+        </h1>
+        {{ entry.practical }}
+      </p>
     </div>
 
   </td>
