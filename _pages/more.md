@@ -24,7 +24,7 @@ permalink: /more/
   </tr>
   <tr>
     <td class="col-md-3"><a href="/teaching/#-hackathons"><i class="fas fa-3x fa-paint-brush"></i></a></td>
-    <td style="vertical-align:middle;" ><a href="/teaching/#-hackathons" style="text-decoration: none;color: black;"><strong>Machine learning hackathons</strong><p style="color:grey;font-size:1.2rem">Designing a practical solution to a real-world problem</p> </a></td>
+    <td style="vertical-align:middle;" ><a href="/teaching/#-hackathons" style="text-decoration: none;color: black;"><strong>Hackathons</strong><p style="color:grey;font-size:1.2rem">Designing a practical solution to a real-world problem</p> </a></td>
   </tr>
   <tr>
     <td class="col-md-3"><a href="/news/"><i class="fa fa-3x fa-newspaper-o"></i></a></td>
