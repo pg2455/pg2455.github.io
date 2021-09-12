@@ -116,6 +116,7 @@ I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a
   <td class='col-md-2'>2017 - 2022</td>
   <td>
     The Alan Turing Institute Doctoral Scholarship<br>
+    3rd place, UK-wide 10th <a href="http://www.drawards.org.uk/" target="_blank">Doctoral Researcher Awards</a> 2021 <span style="color:grey;font-size:1.2rem">(5 min thesis presentation)</span>
   </td>
 </tr>
 <tr>
