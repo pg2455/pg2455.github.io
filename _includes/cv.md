@@ -85,18 +85,26 @@ I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a
 </tr>
 </table>
 
-## <i class="fa fa-chevron-right"></i> Voluntary Service / Non-research Experience
+## <i class="fa fa-chevron-right"></i> Professional Activities
 <table class="table table-hover">
+  <tr>
+    <td class='col-md-3'><b>Events</b></td>
+    <td>
+      <a href="https://ai4abm.org/workshop_icml2022/">ICML AI for Agent-based Modelling Workshop Organizer</a>, 2022<br>
+      Fostering Global Cooperation to Mitigate Climate Change Competition Organizer, 2022
+    </td>
+  </tr>
+  <tr>
+    <td class='col-md-3'><b>Teaching</b></td>
+    <td>
+      Faculty @ CambridgeSpark <span style="color:grey;font-size:1.2rem">(part-time: April '21 - Present)</span>, <br>
+      Teaching Assistant @ Oxford Internet Institute <span style="color:grey;font-size:1.2rem">(Jan '22- Mar '22, <a href="/teaching/#-tutorials">course material</a>)</span>
+    </td>
+  </tr>
   <tr>
     <td class='col-md-3'><b>Reviewer</b></td>
     <td>
       NeurIPS 2021, ICLR 2022
-    </td>
-  </tr>
-  <tr>
-    <td class='col-md-3'><b>Faculty</b></td>
-    <td>
-      CambridgeSpark <span style="color:grey;font-size:1.2rem">(part-time: April '21 - Present)</span>
     </td>
   </tr>
   <tr>
