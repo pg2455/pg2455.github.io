@@ -48,6 +48,12 @@ I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a
 ## <i class="fa fa-chevron-right"></i> Experience
 <table class="table table-hover">
 <tr>
+  <td class='col-md-3'>July 2022 - Present</td>
+  <td>
+    <strong>Research Scientist Intern</strong> | DeepMind | London, U.K
+  </td>
+</tr>
+<tr>
   <td class='col-md-3'>June 2018 - Oct. 2020</td>
   <td>
     <strong>Visiting Researcher</strong> | MILA | Montréal, Canada
@@ -91,7 +97,7 @@ I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a
     <td class='col-md-3'><b>Events</b></td>
     <td>
       <a href="https://ai4abm.org/workshop_icml2022/">ICML AI for Agent-based Modelling Workshop Organizer</a>, 2022<br>
-      Fostering Global Cooperation to Mitigate Climate Change Competition Organizer, 2022
+      <a href="https://mila-iqia.github.io/climate-cooperation-competition/">Fostering Global Cooperation to Mitigate Climate Change Competition Organizer</a>, 2022
     </td>
   </tr>
   <tr>
@@ -104,7 +110,7 @@ I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a
   <tr>
     <td class='col-md-3'><b>Reviewer</b></td>
     <td>
-      NeurIPS 2021, ICLR 2022
+      AI4ABM@ICML Workshop 2022, ICLR 2022, NeurIPS 2021, 
     </td>
   </tr>
   <tr>
@@ -185,6 +191,13 @@ NumPy, Pandas, PyTorch, SciPy, TensorFlow, SimPy, D3, jQuery, Flask
 <a href="https://scholar.google.com/citations?user={{ site.usernames.google_scholar }}" class="btn btn-primary" style="padding: 0.3em;">
   <i class="ai ai-google-scholar"></i> Google Scholar
 </a>
+
+<h2> 2022 </h2>
+<table class="table table-hover">
+
+{% bibliography -f publications --query @*[year=2022] %}
+
+</table>
 
 <h2> 2021 </h2>
 <table class="table table-hover">
