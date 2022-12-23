@@ -48,7 +48,7 @@ I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a
 ## <i class="fa fa-chevron-right"></i> Experience
 <table class="table table-hover">
 <tr>
-  <td class='col-md-3'>July 2022 - Present</td>
+  <td class='col-md-3'>July 2022 - Nov. 2022</td>
   <td>
     <strong>Research Scientist Intern</strong> | DeepMind | London, U.K
   </td>
@@ -96,8 +96,8 @@ I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a
   <tr>
     <td class='col-md-3'><b>Events</b></td>
     <td>
-      <a href="https://ai4abm.org/workshop_icml2022/">ICML AI for Agent-based Modelling Workshop Organizer</a>, 2022<br>
-      <a href="https://mila-iqia.github.io/climate-cooperation-competition/">Fostering Global Cooperation to Mitigate Climate Change Competition Organizer</a>, 2022
+      <a href="https://ai4abm.org/workshop_icml2022/">ICML AI for Agent-based Modelling Workshop</a>, Co-Organizer, 2022<br>
+      <a href="https://mila-iqia.github.io/climate-cooperation-competition/">AI for Global Climate Cooperation Challenge</a>, Co-organizer, 2022
     </td>
   </tr>
   <tr>
@@ -110,7 +110,7 @@ I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a
   <tr>
     <td class='col-md-3'><b>Reviewer</b></td>
     <td>
-      AI4ABM@ICML Workshop 2022, ICLR 2022, NeurIPS 2021, 
+      AI4ABM@ICML Workshop 2022, ICLR 2022, NeurIPS 2021,
     </td>
   </tr>
   <tr>
@@ -154,7 +154,7 @@ C/C++, Python, R, Javascript, vim, git, tmux, bash
 <tr>
   <td class='col-md-2'>Frameworks</td>
   <td>
-NumPy, Pandas, PyTorch, SciPy, TensorFlow, SimPy, D3, jQuery, Flask
+NumPy, Pandas, Jax, PyTorch, SciPy, TensorFlow, SimPy, D3, jQuery, Flask
   </td>
 </tr>
 </table>
