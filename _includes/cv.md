@@ -1,7 +1,12 @@
-I am a Ph.D. student at the <a href="https://www.ox.ac.uk/" target="_blank">University of Oxford</a>, supervised by <a href="http://mpawankumar.info/" target="_blank">Pawan Kumar</a>, <a href="https://cerc-datascience.polymtl.ca/person/dr-andrea-lodi/" target="_blank">Andrea Lodi</a>, and <a href="https://yoshuabengio.org/profile/" target="_blank">Yoshua Bengio</a>.  My Ph.D. is fully sponsored by <a href="https://turing.ac.uk" target="_blank">The Alan Turing Institute</a>. I have also been fortunate enough to work for a year and a half as a visiting researcher at <a href="https://mila.quebec/en/" target="_blank">Montréal Institute of Learning Algorithms (Mila)</a>, Montréal, Canada.<br><br>
-My primary research focuses on improving combinatorial optimization using deep learning (e.g., automated heuristics in discrete solvers). I am also excited about using technology or AI for societally impactful problems. As a result, at the beginning of the pandemic, I joined a multi-disciplinary team of researchers to improve contact tracing applications. Along with defining a peer-to-peer protocol, <a href="https://mila.quebec/en/project/covi/" target="_blank">COVI</a>, necessary to improve decision making in contact tracing applications, we were able to determine a <a href="https://arxiv.org/abs/2010.12536" target="_blank">suitable framework</a> to infuse rule-based or machine learning-based decision making in such applications.<br><br>
-Before my Ph.D., I took a broad array of Operations Research courses at <a href="https://www.columbia.edu/" target="_blank">Columbia University</a>. I also learned about industrial, manufacturing, and mechanical engineering in my undergraduate courses at <a href="https://home.iitd.ac.in/" target="_blank">IIT Delhi</a>.<br><br>
-I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a> as a faculty at <a href="https://www.cambridgespark.com/" target="_blank">CambridgeSpark</a>, collaborating with other researchers to tackle socially relevant problems, or competing in various <a href="#-miscellaneous">sports</a>. <br><br>
+Hi! I'm a <strong>Ph.D. student</strong> at the <a href="https://www.ox.ac.uk/" target="_blank">University of Oxford</a>, sponsored by <a href="https://turing.ac.uk" target="_blank">The Alan Turing Institute</a>, and guided by the amazing researchers <a href="http://mpawankumar.info/" target="_blank">Pawan Kumar</a>, <a href="https://cerc-datascience.polymtl.ca/person/dr-andrea-lodi/" target="_blank">Andrea Lodi</a>, and <a href="https://yoshuabengio.org/profile/" target="_blank">Yoshua Bengio</a>. I am also affiliated with the <a href="https://mila.quebec/en/" target="_blank">Montréal Institute of Learning Algorithms (Mila)</a>, where I spent considerable time working with the esteemed teams of Yoshua Bengio and Andrea Lodi.<br>
+
+My <strong>area of research</strong> revolves around <strong>enhancing combinatorial optimization</strong> and <strong>addressing critical social issues</strong> such as contact tracing and climate change through the use of deep learning. In my opinion, applying AI to agent-based modeling offers a promising approach for designing effective solutions to these challenges. Additionally, I maintain a keen interest in deep learning research and continuously strive to expand my knowledge and skills in this domain.<br>
+
+When I am not reading the books, I am creating teaching resources, collaborating with researchers, playing sports (table tennis, swimming, gymnastics, rowing, etc.), learning new skills such as portrait drawing.<br>
+
+I have a background in Operations Research, Industrial Engineering, and Mechanical Engineering through my undergraduate and master's studies, and I enjoyed all of it!<br>
+
+If you'd like to talk about anything related to AI or beyond, please don't hesitate to get in touch with me.<br><br>
 
 ## <i class="fa fa-chevron-right"></i> Education
 
@@ -110,7 +115,7 @@ I also enjoy creating <a href="/teaching/" target="_blank">teaching resources</a
   <tr>
     <td class='col-md-3'><b>Reviewer</b></td>
     <td>
-      AI4ABM@ICML Workshop 2022, ICLR 2022, NeurIPS 2021, 
+      AI4ABM@ICML Workshop 2022, ICLR 2022, NeurIPS 2021,
     </td>
   </tr>
   <tr>
