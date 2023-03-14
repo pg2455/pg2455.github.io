@@ -4,7 +4,8 @@
 <tr>
 <td class="col-md-3"><a href='{{ entry._link }}' target='_blank'><img src="{{ entry._image }}" onerror="this.style.display='none'"/></a> </td>
 <td>
-    <strong>{{ entry.title }}</strong><br>
+    <strong>{{ entry.title }}</strong>{% if entry._venue %}, <i style="color:grey;font-size:0.9em">{{entry._venue}} {{entry.year}}</i>{% endif %}
+    <br>
 
     {% assign etal = false %}
     {% assign lastindex = entry.author_array | size | minus:1 %}
@@ -37,10 +38,6 @@
     {% endfor %}
 
     <br>
-
-    {% if entry._venue %}
-      {{entry._venue}} {{entry.year}}<br>
-    {% endif %}
 
     {% if entry.abstract %}
       <span> [<a href='javascript:;' onclick='$("#abs_{{ entry.key }}").toggle()'>abs</a>] </span>

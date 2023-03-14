@@ -197,6 +197,13 @@ NumPy, Pandas, Jax, PyTorch, SciPy, TensorFlow, SimPy, D3, jQuery, Flask
   <i class="ai ai-google-scholar"></i> Google Scholar
 </a>
 
+<h2> 2023 </h2>
+<table class="table table-hover">
+
+{% bibliography -f publications --query @*[year=2023] %}
+
+</table>
+
 <h2> 2022 </h2>
 <table class="table table-hover">
 
