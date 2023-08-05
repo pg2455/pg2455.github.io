@@ -12,7 +12,7 @@ If you'd like to talk about anything related to AI or beyond, please don't hesit
 
 <table class="table table-hover">
   <tr>
-    <td class="col-md-3">Sept. 2017 - Present</td>
+    <td class="col-md-3">Sept. 2017 - May 2023</td>
     <td>
         <strong>PhD in Machine Learning</strong>
         <br>
