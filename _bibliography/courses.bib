@@ -16,6 +16,78 @@
     image={../images/resources/attention.png},
 }
 
+@course{mna,
+    title = {Advanced {C}onvolutional {N}eural {N}etwork {A}rchitectures (2012 - 2018)},
+    content = {
+    <ul>
+      <li>History of vision architectures (1998-2012)</li>
+      <li>Network in Network (2014)</li>
+      <li>InceptionNet (2014)</li>
+      <li>ResNet (2015)</li>
+      <li>Pre-activations: Improved ResNet (2016)</li>
+      <li>DenseNet (2016)</li>
+      <li>WaveNet (2016)</li>
+      <li>Depthwise Separable Convolutions (2017)</li>
+      <li>Squeeze-and-Excite: ResNet (2017)</li>
+      <li>Neural Architecture Search (2018 - Present)</li>
+    </ul>
+    },
+    practical = {
+    <b>Task</b>: Build an image classifier<br>
+    <b>Dataset</b>: <a href="https://www.cs.toronto.edu/~kriz/cifar.html" target="_blank"> CIFAR-10</a><br>
+    <b>Libraries</b>: PyTorch, torchvision <br><br>
+    <b>Learning objectives</b>:
+    <ul>
+      <li>Build and train <a href="https://arxiv.org/pdf/1409.4842.pdf" target="_blank">InceptionNet</a> on CIFAR-10</li>
+      <li>Build and train <a href="https://arxiv.org/pdf/1608.06993.pdf" target="_blank">DenseNet</a> on CIFAR-10</li>
+    </ul>
+
+    },
+
+    image={../images/resources/imagenet.png},
+
+    content_link={https://github.com/pg2455/ml_resources/blob/master/courses/mna/lessons/mna-interactive.ipynb},
+    practical_link_diy={https://github.com/pg2455/ml_resources/blob/master/courses/mna/practical/mna-practical.ipynb},
+    practical_link_sol={https://github.com/pg2455/ml_resources/blob/master/courses/mna/practical/mna-practical-solution.ipynb},
+
+
+}
+
+@course{pruning,
+    title = {Network Pruning},
+    content = {
+    <ul>
+      <li>Motivation</li>
+      <li>Network Pruning: Pipeline</li>
+      <li>Network Pruning: Unstructured vs Structured</li>
+      <li>Network Pruning: Criterion</li>
+      <li>Network Pruning: Prune Rate</li>
+      <li>Network Pruning: Lottery Ticket Hypothesis</li>
+      <li>Knowledge Distillation</li>
+      <li>Quantization</li>
+    </ul>
+    },
+    practical = {
+    <b>Task</b>: Build a land use classifier<br>
+    <b>Dataset</b>: <a href="https://github.com/phelber/eurosat" target="_blank">EuroSat (RGB)</a><br>
+    <b>Libraries</b>: PyTorch, torchvision <br><br>
+    <b>Learning objectives</b>:
+    <ul>
+      <li>Build and train a simple classifier</li>
+      <li>Use different techniques of pruning available in PyTorch to reduce the size of the network</li>
+      <li>Observe the effect of pruning on model accuracy</li>
+    </ul>
+
+    },
+
+    image={../images/resources/pruning.png},
+    content_link={https://github.com/pg2455/ml_resources/blob/master/courses/network-pruning/lessons/network-pruning-slides-interactive.ipynb},
+    practical_link_diy={https://github.com/pg2455/ml_resources/blob/master/courses/network-pruning/practical/pruning-practical.ipynb},
+    practical_link_sol={https://github.com/pg2455/ml_resources/blob/master/courses/network-pruning/practical/pruning-practical-solution.ipynb},
+
+
+}
+
 @course{dae,
     title = {Deep {A}utoencoders and {V}ariational {A}utoencoders},
     content = {
@@ -92,78 +164,6 @@
     content_link={https://github.com/pg2455/ml_resources/blob/master/courses/noise-reduction/lessons/noise-reduction-slides-interactive.ipynb},
     practical_link_diy={https://github.com/pg2455/ml_resources/blob/master/courses/noise-reduction/practical/noise-reduction-practical.ipynb},
     practical_link_sol={https://github.com/pg2455/ml_resources/blob/master/courses/noise-reduction/practical/noise-reduction-practical-solution.ipynb},
-
-
-}
-
-@course{mna,
-    title = {Advanced {C}onvolutional {N}eural {N}etwork {A}rchitectures (2012 - 2018)},
-    content = {
-    <ul>
-      <li>History of vision architectures (1998-2012)</li>
-      <li>Network in Network (2014)</li>
-      <li>InceptionNet (2014)</li>
-      <li>ResNet (2015)</li>
-      <li>Pre-activations: Improved ResNet (2016)</li>
-      <li>DenseNet (2016)</li>
-      <li>WaveNet (2016)</li>
-      <li>Depthwise Separable Convolutions (2017)</li>
-      <li>Squeeze-and-Excite: ResNet (2017)</li>
-      <li>Neural Architecture Search (2018 - Present)</li>
-    </ul>
-    },
-    practical = {
-    <b>Task</b>: Build an image classifier<br>
-    <b>Dataset</b>: <a href="https://www.cs.toronto.edu/~kriz/cifar.html" target="_blank"> CIFAR-10</a><br>
-    <b>Libraries</b>: PyTorch, torchvision <br><br>
-    <b>Learning objectives</b>:
-    <ul>
-      <li>Build and train <a href="https://arxiv.org/pdf/1409.4842.pdf" target="_blank">InceptionNet</a> on CIFAR-10</li>
-      <li>Build and train <a href="https://arxiv.org/pdf/1608.06993.pdf" target="_blank">DenseNet</a> on CIFAR-10</li>
-    </ul>
-
-    },
-
-    image={../images/resources/imagenet.png},
-
-    content_link={https://github.com/pg2455/ml_resources/blob/master/courses/mna/lessons/mna-interactive.ipynb},
-    practical_link_diy={https://github.com/pg2455/ml_resources/blob/master/courses/mna/practical/mna-practical.ipynb},
-    practical_link_sol={https://github.com/pg2455/ml_resources/blob/master/courses/mna/practical/mna-practical-solution.ipynb},
-
-
-}
-
-@course{pruning,
-    title = {Network Pruning},
-    content = {
-    <ul>
-      <li>Motivation</li>
-      <li>Network Pruning: Pipeline</li>
-      <li>Network Pruning: Unstructured vs Structured</li>
-      <li>Network Pruning: Criterion</li>
-      <li>Network Pruning: Prune Rate</li>
-      <li>Network Pruning: Lottery Ticket Hypothesis</li>
-      <li>Knowledge Distillation</li>
-      <li>Quantization</li>
-    </ul>
-    },
-    practical = {
-    <b>Task</b>: Build a land use classifier<br>
-    <b>Dataset</b>: <a href="https://github.com/phelber/eurosat" target="_blank">EuroSat (RGB)</a><br>
-    <b>Libraries</b>: PyTorch, torchvision <br><br>
-    <b>Learning objectives</b>:
-    <ul>
-      <li>Build and train a simple classifier</li>
-      <li>Use different techniques of pruning available in PyTorch to reduce the size of the network</li>
-      <li>Observe the effect of pruning on model accuracy</li>
-    </ul>
-
-    },
-
-    image={../images/resources/pruning.png},
-    content_link={https://github.com/pg2455/ml_resources/blob/master/courses/network-pruning/lessons/network-pruning-slides-interactive.ipynb},
-    practical_link_diy={https://github.com/pg2455/ml_resources/blob/master/courses/network-pruning/practical/pruning-practical.ipynb},
-    practical_link_sol={https://github.com/pg2455/ml_resources/blob/master/courses/network-pruning/practical/pruning-practical-solution.ipynb},
 
 
 }
