@@ -1,10 +1,30 @@
 ---
 ---
+@tutorial{llm_time_series_forecasting,
+    title = {LLMTime - Zero-shot prompting LLMs for time series forecasting},
+    objective = {
+    <b>Publication</b>: <a href="https://arxiv.org/abs/2310.07820" target="_blank">Gruver et al. Large Language Models are Zero Shot Time Series Forecasters. NeurIPS, 2023</a><br>
+    <b>Task</b>: Weather forecasting using LLMs<br>
+    <b>Libraries</b>: openai, tiktoken, jax<br><br>
+    <b>Learning objectives</b>: Explore zero-shot prompting with Large Language Models (LLMs) for time series forecasting. In this tutorial, we aim to:<br>
+    <ul>
+      <li>Acquaint you with the application of machine learning techniques using Large Language Models (LLMs).</li>
+      <li>Enhance your understanding of LLMs and the parameters influencing their behavior.</li>
+      <li>Guide you through the essentials for successful time series prediction with LLMs.</li>
+      <li>Translate knowledge from transformers to the realm of LLMs.</li>
+    </ul>
+    },
+
+    image={../images/resources/llmtime.png},
+
+    link_diy={https://github.com/pg2455/ml_resources/blob/master/tutorials/LLMTime/LLM-timeseries.ipynb},
+    link_sol={https://github.com/pg2455/ml_resources/blob/master/tutorials/LLMTime/LLM-timeseries-solution.ipynb},
+}
 
 @tutorial{attn,
     title = {Attention is all you need},
     objective = {
-    <b>Paper</b>: <a href="https://arxiv.org/pdf/1706.03762.pdf" target="_blank">Vaswani, Ashish, et al. "Attention is all you need." NeurIPS 2017.</a><br>
+    <b>Publication</b>: <a href="https://arxiv.org/pdf/1706.03762.pdf" target="_blank">Vaswani, Ashish, et al. "Attention is all you need." NeurIPS 2017.</a><br>
     <b>Task</b>: Neural Machine Translation (e.g, German-English)<br>
     <b>Dataset</b>: <a href="https://arxiv.org/abs/1605.00459" target="_blank">Multi30k</a><br>
     <b>Libraries</b>: PyTorch, NLTK, Spacy, torchtext <br><br>
@@ -27,10 +47,30 @@
 
 }
 
+@tutorial{critical_exploration_transformers,
+    title = {Critical Exploration of Transformer Models},
+    objective = {
+    <b>Learning objectives</b>: Delve into the inner workings of transformer models beyond basic applications<br>
+    <b>Key Areas</b>:
+    <ul>
+      <li>Adversarial Inputs: Crafting inputs to challenge language models</li>
+      <li>Attention Visualization: Understanding focus mechanisms in transformers</li>
+      <li>Fine-Tuning with LoRA: Implementing Low-Rank Adaptation for model refinement</li>
+      <li>Bias Detection: Investigating biases in model responses</li>
+    </ul>
+    <b>Note</b>: This tutorial is an introductory exploration of transformers. It's a starting point for more advanced study.<br><br>
+    },
+
+    image={../images/resources/lora.png},
+
+    link_diy={https://github.com/pg2455/ml_resources/blob/master/tutorials/attention_is_all_you_need/transformer-extended.ipynb},
+    link_sol={https://github.com/pg2455/ml_resources/blob/master/tutorials/attention_is_all_you_need/transformer-extended-solution.ipynb},
+}
+
 @tutorial{mat,
     title = {Molecule Attention Transformer},
     objective = {
-    <b>Paper</b>: <a href="https://arxiv.org/pdf/2002.08264.pdf" target="_blank">Maziarka, et al. "Molecule Attention Transformer"</a><br>
+    <b>Publication</b>: <a href="https://arxiv.org/pdf/2002.08264.pdf" target="_blank">Maziarka, et al. "Molecule Attention Transformer"</a><br>
     <b>Task</b>: Classification task to predict Blood-brain barrier permeability (BBBP)<br>
     <b>Dataset</b>: <a href="https://deepchem.readthedocs.io/en/latest/api_reference/moleculenet.html#bbbp-datasets" target="_blank">BBBP</a><br>
     <b>Libraries</b>: PyTorch, DeepChem, RDKit <br><br>
