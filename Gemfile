@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 group :jekyll_plugins do
-    gem 'github-pages'
-    gem 'jekyll'
+    gem 'github-pages', '214', group: :jekyll_plugins
+    # gem 'jekyll'
     gem 'jemoji'
     gem 'jekyll-scholar'
     gem 'jekyll-github-metadata'
