@@ -1,5 +1,34 @@
 ---
 ---
+@tutorial{pfn,
+    title = {Prior-Fitted Networks},
+    objective = {
+    <b>Publication</b>: <a href="https://arxiv.org/abs/2112.10510" target="_blank">Müller et al. Transformers can do Bayesian Inference. ICLR, 2022</a><br>
+    <b>Task</b>: Using Transformers to estimate Posterior Predictive Distributions<br>
+    <b>Libraries</b>: PyTorch<br>
+    <b>Learning objectives</b>: <br>
+    <ul>
+      <li>Understand the principles of Prior-Data Fitted Networks (PFNs) and their application in integrating prior knowledge to predict the Posterior Predictive Distribution (PPD) in machine learning models.</li>
+      <li>Acquire practical skills in defining priors, creating dataset loaders for synthetic data generation, developing transformer models for PPD approximation, formulating loss functions for specific regression tasks, and evaluating model output quality.</li>
+    </ul>
+    },
+    image={../images/resources/pfn.png},
+    link_sol={https://github.com/pg2455/ml_resources/blob/master/tutorials/PFN/PFN-final.ipynb},
+}
+
+@tutorial{pfn_data_priors,
+    title = {Data Generating Priors for Prior-Fitted Networks},
+    objective = {
+    <b>Publication</b>: <a href="https://arxiv.org/abs/2310.07820" target="_blank">Müller et al. Transformers can do Bayesian Inference. ICLR, 2022</a><br><a href="https://arxiv.org/abs/2207.01848" target="_blank">Hollmann et al. TabPFN: A Transformer That Solves Small Tabular Classification Problems in a Second. ICLR, 2023</a><br>
+    <b>Task</b>: Generating data according to different priors for PFNs<br>
+    <b>Libraries</b>: PyTorch<br>
+    <b>Learning objectives</b>: Learn how to generate synthetic data based on specified priors and utilize it for training neural networks to approximate Bayesian inference.<br>
+    },
+
+    image={../images/resources/pfn_data.png},
+    link_sol={https://github.com/pg2455/ml_resources/blob/master/tutorials/PFN/PFN-priors.ipynb},
+}
+
 @tutorial{llm_time_series_forecasting,
     title = {LLMTime - Zero-shot prompting LLMs for time series forecasting},
     objective = {
@@ -16,7 +45,6 @@
     },
 
     image={../images/resources/llmtime.png},
-
     link_diy={https://github.com/pg2455/ml_resources/blob/master/tutorials/LLMTime/LLM-timeseries.ipynb},
     link_sol={https://github.com/pg2455/ml_resources/blob/master/tutorials/LLMTime/LLM-timeseries-solution.ipynb},
 }
@@ -39,7 +67,6 @@
         </ul>
     </ul>
     },
-
     image={../images/resources/transformer_architecture.jpeg},
 
     link_diy={https://github.com/pg2455/ml_resources/blob/master/tutorials/attention_is_all_you_need/practical.ipynb},
@@ -60,7 +87,6 @@
     </ul>
     <b>Note</b>: This tutorial is an introductory exploration of transformers. It's a starting point for more advanced study.<br><br>
     },
-
     image={../images/resources/lora.png},
 
     link_diy={https://github.com/pg2455/ml_resources/blob/master/tutorials/attention_is_all_you_need/transformer-extended.ipynb},
@@ -83,7 +109,6 @@
       <li>Train and evaluate the model on molecular datasets</li>
     </ul>
     },
-
     image={../images/resources/MAT.png},
 
     link_sol={https://github.com/pg2455/ml_resources/blob/master/tutorials/molecule_attention_transformer/practical-solution.ipynb},

@@ -84,6 +84,13 @@ h1.resources-headline span.h1-links {
   padding: 0 1em 0 1em;
 }
 
+h1.resources-headline span.published {
+  font-size: 15px;
+  color: gray;
+  float: left;
+  padding: 0 1em 0 1em;
+}
+
 a.button1 {
   display: inline-block;
   padding: 0.35em 0.5em;

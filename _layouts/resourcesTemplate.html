@@ -17,6 +17,9 @@
     {% if entry.objective %}
       <p>
         <h1 class="resources-headline">&nbsp;
+          {% if entry.published %}
+            <span class="published">Published: {{ entry.published }} </span>
+          {% endif %}
           {% if entry.link_diy %}
             <span class="h1-links"><a href="{{ entry.link_diy }}" target="_blank">  [ Notebook (DIY) ] </a></span>
           {% endif %}
