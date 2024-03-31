@@ -53,6 +53,12 @@ If you'd like to talk about anything related to AI or beyond, please don't hesit
 ## <i class="fa fa-chevron-right"></i> Experience
 <table class="table table-hover">
 <tr>
+  <td class='col-md-3'>Feb. 2023 - Present</td>
+  <td>
+    <strong>Postdoctoral Researcher</strong> | Max Planck Institute | Berlin, Germany
+  </td>
+</tr>
+<tr>
   <td class='col-md-3'>July 2022 - Nov. 2022</td>
   <td>
     <strong>Research Scientist Intern</strong> | DeepMind | London, U.K

@@ -6,11 +6,12 @@ permalink: /blog/
 
 # Blog Posts
 <br>
-<table class="table table-hover">
-  {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
+{% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
 
-  {% for year in postsByYear %}
-    <h2>{{ year.name }}</h2>
+{% for year in postsByYear %}
+  <h2>{{ year.name }}</h2>
+  <table class="table table-hover">
+
     {% assign postsBySeries = year.items | group_by_exp:"item", "item.series.name" %}
 
       {% for series in postsBySeries %}
@@ -38,14 +39,14 @@ permalink: /blog/
           {% for post in series.items %}
           {% unless post.draft %}
           <tr>
-            <td class="col-md-3"><a href="{{ post.url }}"><i class="{{ post.icon }}"></i></a></td>
-            <td style="vertical-align:middle;"><a href="{{ post.url }}" style="text-decoration: none;color: black; font-size:1.25em;"><strong>{{ post.title }}</strong></a></td>
+            <td class="col-md-3"><a href="{{ post.url }}">{{ post.icon }}</a></td>
+            <td style="vertical-align:middle;"><a href="{{ post.url }}"><strong style="margin: 0 0 5px 0; font-size:1.25em;">{{ post.title }}</strong></a></td>
           </tr>
           {% endunless %}
           {% endfor %}
         {% endif %}
 
       {% endfor %}
+  </table>
+{% endfor %}
 
-  {% endfor %}
-</table>

@@ -15,20 +15,11 @@
     {% endif %}
 
     {% if entry.objective %}
-      <p>
-        <h1 class="resources-headline">&nbsp;
-          {% if entry.published %}
-            <span class="published">Published: {{ entry.published }} </span>
-          {% endif %}
-          {% if entry.link_diy %}
-            <span class="h1-links"><a href="{{ entry.link_diy }}" target="_blank">  [ Notebook (DIY) ] </a></span>
-          {% endif %}
-          {% if entry.link_sol %}
-            <span class="h1-links"><a href="{{ entry.link_sol }}" target="_blank"> [ Notebook (Soln.) ] </a></span>
-          {% endif %}
-        </h1>
-      </p>
-        {{ entry.objective }}
+    <span> [<a href='javascript:;' onclick='$("#objective_{{ entry.key }}").toggle()'>Details</a>] </span>
+    {% endif %}
+
+    {% if entry.date_published %}
+    <span style="float: right; color:grey;font-size:1em">{{ entry.date_published }}</span>
     {% endif %}
 
     <div id="lessons_{{ entry.key }}" class="hidden-content" style="text-align: justify; display: none">
@@ -54,6 +45,23 @@
         </h1>
         {{ entry.practical }}
       </p>
+    </div>
+
+    <div id="objective_{{ entry.key }}" class="hidden-content" style="text-align: justify; display: none">
+      <p>
+        <h1 class="resources-headline">&nbsp;
+          {% if entry.published %}
+            <span class="published">Published: {{ entry.published }} </span>
+          {% endif %}
+          {% if entry.link_diy %}
+            <span class="h1-links"><a href="{{ entry.link_diy }}" target="_blank">  [ Notebook (DIY) ] </a></span>
+          {% endif %}
+          {% if entry.link_sol %}
+            <span class="h1-links"><a href="{{ entry.link_sol }}" target="_blank"> [ Notebook (Soln.) ] </a></span>
+          {% endif %}
+        </h1>
+      </p>
+        {{ entry.objective }}
     </div>
 
   </td>
