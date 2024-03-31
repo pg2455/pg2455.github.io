@@ -1,6 +1,6 @@
-Hi! I'm a <strong>Ph.D. student</strong> at the <a href="https://www.ox.ac.uk/" target="_blank">University of Oxford</a>, sponsored by <a href="https://turing.ac.uk" target="_blank">The Alan Turing Institute</a>, and guided by the amazing researchers <a href="http://mpawankumar.info/" target="_blank">Pawan Kumar</a>, <a href="https://cerc-datascience.polymtl.ca/person/dr-andrea-lodi/" target="_blank">Andrea Lodi</a>, and <a href="https://yoshuabengio.org/profile/" target="_blank">Yoshua Bengio</a>. I am also affiliated with the <a href="https://mila.quebec/en/" target="_blank">Montréal Institute of Learning Algorithms (Mila)</a>, where I spent considerable time of my doctorate studies.<br>
+Hi! I'm currently a Postdoctoral Researcher at the Max Planck Institute's [Center for Humans and Machines](https://www.mpib-berlin.mpg.de/chm), working alongside [Iyad Rahwan](https://www.rahwan.me/). My research centers on the co-evolution of humans and intelligent machines. I am also deeply engaged in exploring fundamental deep learning methodologies and contributing to projects that leverage AI for scientific discoveries.
 
-My <strong>area of research</strong> revolves around <strong>using deep learning to enhance combinatorial optimization</strong> and <strong>addressing critical social issues</strong> such as effective pandemic management using contact tracing or the lack of international cooperation on climate change objectives. I am also interested in developing AI methods for agent-based modelling to better understand and solve societal problems. Additionally, I maintain a keen interest in deep learning research and continuously strive to expand my knowledge and skills in this domain.<br>
+I completed my Ph.D at the <a href="https://www.ox.ac.uk/" target="_blank">University of Oxford</a>, sponsored by <a href="https://turing.ac.uk" target="_blank">The Alan Turing Institute</a>, and guided by the amazing researchers <a href="http://mpawankumar.info/" target="_blank">Pawan Kumar</a>, <a href="https://cerc-datascience.polymtl.ca/person/dr-andrea-lodi/" target="_blank">Andrea Lodi</a>, and <a href="https://yoshuabengio.org/profile/" target="_blank">Yoshua Bengio</a>. During my Ph.D., I was also affiliated with the <a href="https://mila.quebec/en/" target="_blank">Montréal Institute of Learning Algorithms (Mila)</a>, where I spent considerable time of my doctorate studies.<br>
 
 When I am not reading books, I enjoy creating teaching resources, collaborating with researchers, playing sports (table tennis, swimming, gymnastics, rowing, etc.), learning new skills such as portrait drawing.<br>
 
@@ -53,7 +53,7 @@ If you'd like to talk about anything related to AI or beyond, please don't hesit
 ## <i class="fa fa-chevron-right"></i> Experience
 <table class="table table-hover">
 <tr>
-  <td class='col-md-3'>Feb. 2023 - Present</td>
+  <td class='col-md-3'>Feb. 2024 - Present</td>
   <td>
     <strong>Postdoctoral Researcher</strong> | Max Planck Institute | Berlin, Germany
   </td>
