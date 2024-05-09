@@ -1,7 +1,7 @@
 ---
 ---
 
-<tr>
+<tr data-tags='{{ entry.tags }}'>
   <td class="col-md-3"><img src="{{ entry.image }}" onerror="this.style.display='none'"/></td>
   <td>
     <strong>{{ entry.title }}</strong><br>
@@ -46,6 +46,7 @@
         {{ entry.practical }}
       </p>
     </div>
+  </div>
 
     <div id="objective_{{ entry.key }}" class="hidden-content" style="text-align: justify; display: none">
       <p>
