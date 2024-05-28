@@ -4,7 +4,11 @@
 <tr>
   <td class="col-md-3"><img src="{{ entry.image }}" onerror="this.style.display='none'"/></td>
   <td>
-    <strong>{{ entry.title }}</strong><br>
+    <div class="content-text">
+      <div id="{{ entry.key | slugify }}" class="highlight-text">
+        <span> <a href="#{{ entry.key | slugify }}" target="_blank"><i class="fas fa-link"></i></a> </span>
+        <strong>{{ entry.title }}</strong><br>
+      </div>
 
     {% if entry.content %}
       <span> [<a href='javascript:;' onclick='$("#lessons_{{ entry.key }}").toggle()'>Topics</a>] </span>
@@ -15,14 +19,15 @@
     {% endif %}
 
     {% if entry.objective %}
-    <span> [<a href='javascript:;' onclick='$("#objective_{{ entry.key }}").toggle()'>Details</a>] </span>
+      <span> [<a href='javascript:;' onclick='$("#objective_{{ entry.key }}").toggle()'>Details</a>] </span>
     {% endif %}
 
     {% if entry.date_published %}
-    <span style="float: right; color:grey;font-size:1em">{{ entry.date_published }}</span>
+      <span style="float: right; color:grey;font-size:1em">{{ entry.date_published }}</span>
     {% endif %}
-
-    <div id="lessons_{{ entry.key }}" class="hidden-content" style="text-align: justify; display: none">
+    
+    {% if entry.content %}
+    <div id="lessons_{{ entry.key | slugify }}" class="hidden-content" style="text-align: justify; display: none">
       <p>
         <h1 class="resources-headline">Topics
           {% if entry.content_link %}
@@ -32,8 +37,10 @@
         {{ entry.content }}
       </p>
     </div>
+    {% endif %}
 
-    <div id="practical_{{ entry.key }}" class="hidden-content" style="text-align: justify; display: none">
+    {% if entry.practical %}
+    <div id="practical_{{ entry.key | slugify }}" class="hidden-content" style="text-align: justify; display: none">
       <p>
         <h1 class="resources-headline">Practical
           {% if entry.practical_link_diy %}
@@ -46,8 +53,10 @@
         {{ entry.practical }}
       </p>
     </div>
+    {% endif %}
 
-    <div id="objective_{{ entry.key }}" class="hidden-content" style="text-align: justify; display: none">
+    {% if entry.objective %}
+    <div id="objective_{{ entry.key | slugify }}" class="hidden-content" style="text-align: justify; display: none">
       <p>
         <h1 class="resources-headline">&nbsp;
           {% if entry.published %}
@@ -63,6 +72,8 @@
       </p>
         {{ entry.objective }}
     </div>
+    {% endif %}
 
+  </div>
   </td>
 </tr>

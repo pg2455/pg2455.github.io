@@ -37,6 +37,7 @@
       }
     };
   </script>
+
   <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@{{ site.mathjax.version }}/es5/tex-mml-chtml.js"></script>
   <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script type="text/javascript" id="MathJax-script" defer
@@ -143,6 +144,36 @@
    });
    anchors.add('h2,h3');
   </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if there is a hash in the URL
+        const hash = window.location.hash;
+        if (hash) {
+            // Find the element that matches the hash
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                // Add the highlight class to the element
+                targetElement.classList.add('highlight');
+                
+                // If there are collapsible sections related to this hash, open them
+                const relatedSections = ['lessons', 'practical', 'objective'];
+                relatedSections.forEach(section => {
+                    const elem = document.getElementById(section + '_' + hash.slice(1));
+                    if (elem) {
+                        elem.style.display = 'block'; // Change display style to 'block' to show the section
+                    }
+                });
+
+                // Set a timeout to remove the highlight after 5 seconds
+                setTimeout(() => {
+                    targetElement.classList.remove('highlight');
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        }
+    });
+
+</script>
 
 </body>
 

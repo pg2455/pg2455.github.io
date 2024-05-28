@@ -117,3 +117,41 @@ a.button1:hover {
     margin: 0.4em auto;
   }
 }
+
+@keyframes fadeIn {
+  from {
+      background-color: transparent;
+  }
+  to {
+      background-color: #E0F2F1;
+  }
+}
+
+.highlight {
+  background-color: #E0F2F1; /* Pale green for a soothing background */
+  padding: 10px; /* Adds space around the text */
+  border-radius: 8px; /* Smooth rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: background-color 5s ease-out; /* Smooth transition for the background color */
+  margin: 10px 0; /* Adds vertical space around the element */
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #005662; /* A darker shade that contrasts well with a pale green background */
+  animation: fadeIn 1s ease-in-out;
+  scroll-margin-top: 100px; 
+}
+
+
+.highlight-text {
+  padding: 10px; /* Adds space around the text */
+  border-radius: 8px; /* Smooth rounded corners */
+  margin: 10px 0; /* Adds vertical space around the element */
+  /* font-size: 1.1em; */
+}
+
+.content-text {
+  font-size: 1.1em;
+}
+
+
+
