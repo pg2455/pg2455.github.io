@@ -11,15 +11,15 @@
       </div>
 
     {% if entry.content %}
-      <span> [<a href='javascript:;' onclick='$("#lessons_{{ entry.key }}").toggle()'>Topics</a>] </span>
+      <span> [<a href='javascript:;' onclick='$("#lessons_{{ entry.key | slugify }}").toggle()'>Topics</a>] </span>
     {% endif %}
 
     {% if entry.practical %}
-      <span> [<a href='javascript:;' onclick='$("#practical_{{ entry.key }}").toggle()'>Practical</a>] </span>
+      <span> [<a href='javascript:;' onclick='$("#practical_{{ entry.key | slugify }}").toggle()'>Practical</a>] </span>
     {% endif %}
 
     {% if entry.objective %}
-      <span> [<a href='javascript:;' onclick='$("#objective_{{ entry.key }}").toggle()'>Details</a>] </span>
+      <span> [<a href='javascript:;' onclick='$("#objective_{{ entry.key | slugify }}").toggle()'>Details</a>] </span>
     {% endif %}
 
     {% if entry.date_published %}
