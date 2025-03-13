@@ -1,12 +1,12 @@
-Hi! I'm currently a Postdoctoral Researcher at the Max Planck Institute's [Center for Humans and Machines](https://www.mpib-berlin.mpg.de/chm), working alongside [Iyad Rahwan](https://www.rahwan.me/). My research centers on the co-evolution of humans and intelligent machines. I am also deeply engaged in exploring fundamental deep learning methodologies and contributing to projects that leverage AI for scientific discoveries.
+Hi! I'm currently a Postdoctoral Researcher at the Max Planck Institute's [Center for Humans and Machines](https://www.mpib-berlin.mpg.de/chm), working with [Iyad Rahwan](https://www.rahwan.me/). My research centers on the co-evolution of humans and intelligent machines. I am also deeply engaged in exploring fundamental deep learning methodologies and contributing to projects that leverage AI for scientific discoveries.
 
-I completed my Ph.D at the <a href="https://www.ox.ac.uk/" target="_blank">University of Oxford</a>, sponsored by <a href="https://turing.ac.uk" target="_blank">The Alan Turing Institute</a>, and guided by the amazing researchers <a href="http://mpawankumar.info/" target="_blank">Pawan Kumar</a>, <a href="https://cerc-datascience.polymtl.ca/person/dr-andrea-lodi/" target="_blank">Andrea Lodi</a>, and <a href="https://yoshuabengio.org/profile/" target="_blank">Yoshua Bengio</a>. During my Ph.D., I was also affiliated with the <a href="https://mila.quebec/en/" target="_blank">Montréal Institute of Learning Algorithms (Mila)</a>, where I spent considerable time of my doctorate studies.<br>
+I completed my Ph.D on deep learning methods for exact combinatorial optimization at the <a href="https://www.ox.ac.uk/" target="_blank">University of Oxford</a>, sponsored by <a href="https://turing.ac.uk" target="_blank">The Alan Turing Institute</a>, and guided by the amazing researchers <a href="http://mpawankumar.info/" target="_blank">Pawan Kumar</a>, <a href="https://cerc-datascience.polymtl.ca/person/dr-andrea-lodi/" target="_blank">Andrea Lodi</a>, and <a href="https://yoshuabengio.org/profile/" target="_blank">Yoshua Bengio</a>. During my Ph.D., I was also affiliated with the <a href="https://mila.quebec/en/" target="_blank">Montréal Institute of Learning Algorithms (Mila)</a>, where I spent considerable time of my doctorate studies.<br>
 
-When I am not reading books, I enjoy creating teaching resources, collaborating with researchers, playing sports (table tennis, swimming, gymnastics, rowing, etc.), learning new skills such as portrait drawing.<br>
+Beyond my research, I'm passionate about creating educational resources in machine learning (<a href="/teaching/">check them out here</a>), engaging in collaborative research projects, and maintaining an active lifestyle through diverse sports including table tennis, swimming, gymnastics, and rowing. I also enjoy reading books across various genres to broaden my perspectives.<br>
 
-I have a background in Operations Research, Industrial Engineering, and Mechanical Engineering through my undergraduate and master's studies, and I enjoyed all of it!<br>
+I have a background in Operations Research, Industrial Engineering, and Mechanical Engineering through my undergraduate and master's studies.<br>
 
-If you'd like to talk about anything related to AI or beyond, please don't hesitate to get in touch with me.<br><br>
+I'm always eager to engage in discussions about AI, machine learning, optimization, or any other research interests. Feel free to reach out via email or connect with me on social media to start a conversation.<br><br>
 
 ## <i class="fa fa-chevron-right"></i> Education
 
@@ -49,6 +49,13 @@ If you'd like to talk about anything related to AI or beyond, please don't hesit
   </tr>
 </table>
 
+<br>
+
+## <i class="fa fa-chevron-right"></i> Publications
+
+For a complete list of my publications, please visit my <a href="https://scholar.google.com/citations?user={{ site.usernames.google_scholar }}" target="_blank">Google Scholar profile</a>.
+
+<br>
 
 ## <i class="fa fa-chevron-right"></i> Experience
 <table class="table table-hover">
@@ -102,6 +109,8 @@ If you'd like to talk about anything related to AI or beyond, please don't hesit
 </tr>
 </table>
 
+<br>
+
 ## <i class="fa fa-chevron-right"></i> Professional Activities
 <table class="table table-hover">
   <tr>
@@ -134,6 +143,7 @@ If you'd like to talk about anything related to AI or beyond, please don't hesit
 
 </table>
 
+<br>
 
 ## <i class="fa fa-chevron-right"></i> Honors & Awards
 <table class="table table-hover">
@@ -153,6 +163,7 @@ If you'd like to talk about anything related to AI or beyond, please don't hesit
 </tr>
 </table>
 
+<br>
 
 ## <i class="fa fa-chevron-right"></i> Skills
 <table class="table table-hover">
@@ -165,10 +176,12 @@ C/C++, Python, R, Javascript, vim, git, tmux, bash
 <tr>
   <td class='col-md-2'>Frameworks</td>
   <td>
-NumPy, Pandas, Jax, PyTorch, SciPy, TensorFlow, SimPy, D3, jQuery, Flask
+PyTorch, TensorFlow, Jax, NumPy, Pandas, SciPy, Langchain, Flask, D3, jQuery, SimPy
   </td>
 </tr>
 </table>
+
+<br> 
 
 ## <i class="fa fa-chevron-right"></i> Miscellaneous
 <table class="table table-hover">
@@ -197,44 +210,3 @@ NumPy, Pandas, Jax, PyTorch, SciPy, TensorFlow, SimPy, D3, jQuery, Flask
 </tr>
 </table>
 
-## <i class="fa fa-chevron-right"></i> Publications <a href="{{ site.host_address }}/blob/master/_bibliography/publications.bib"><i class="fa fa-code-fork" aria-hidden="true"></i></a>
-
-<a href="https://scholar.google.com/citations?user={{ site.usernames.google_scholar }}" class="btn btn-primary" style="padding: 0.3em;">
-  <i class="ai ai-google-scholar"></i> Google Scholar
-</a>
-
-<h2> 2023 </h2>
-<table class="table table-hover">
-
-{% bibliography -f publications --query @*[year=2023] %}
-
-</table>
-
-<h2> 2022 </h2>
-<table class="table table-hover">
-
-{% bibliography -f publications --query @*[year=2022] %}
-
-</table>
-
-<h2> 2021 </h2>
-<table class="table table-hover">
-
-{% bibliography -f publications --query @*[year=2021] %}
-
-</table>
-
-<h2> 2020 </h2>
-<table class="table table-hover">
-
-{% bibliography -f publications --query @*[year=2020] %}
-
-</table>
-
-
-<h2> 2013 </h2>
-<table class="table table-hover">
-
-{% bibliography -f publications --query @*[year=2013] %}
-
-</table>
