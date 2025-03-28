@@ -154,4 +154,42 @@ a.button1:hover {
 }
 
 
+.social-icon {
+  color: #4582ec;
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  display: inline-block;
+}
+
+.social-icon:hover {
+  color: #1d4189;
+  transform: translateY(-3px);
+  text-decoration: none;
+}
+
+.idxIcons li {
+  margin: 0 0.5rem;
+}
+
+/* Brand-specific colors on hover */
+.social-icon:hover .fa-github {
+  color: #24292e !important;
+}
+
+.social-icon:hover .fa-linkedin {
+  color: #0077b5 !important;
+}
+
+.social-icon:hover .fa-x-twitter {
+  color: #000000 !important;
+}
+
+.social-icon:hover .ai-google-scholar {
+  color: #4285f4 !important;
+}
+
+.social-icon:hover .fa-rss {
+  color: #f26522 !important;
+}
+
 
