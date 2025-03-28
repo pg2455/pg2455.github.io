@@ -1,7 +1,8 @@
 #footer-container {
-  background-color: white;
-  color: black;
+  background-color: #f8f9fa;
+  color: #2c3e50;
   padding: 25px;
+  border-top: 1px solid #e9ecef;
 }
 
 .hidden-content {
@@ -25,20 +26,20 @@
 /* icons */
 
 .fa-github {
-  color: #333 !important;
+  color: #333333 !important;  /* GitHub's original black */
 }
 
-.fa-linkedin-square {
-  color: #2867B2 !important;
+.fa-linkedin {
+  color: #0077b5 !important;  /* LinkedIn's original blue */
 }
 
-.fa-twitter {
-  color: #55ACEE!important;
-  background: transparent!important ;
+.fa-x-twitter {
+  color: #000000 !important;  /* X/Twitter's original black */
 }
 
 .ai-google-scholar {
-  color: #4782e0 !important;
+  color: #4285f4 !important;  /* Google's blue */
+  transition: all 0.3s ease;
 }
 
 .fa-rss {
@@ -93,22 +94,24 @@ h1.resources-headline span.published {
 
 a.button1 {
   display: inline-block;
-  padding: 0.35em 0.5em;
-  border: 0.1em solid #4582ec;
-  margin: 0 0.0em 0.0em 0;
-  border-radius: 0.12em;
+  padding: 0.5em 1em;
+  border: 2px solid #4582ec;
+  margin: 0 0.5em 0.5em 0;
+  border-radius: 25px;
   box-sizing: border-box;
   text-decoration: none;
-  font-weight: 300;
+  font-weight: 500;
   color: #4582ec;
   text-align: center;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  background: transparent;
 }
 
 a.button1:hover {
   color: #FFFFFF;
   background-color: #4582ec;
-
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(69, 130, 236, 0.3);
 }
 
 @media all and (max-width:30em) {
@@ -173,23 +176,165 @@ a.button1:hover {
 
 /* Brand-specific colors on hover */
 .social-icon:hover .fa-github {
-  color: #24292e !important;
+  color: #24292e !important;  /* Slightly darker on hover */
 }
 
 .social-icon:hover .fa-linkedin {
-  color: #0077b5 !important;
+  color: #006097 !important;  /* Slightly darker on hover */
 }
 
 .social-icon:hover .fa-x-twitter {
-  color: #000000 !important;
+  color: #000000 !important;  /* Stays black on hover */
 }
 
 .social-icon:hover .ai-google-scholar {
-  color: #4285f4 !important;
+  color: #3367d6 !important;  /* Slightly darker on hover */
+  transform: scale(1.1);
 }
 
-.social-icon:hover .fa-rss {
-  color: #f26522 !important;
+/* Landing page styles */
+.idxHdr {
+  padding: 3rem 0;
+}
+
+.name-title {
+  font-size: 2.2em;
+  color: #2c3e50;
+  font-weight: 700;
+  margin: 1.5em 0 0.4em 0;
+  background: linear-gradient(45deg, #4582ec, #2c3e50);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.name-title:hover {
+  transform: translateY(-2px);
+}
+
+.role-title {
+  font-size: 1.4em;
+  color: #34495e;
+  margin-bottom: 0.5em;
+  font-weight: 300;
+}
+
+.institution-link {
+  color: #4582ec;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.institution-link:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #4582ec;
+  transition: width 0.3s ease;
+}
+
+.institution-link:hover:after {
+  width: 100%;
+}
+
+.email-link {
+  color: #4582ec;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  pointer-events: none;
+}
+
+.email-parts {
+  display: inline-block;
+  direction: ltr;
+  unicode-bidi: bidi-override;
+}
+
+.email-parts span {
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.email-link:hover .email-parts span {
+  transform: translateY(-2px);
+  color: #2c3e50;
+}
+
+.email-link:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #4582ec;
+  transition: width 0.3s ease;
+}
+
+.email-link:hover:after {
+  width: 100%;
+}
+
+.profile-image {
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  max-width: 100%;
+  height: auto;
+}
+
+.profile-image:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+#footer-container a {
+  color: #4582ec;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+#footer-container a:hover {
+  color: #2c3e50;
+  text-decoration: underline;
+}
+
+/* Navbar social icons */
+.navbar-nav .social-icon {
+  padding: 0 10px;
+  transition: all 0.3s ease;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.navbar-nav .social-icon:hover {
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.navbar-nav .social-icon i {
+  font-size: 1.2em;
+}
+
+/* Special styling for Google Scholar in navbar */
+.navbar-nav .social-icon .ai-google-scholar {
+  color: #4285f4;
+  font-size: 1.2em;
+  transition: all 0.3s ease;
+}
+
+.navbar-nav .social-icon:hover .ai-google-scholar {
+  color: #3367d6;
+  transform: scale(1.1);
 }
 
 
