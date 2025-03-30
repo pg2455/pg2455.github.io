@@ -1,25 +1,850 @@
----
----
-
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site.name }}</title>
-    <description>{{ site.description }}</description>
-    <link>{{ site.url }}</link>
+    <title>Prateek Gupta</title>
+    <description>Prateek Gupta | Personal Website</description>
+    <link>http://pg2455.github.io</link>
     <atom:link
-      href="{{ site.url }}/atom.xml" rel="self"
+      href="http://pg2455.github.io/atom.xml" rel="self"
       type="application/rss+xml" />
-    {% for post in site.posts limit:10 %}
+    
     <item>
-      <title>{{ post.title }}</title>
-      <description>{{ post.content | xml_escape }}</description>
+      <title>Exploring Simulacra's Generative Agents</title>
+      <description>&lt;h2 id=&quot;tutorial-on-toy-simulacra&quot;&gt;Tutorial on Toy Simulacra&lt;/h2&gt;
+
+&lt;p&gt;This post is a retrospective on the &lt;a href=&quot;/teaching/tutorials&quot;&gt;tutorial series&lt;/a&gt; to understand &lt;a href=&quot;https://arxiv.org/abs/2304.03442&quot; target=&quot;_blank&quot;&gt;Generative Agents: Interactive Simulacra of Human Behavior (Park et al. 2023)&lt;/a&gt;&lt;d-cite key=&quot;park2023generative&quot;&gt;&lt;/d-cite&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;sociological-simulations-with-llms&quot;&gt;Sociological Simulations with LLMs&lt;/h2&gt;
+
+&lt;p&gt;Simulations offer a way to study complex systems with many moving parts, which may or may not exhibit well-defined behaviors. As simulated systems evolve, researchers can explore various aspects, including future predictions, system behavior descriptions, and scenario explorations like interventions and their outcomes. This potential has made simulations a point of interest across diverse domains. However, it’s important to recognize that no simulation can perfectly replicate the system it models. They are all built on assumptions that may not hold in the real world, allowing us to observe system dynamics by unfolding computational time rather than waiting in real-time.&lt;/p&gt;
+
+&lt;p&gt;Simulations have been developed across various domains, such as physics and biology, to investigate physical and biological systems. Similarly, in economics and social sciences, they are employed to explore complex human behavior, organizational behavior, and social dynamics.&lt;/p&gt;
+
+&lt;p&gt;In the &lt;a href=&quot;/teaching/tutorials&quot;&gt;tutorial series&lt;/a&gt;, we focus on sociological simulations, where software agents (representing humans) exhibit behaviors and personalities commonly observed in the real world. While quantifying their resemblance to real humans is challenging, the authors provide instances that closely mirror expected real-world behaviors. However, a deeper examination might reveal behaviors that seem awkward or unexpected. Nevertheless, the paper provides a solid foundation for future research in social simulations.&lt;/p&gt;
+
+&lt;p&gt;The primary goal is to demonstrate how LLMs can create “believable proxies” of human behavior, imbuing agents with a sense of life and realism as they react and plan autonomously. For a deeper understanding, I highly recommend reviewing the related works section of the paper.&lt;/p&gt;
+
+&lt;p&gt;A notable advancement is the shift away from hardcoded human behaviors in simulations. For instance, in traditional agent-based modeling, agents might follow a predetermined schedule throughout the simulation. In contrast, Simulacra allows agents the autonomy to decide their daily and hourly schedules, agendas, and goals.&lt;/p&gt;
+
+&lt;h2 id=&quot;integrating-llms-in-agent-decision-making&quot;&gt;Integrating LLMs in Agent Decision-Making&lt;/h2&gt;
+
+&lt;div class=&quot;row mt-3&quot;&gt;
+  &lt;div class=&quot;col-sm mt-3 mt-md-0&quot;&gt;
+    &lt;img class=&quot;img-fluid rounded z-depth-1&quot; src=&quot;/images/blog/simulacra/simulacra-design.png&quot; /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;caption&quot;&gt;
+  Figure 1: High-level design of the simulation.
+&lt;/div&gt;
+
+&lt;p&gt;The design of the simulation is illustrated in Figure 1.&lt;/p&gt;
+
+&lt;p&gt;Within this environment, agents interact with various elements. The Maze provides structural components that enhance the realism of these interactions, including designated residential and working areas. These areas offer agents contextual cues about their potential actions and conversational topics appropriate for each setting.&lt;/p&gt;
+
+&lt;p&gt;Agents perceive their surroundings, noting objects nearby and the presence of other agents.&lt;/p&gt;
+
+&lt;p&gt;These observations are stored in their memory, alongside other relevant recollections, informing their subsequent actions.&lt;/p&gt;
+
+&lt;p&gt;Armed with these retrieved memories, agents decide on their next steps, whether it’s interacting with the environment or engaging in conversations with other agents.&lt;/p&gt;
+
+&lt;p&gt;This ongoing cycle yields a convincing illusion of realism within the simulations.&lt;/p&gt;
+
+&lt;div class=&quot;row mt-3&quot;&gt;
+  &lt;div class=&quot;col-sm mt-3 mt-md-0&quot;&gt;
+    &lt;img class=&quot;img-fluid rounded z-depth-1&quot; src=&quot;/images/blog/simulacra/prompt-uses.png&quot; /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;caption&quot;&gt;
+  Figure 2: Various ways in which LLMs are used in degining generative agents.
+&lt;/div&gt;
+
+&lt;p&gt;Figure 2 further clarifies the integration of Language Learning Models (LLMs) in the simulation. Agents act as repositories for memories and events, but when decisions are required, LLMs are consulted for their input. These prompts are enriched with information critical for shaping the response, including the agent’s personality, observations of the surrounding environment, and past events.&lt;/p&gt;
+
+&lt;p&gt;It’s crucial to understand that responses from LLMs may not always align with expectations, making the interpretation of these responses a challenge in itself. The tutorial series does not delve into the nuances of parsing LLM feedback.&lt;/p&gt;
+
+&lt;h2 id=&quot;tutorial-overview&quot;&gt;Tutorial Overview&lt;/h2&gt;
+
+&lt;p&gt;The original &lt;a href=&quot;https://github.com/joonspk-research/generative_agents&quot;&gt;Simulacra code&lt;/a&gt; is extensive and complex, presenting challenges in comprehension, especially for newcomers. To facilitate a more accessible introduction, I have streamlined the code by omitting the frontend visualization aspect. This modification results in a simpler environment (Maze) where generative agents navigate. There will be no visual feedback. Nonetheless, their movements can be verified by printing the output of their coordinates.&lt;/p&gt;
+
+&lt;p&gt;The primary focus of this tutorial is to construct generative agents equipped with the autonomy to make decisions and interact with others.&lt;/p&gt;
+
+&lt;p&gt;This tutorial is structured into a series of four notebooks, gradually building a simulation of an artificial society:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt; &lt;b&gt;Notebook 1.1 - Basic Simulation Structure:&lt;/b&gt;  Explore fundamental simulation components, including environment interaction and constructing the basic simulation loop.&lt;/li&gt;
+  &lt;li&gt; &lt;b&gt;Notebook 1.2 - Building Generative Agents:&lt;/b&gt; Delve into the creation of generative agents, focusing on memory structures as discussed in the Simulacra paper..&lt;/li&gt;
+  &lt;li&gt; &lt;b&gt;Notebook 1.3 - Agent schedule planning:&lt;/b&gt; Develop agents' abilities to plan their schedules, highlighting cognitive process implementation.&lt;/li&gt;
+  &lt;li&gt; &lt;b&gt;Notebook 1.4 - Agent Cognition and Communication:&lt;/b&gt; Examine agents' cognitive functions such as perception, memory retrieval, and response to events, including conversations with other agents and memory integration.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; LLM prompting happens only in the notebooks 1.3 and 1.4.&lt;/p&gt;
+
+&lt;p&gt;To streamline the learning process, certain complex components have been excluded from this tutorial, including agents’ reflection and path planning within the environment.&lt;/p&gt;
+
+&lt;h2 id=&quot;takeaways-from-creating-this-tutorial&quot;&gt;Takeaways from creating this tutorial&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;b&gt;Function Testing:&lt;/b&gt; It's crucial to verify whether individual functions behave as intended. Although simulation developers likely perform this check, creating official tests for each function would greatly enhance ease of testing and adaptability to changes. This becomes particularly challenging in complex simulations where multiple functions interact.&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;Testable Scenarios:&lt;/b&gt; Establishing easily testable scenarios is essential for efficient debugging and validation of simulation behavior.&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;Class Design:&lt;/b&gt; Thoughtful class design can significantly reduce cognitive overhead by clarifying the purpose and use of each variable, streamlining development and maintenance processes.&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;Using Prompts with LLMs:&lt;/b&gt; Mastering prompt use with LLMs presents an interesting challenge. Implementing a failsafe mechanism is critical to ensure resilience in the face of unexpected or unhelpful LLM responses. The effectiveness of various prompting strategies can vary greatly and often depends on the specifics of the LLM being used.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
       <pubDate>
-        {{ post.date | date: "%a, %d %b %Y %H:%M:%S %z" }}
+        Sun, 31 Mar 2024 00:00:00 +0000
       </pubDate>
-      <link>{{ site.url }}{{ post.url }}</link>
-      <guid isPermaLink="true">{{ site.url }}{{ post.url }}</guid>
+      <link>http://pg2455.github.io/blog/2024/simulacra-0/</link>
+      <guid isPermaLink="true">http://pg2455.github.io/blog/2024/simulacra-0/</guid>
     </item>
-    {% endfor %}
+    
+    <item>
+      <title>Why should we care now?</title>
+      <description>&lt;p&gt;As computer scientists, we think about how a proposed solution will fare in a worst-case scenario.
+As discussed earlier, &lt;a href=&quot;#an-example-heuristic-for-pct&quot;&gt;the PCT framework with warning signals strives to caution individuals earlier than without the warning signals&lt;/a&gt;.
+The usefulness of early warning signals will be more noticeable for a virus that exhibits dormant characteristics, i.e., the host is infectious without definite signs of being infected.&lt;/p&gt;
+
+&lt;p&gt;The following changes to the &lt;em&gt;viral profile&lt;/em&gt; will increase its dormant characteristics.&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Weaker tests &amp;amp;  delayed results&lt;/strong&gt;: In the absence of conclusive diagnostic tests, we will be likely to detect an infectious person.
+SARS-CoV-2's most conclusive test is through &lt;em&gt;Real-Time Polymerase Chain Reaction Test (RT-PCR)&lt;/em&gt;.
+The test's false-negative rate varies depending on the individual's viral load, with a minimum of 33% at the peak viral load&lt;d-cite key=&quot;li2020false&quot;&gt;&lt;/d-cite&gt;.
+The test results take at least a day to two to return.
+Thus, a &lt;em&gt;worst-case virus&lt;/em&gt; will likely have a higher false-negative rate with a longer turnover time.
+As an aside, the mega-diagnostic platforms, &lt;a href=&quot;https://www.gatesnotes.com/2021-Annual-Letter#ALChapter3&quot;&gt;proposed in Bill and Melinda Gates, 2021 Annual letter focused on better preparedness to future pandemic&lt;/a&gt;, serve the purpose of faster turnover.
+&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Inconclusive symptoms &amp;amp; harsher health-impact&lt;/strong&gt;: If an infected individual shares a symptom profile with other common diseases, it is likely to be ignored by an individual.
+&lt;a href=&quot;https://www.economist.com/britain/2021/01/30/why-britons-go-to-work-with-covid-19&quot;&gt;Familiar stories have come up during the Covid-19 pandemic&lt;/a&gt;.
+SARS-CoV-2 virus exhibits such inconclusive signs of the virus combined with varying degrees of health-impact depending on individual characteristics.
+Thus, a &lt;em&gt;worst-case virus&lt;/em&gt; will likely have more of such inconclusive signs for some people and have a harsher health impact on others. &lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Longer incubation period &lt;/strong&gt;: If an infectious individual is unaware of the infection, they are likely to spread the infection.
+&lt;a href=&quot;/blog/2021/ct-2/#epidemilogy--virology&quot;&gt;Recall that the incubation period is the time since infection before any symptoms appear&lt;/a&gt;.
+SARS-CoV-2 has a mean incubation period of five days&lt;d-cite key=&quot;lauer2020incubation&quot;&gt;&lt;/d-cite&gt;, so a longer incubation period will likely to result in more infections per individual (i.e. higher reproductive number &lt;em&gt;R&lt;/em&gt;).
+&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;More asymptomatic population &amp;amp; their infectiousness&lt;/strong&gt;:
+An estimated 20-40%&lt;d-cite key=&quot;he2020temporal&quot;&gt;&lt;/d-cite&gt;&lt;d-cite key=&quot;luo&quot;&gt;&lt;/d-cite&gt; of the population does not show any symptoms throughout the time they are infected.
+However, their infectiousness (likelihood to infect others) is also roughly 30% of those who exhibit symptoms&lt;d-cite key=&quot;luo&quot;&gt;&lt;/d-cite&gt;.
+Thus, a &lt;em&gt;worst-case virus&lt;/em&gt; will likely have a larger proportion (less than 100%) of asymptomatic population with higher infectiousness.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Many future pandemic preparedness efforts are likely to be focused on rapid vaccine development and testing platforms.
+These efforts will help us fight this &lt;em&gt;worst-case virus&lt;/em&gt;.
+However, due to the speed and the scale with which digital contact tracing can be deployed, efforts to improve the existing contact tracing frameworks (e.g., PCT&lt;d-cite key=&quot;bengio2020predicting&quot;&gt;&lt;/d-cite&gt;, PanCast&lt;d-cite key=&quot;barthe2020pancast&quot;&gt;&lt;/d-cite&gt;) may prove equally beneficial.&lt;/p&gt;
+</description>
+      <pubDate>
+        Thu, 08 Apr 2021 00:00:06 +0000
+      </pubDate>
+      <link>http://pg2455.github.io/blog/2021/ct-6/</link>
+      <guid isPermaLink="true">http://pg2455.github.io/blog/2021/ct-6/</guid>
+    </item>
+    
+    <item>
+      <title>Limitations and Open Questions</title>
+      <description>&lt;p&gt;So far, we discussed the PCT framework in the spirit of a personalization tool that incorporates relevant data points to recommend cautionary behaviors to app-users.
+These recommendations are intended to control the outbreak while minimizing economic disruption.
+The framework is grounded in epidemiology and virology while respecting technological constraints such as user privacy and Bluetooth communication protocol.
+Finally, apart from various rule-based instantiations, we also saw a deep learning solution to implement the framework.&lt;/p&gt;
+
+&lt;p&gt;Still, this is just the first step towards having a better contact tracing framework.
+Hopefully, addressing some of the shortcomings can help us better prepare for the future.
+While the &lt;a href=&quot;/blog/2021/ct-6/&quot;&gt;subsequent post&lt;/a&gt; discusses why we should care, in this post, we focus on some of the limitations and possible ways to mitigate them.&lt;/p&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Simulator Reliability&lt;/strong&gt;: A machine learning model relies on access to a simulator.
+However, the simulator is a  crude approximation of reality.
+Thus, we need a way to improve the simulator to represent reality as closely as possible.
+Currently, we used domain randomization&lt;d-cite key=&quot;tobin2017domain&quot;&gt;&lt;/d-cite&gt; to hedge against this issue to train robust deep learning models.
+To align the simulator more closely to reality, we propose incorporating real-world app usage data (after the app is launched) along with the simulated data to improve the simulator (Figure 5).
+The details are a bit involved, but the high-level idea is to parametrize the simulator (using neural networks with learnable weights) so that the differences in the simulated data and the real-world observations can tune the weights.
+&lt;div class=&quot;row mt-3&quot;&gt;
+  &lt;div class=&quot;col mt-3 mt-md-0&quot;&gt;
+    &lt;img class=&quot;img-fluid rounded z-depth-1&quot; src=&quot;/images/blog/ct/step3.png&quot; /&gt;
+  &lt;/div&gt;
+	&lt;div class=&quot;caption&quot;&gt;
+		&lt;strong&gt;Figure 5&lt;/strong&gt;: We can align the simulator to reality by using app-usage data (green arrow) with simulated data. The methods like wake-sleep algorithm&lt;d-cite key=&quot;hinton1995wake&quot;&gt;&lt;/d-cite&gt; and amaortized variational inference&lt;d-cite key=&quot;kingma2013auto&quot;&gt;&lt;/d-cite&gt; can be used here.
+	&lt;/div&gt;
+&lt;/div&gt;
+In doing so, we learn the simulator (generative model as neural network) and the predictor (also called inference model) in an iterative fashion.
+The wake-sleep algorithm&lt;d-cite key=&quot;hinton1995wake&quot;&gt;&lt;/d-cite&gt; and amortized variational inference&lt;d-cite key=&quot;kingma2013auto&quot;&gt;&lt;/d-cite&gt; are two methods that can be employed here.
+Interested readers can find more involved details of the above methods in our &lt;a href=&quot;/data/blog/sim-real.pdf&quot; target=&quot;_blank&quot;&gt;write-up&lt;/a&gt; (work of &lt;a href=&quot;https://mila.quebec/en/person/tristan-deleu/&quot;&gt;Tristan Deleu&lt;/a&gt; and &lt;a href=&quot;https://mila.quebec/en/person/meng-qu/&quot;&gt;Meng Qu&lt;/a&gt;), prepared while the plans to launch &lt;a href=&quot;https://mila.quebec/en/covi-protecting-the-health-and-privacy-of-canadians/&quot;&gt;COVI&lt;/a&gt;, the app with the PCT framework, were still alive.
+&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Reinforcement Learning&lt;/strong&gt;: We used &lt;a href=&quot;/blog/2021/ct-4/#deep-learning-for-pct&quot;&gt;iterative training&lt;/a&gt; procedure for training a deep learning model to tackle the problem of distribution shift in data.
+However, the reinforcement learning (RL) paradigm is better suited to tackle this problem.
+An appropriate RL formulation for predictor design can have &lt;em&gt;actions&lt;/em&gt; as the level of behavior restrictions recommended to the app-user and &lt;em&gt;rewards&lt;/em&gt; as carefully combined metrics of disease prevalence and mobility.
+Due to RL's training requirements, we need access to a faster simulator than what we have at the moment.
+&lt;div class=&quot;row mt-3&quot;&gt;
+  &lt;div class=&quot;col mt-3 mt-md-0&quot;&gt;
+    &lt;img class=&quot;img-fluid rounded z-depth-1&quot; src=&quot;/images/blog/ct/step4.png&quot; /&gt;
+  &lt;/div&gt;
+	&lt;div class=&quot;caption&quot;&gt;
+		&lt;strong&gt;Figure 6&lt;/strong&gt;: The problem of predictor design is better suited as an RL formulation (inside the computer screen on the left). We used &lt;a href=&quot;/blog/2021/ct-4/#deep-learning-for-pct&quot;&gt;iterative training&lt;/a&gt; for deep learning model to tackle the problem of distribution shifts. However, RL is better suited to tackle this problem.
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Interpretable models&lt;/strong&gt;: We think that for better user-adherence, we should be able to give an app-user the explanation behind the recommended behaviors.
+For example, if an app-user is asked to avoid public transport, an explanation (e.g., the appearance of symptoms in the past contact) will make the app-user more likely to follow the recommendation.
+The rule-based predictors are better suited to serve this purpose.
+However, it is not easy to extract an explanation from the &lt;a href=&quot;/blog/2021/ct-4/&quot;&gt;deep learning model discussed in the previous post&lt;/a&gt;.
+To this end, apart from leveraging &lt;a href=&quot;https://explainml-tutorial.github.io/&quot;&gt;interpretability research&lt;/a&gt;&lt;d-cite key=&quot;gilpin2018explaining&quot;&gt;&lt;/d-cite&gt;&lt;d-cite key=&quot;murdoch2019interpretable&quot;&gt;&lt;/d-cite&gt;&lt;d-cite key=&quot;rudin2019stop&quot;&gt;&lt;/d-cite&gt; being done for deep learning models, we think a hybrid approach might also be helpful.
+For example, the rules can rely on the likelihood of the app-user showing symptoms or test results in the next seven days, which is an output of a learned deep learning model.
+&lt;div class=&quot;row mt-3&quot;&gt;
+  &lt;div class=&quot;col mt-3 mt-md-0&quot;&gt;
+    &lt;img class=&quot;img-fluid rounded z-depth-1&quot; src=&quot;/images/blog/ct/step6.png&quot; /&gt;
+  &lt;/div&gt;
+	&lt;div class=&quot;caption&quot;&gt;
+		&lt;strong&gt;Figure 7&lt;/strong&gt;: In addition to leveraging &lt;a href=&quot;https://explainml-tutorial.github.io/&quot;&gt;interpretability research&lt;/a&gt;&lt;d-cite key=&quot;gilpin2018explaining&quot;&gt;&lt;/d-cite&gt;&lt;d-cite key=&quot;murdoch2019interpretable&quot;&gt;&lt;/d-cite&gt;&lt;d-cite key=&quot;rudin2019stop&quot;&gt;&lt;/d-cite&gt; to design deep learning models capable of generating explanations, we can also opt for a hybrid predictor that has deep learning powered rules.
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Biases&lt;/strong&gt;: As in many applied projects, addressing the sources of biases is crucial for it to perform at a scale wider than considered for prototyping.
+There are various sources of bias that could creep into our plan.
+To start with, assumptions built into the simulator can be biased towards team member's personal experiences.
+Further, suppose we were to incorporate real-world app-usage data to improve the simulator.
+In that case, data for training the predictor might become more accurate for the demographics that adopted the app compared to the new adopters from different demographics.
+We would expect a thorough understanding of the sources of biases before launching an app to be aware of where it may or may not work.
+&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Offline Reinforcement Learning&lt;/strong&gt;: Building a simulator takes time.
+Various assumptions that go into building a simulator might differ from one virus to another (e.g., viral load curves or mobility patterns).
+Additionally, we would not have a reliable simulator until sufficient data from scientific experiments and clinical observations are collected.
+
+In such a case, we think that the research in Offline-RL&lt;d-cite key=&quot;levine2020offline&quot;&gt;&lt;/d-cite&gt; could be used to address the above problem.
+The researchers have been applying it to solve problems related to autonomous driving and healthcare.
+One does not have access to a high-fidelity simulator in these domains.
+In our context, a roll-out of some basic rules will yield observation-reward pairs.
+The objective of Offline-RL will be to learn a policy that improves upon the rolled-out policy (rule-based predictor) without trying them out on a simulator.
+
+&lt;div class=&quot;row mt-3&quot;&gt;
+  &lt;div class=&quot;col mt-3 mt-md-0&quot;&gt;
+    &lt;img class=&quot;img-fluid rounded z-depth-1&quot; src=&quot;/images/blog/ct/step7.png&quot; /&gt;
+  &lt;/div&gt;
+	&lt;div class=&quot;caption&quot;&gt;
+		&lt;strong&gt;Figure 7&lt;/strong&gt;: Offline-RL&lt;d-cite key=&quot;levine2020offline&quot;&gt;&lt;/d-cite&gt; could potentially help when a fully reliable simulator is not available (e.g., at the very beginning of a pandemic)
+	&lt;/div&gt;
+&lt;/div&gt;
+
+There are three reasons for the above proposal.
+&lt;ul&gt;
+&lt;li&gt;First, at the onset of a pandemic, when there is not much information about the virus (through clinical observations and scientific experiments) to build a reliable simulator, a conservative rule-based policy could be rapidly deployed.
+This will not only help us collect initial data points but also, through Offline-RL, we will be able to improve upon the rule-based policy.
+Subsequent iterations will be very much like the traditional RL.&lt;/li&gt;
+
+&lt;li&gt;Second, in the absence of a scalable and fast simulator, we can hope that Offline-RL on the rule-based policy can give us a better policy with lesser iterations.
+For example, a supervised framework requires three iterations of training where each iteration collects data from more than 1K simulation runs.
+It takes 2-3 weeks to have a policy.
+If time is a constrained resource such that only one iteration is possible, we can hope to have a better policy through Offline-RL in one iteration as compared to the supervised policy.
+Note that it is cheaper to run rule-based policies as compared to neural network policies (3 hours for rule-based vs 10 hours for deep learning with 10K agents).&lt;/li&gt;
+
+&lt;li&gt;Finally, a deep learning solution might not be trusted well by authorities from the very beginning.
+So, it might be a useful practice to have a curriculum of deployment which gradually, and reliably, injects a smarter solution into the system.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+    &lt;li&gt;&lt;strong&gt;Backward Tracing&lt;/strong&gt; - &lt;a href=&quot;https://www.theatlantic.com/health/archive/2020/09/k-overlooked-variable-driving-pandemic/616548/&quot;&gt;Covid-19 is an overdispersed phenomenon, in which a few people infect many while many infect a few&lt;/a&gt;.
+    Thus, the reproductive number for Covid-19 may not paint as bad a picture of the outbreak as it might be in reality.
+    For example, the reproductive number of &lt;em&gt;2&lt;/em&gt; means that an infected person typically transmits the virus to two other people.
+    However, due to dispersion, it may be that a few people infect 10 while a lot of them infect just 1, such that there are 2 mean contagions per infected person.
+    Therefore, it is increasingly important to detect the source of infection as early as possible.
+This is the objective of backward tracing, which differs from forward tracing (the central idea of this series) as we are interested in identifying individuals whom the source (e.g., person who reports a positive test result) might have infected.
+
+Recall that the PCT framework relies on warning signals that encode transmitted viral load (for an encounter) in N-bits.
+It serves as a proxy for the &lt;em&gt;likelihood of infecting&lt;/em&gt; the other person involved in an encounter.
+Though non-trivial, we think that reserving some bits (out of N-bits sent in a warning signal) for the &lt;em&gt;likelihood of getting infected&lt;/em&gt; could help to identify the source of infection.
+A deep learning-based solution could leverage the ground truth to get better at this prediction.
+However, appropriate rules for a rule-based predictor are not clear at the moment.
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Network Optimization&lt;/strong&gt;:
+Recall that every time a predictor updates an individual's estimated viral load, it is sent across as a warning signal through a communication channel.
+Such warning signal updates could heavily consume the network bandwidth while being redundant.
+For example, suppose the rule-based predictor only cares about the maximum warning signal.
+In that case, it might be economical to prioritize bandwidth to high-intensity warning signals while ignoring the lower ones.
+
+Thus, not all warning signals are going to be informative.
+Moreover, the prioritization of these signals may or may not depend on the predictor used for the PCT framework.
+Finally, it might be helpful to include this constraint as a part of the machine learning training procedure.
+We think that addressing this challenge will help us improve the framework even further.
+In a similar spirit, work done by Mitra et al.&lt;d-cite key=&quot;mitra2020distributed&quot;&gt;&lt;/d-cite&gt; addresses this problem in distributed inference setting.
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Multiple viruses&lt;/strong&gt;:
+In the event of an outbreak, unless theoretically impossible, caused by more than one virus (e.g., influenza and coronavirus) at the same time, we would want to understand how we can modify the framework.
+A conservative approach would be to use the PCT framework with a viral-load profile of a &quot;proxy-virus&quot; with the viral load as a maximum of the two viruses.  
+However, one could also think of efficient use of N-bits sent through the communication channels so that the information about the type of virus and the corresponding viral load is sent.
+The situation will likely test the trade-off between privacy (number of bits sent) and the framework's efficacy (controlling the outbreak while minimizing economic disruption).
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Having discussed the possible limitations and corresponding ways to alleviate them, it is natural to ask if and when these improvements will help.
+We discuss this in our next post.&lt;/p&gt;
+</description>
+      <pubDate>
+        Thu, 08 Apr 2021 00:00:05 +0000
+      </pubDate>
+      <link>http://pg2455.github.io/blog/2021/ct-5/</link>
+      <guid isPermaLink="true">http://pg2455.github.io/blog/2021/ct-5/</guid>
+    </item>
+    
+    <item>
+      <title>Deep learning for the framework</title>
+      <description>&lt;p&gt;In the previous post, we discussed various rule-based predictor-recommender pairs for the PCT framework.
+These rules are designed by domain experts, who continually update their understanding of the disease, and accordingly rules,  based on the observed data (Figure 4A).
+This post explores a machine learning (ML) based methodology that can be useful alongside domain experts.&lt;/p&gt;
+
+&lt;div class=&quot;row mt-3&quot;&gt;
+  &lt;div class=&quot;col mt-3 mt-md-0&quot;&gt;
+    &lt;img class=&quot;img-fluid rounded z-depth-1&quot; src=&quot;/images/blog/ct/step1.png&quot; /&gt;
+  &lt;/div&gt;
+	&lt;div class=&quot;caption&quot;&gt;
+		&lt;strong&gt;Figure 4A&lt;/strong&gt;: &lt;a href=&quot;/blog/2021/ct-3/&quot;&gt;Previously discussed&lt;/a&gt; rule-based predictor-recommender pairs are designed by domain experts, who themselves learn from the real world observations.
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;As illustrated in Figure 4B, domain experts use their knowledge to build an approximate generative model (also referred to as a simulator) of an epidemic, and the simulator’s data is, further, used to train the machine learning models.
+This simulator is a crude approximation of how the virus spreads through interactions (i.e., who meets whom) in a synthetic population, which is sampled from the census to resemble a particular demographics.
+The interactions between synthetic agents (or software individuals) accounts for the mobility patterns and empirically surveyed contact matrices&lt;d-cite key=&quot;Prem2017ProjectingSC&quot;&gt;&lt;/d-cite&gt;.
+Such agent-based models are often used in epidemiology to study the effects of various interventions&lt;d-cite key=&quot;ferretti2020quantifying&quot;&gt;&lt;/d-cite&gt;&lt;d-cite key=&quot;ferguson2020report&quot;&gt;&lt;/d-cite&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;row mt-3&quot;&gt;
+  &lt;div class=&quot;col mt-3 mt-md-0&quot;&gt;
+    &lt;img class=&quot;img-fluid rounded z-depth-1&quot; src=&quot;/images/blog/ct/step2.png&quot; /&gt;
+  &lt;/div&gt;
+	&lt;div class=&quot;caption&quot;&gt;
+		&lt;strong&gt;Figure 4B&lt;/strong&gt;: A generative model built with the help of domain experts can be used to collect data to train the machine learning model. Note that there are several realizations of the simulated world to make the model robust to crude assumptions required to build a generative model.
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;deep-learning-for-pct&quot;&gt;Deep Learning for PCT&lt;/h3&gt;
+&lt;p&gt;In Bengio et al.&lt;d-cite key=&quot;bengio2020predicting&quot;&gt;&lt;/d-cite&gt;, an agent-based model, &lt;a href=&quot;https://github.com/mila-iqia/COVI-AgentSim&quot;&gt;COVI-AgentSim&lt;/a&gt;&lt;d-cite key=&quot;gupta2020covi&quot;&gt;&lt;/d-cite&gt;, is used to collect data to train a machine learning predictor-recommender pair for the PCT framework.
+For brevity, we will restrict our discussion in this post to the high-level ideas that were crucial to design a deep learning predictor-recommender pair for the PCT framework.&lt;/p&gt;
+
+&lt;p&gt;In Bengio et al.&lt;d-cite key=&quot;bengio2020predicting&quot;&gt;&lt;/d-cite&gt;, we used the simulator to collect observations for each app-user (randomly selected in a population according to age-based smartphone adoption; see section 3.7 of Gupta et al.&lt;d-cite key=&quot;gupta2020covi&quot;&gt;&lt;/d-cite&gt;).
+These observations comprise (a) (user-dependent inputs) personal information like pre-existing conditions, daily symptoms, test results, and (b) warning signals received for previous encounters.
+The simulator models imperfect user-behavior by using Bernoulli variables for (a).
+Through the simulator, we also have access to the underlying ground-truth viral load for each user.
+Thus, our objective is to estimate app-users’ viral load for the current day and the past 14 days using personal information (if logged), daily symptoms for the past 14 days (if logged), test results (if logged and verified), and warning signals received in the past 14 days.
+A non-zero viral load for the current day will trigger a notification to the app-user recommending cautionary behaviors.&lt;/p&gt;
+
+&lt;p&gt;Below are some of the key elements of our trained predictor&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Deep Learning Architecture&lt;/strong&gt;: -  Inputs are treading in the following manner
+&lt;ul&gt;
+&lt;li&gt; daily information about symptoms and test results is aggregated into a single vector for each day (&lt;em&gt;daily health status&lt;/em&gt;)&lt;/li&gt;
+&lt;li&gt;daily warning signals are aggregated to yield a vector with each dimension representing intensities and the value as the number of such warning signals received&lt;/li&gt;
+&lt;li&gt;an offset element denoting a particular day relative to the current day is concatenated to the above vectors&lt;/li&gt;
+&lt;li&gt;a vector of personal attributes is used as a separate input&lt;/li&gt;
+&lt;/ul&gt;
+These inputs are then processed by a Deep Set&lt;d-cite key=&quot;zaheer2017deep&quot;&gt;&lt;/d-cite&gt; or Set Transformer&lt;d-cite key=&quot;lee2018set&quot;&gt;&lt;/d-cite&gt; type architecture to output a vector of 15 scalars (viral load estimate for the current and the past 14 days).&lt;/li&gt;
+
+&lt;li&gt;&lt;strong&gt;Domain randomization&lt;/strong&gt;: Many crude assumptions go into building such a simulator.
+Some examples include the dependence of symptoms on the disease phase, grouping of synthetic agents for interactions, or individual viral load curves.
+Thus, a single choice of parameters for a simulator is unlikely to reflect reality.
+To make the predictor robust to these assumptions, we employ domain randomization&lt;d-cite key=&quot;tobin2017domain&quot;&gt;&lt;/d-cite&gt; over the parameters fueling these assumptions.
+The model, therefore, learns from several alternative worlds realized by randomly sampling these parameters.&lt;/li&gt;
+
+&lt;li&gt;&lt;strong&gt;Iterative training&lt;/strong&gt;: Employing this predictor in the simulator (or even the real world) is likely to result in distribution shifts, i.e., eventually, observations will not be representative of those that were used to train the model.
+For example, a predictor &lt;em&gt;P&lt;sub&gt;0&lt;/sub&gt;&lt;/em&gt; trained on the dataset &lt;em&gt;D&lt;sub&gt;0&lt;/sub&gt;&lt;/em&gt;, when used in the simulator, will, eventually, encounter observations not representative of &lt;em&gt;D&lt;sub&gt;0&lt;/sub&gt;&lt;/em&gt;.
+To counter this problem, we use iterative training so that a predictor &lt;em&gt;P&lt;sub&gt;n&lt;/sub&gt;&lt;/em&gt; is used in the simulator to collect new dataset &lt;em&gt;D&lt;sub&gt;n+1&lt;/sub&gt;&lt;/em&gt;, which is then used to train a new predictor &lt;em&gt;P&lt;sub&gt;n+1&lt;/sub&gt;&lt;/em&gt;.
+We used &lt;em&gt;n = 3&lt;/em&gt; in our experiments.&lt;/li&gt;
+
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;simulation-results&quot;&gt;Simulation Results&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;/blog/2021/ct-2/#demands-on-the-framework&quot;&gt;Recall from our discussion&lt;/a&gt; that we, ideally,  want an oracle that accurately predicts an individual’s viral load to control the outbreak with minimum economic disruption.
+Thus, the results in Bengio et al.&lt;d-cite key=&quot;bengio2020predicting&quot;&gt;&lt;/d-cite&gt; compare this &lt;a href=&quot;/blog/2021/ct-1/#trade-off&quot;&gt;tradeoff between health and economy&lt;/a&gt;.
+Specifically, &lt;a href=&quot;&quot;&gt;BTT&lt;/a&gt; (referred by BCT in the paper), a mature heuristic proposed in Gupta et al.&lt;d-cite key=&quot;gupta2020covi&quot;&gt;&lt;/d-cite&gt; (referred by Heuristic), and the above deep learning predictor (referred by DS-PCT or ST-PCT depending on the implementation) are pitted against each other.
+Figure 3 in Bengio et al.&lt;d-cite key=&quot;bengio2020predicting&quot;&gt;&lt;/d-cite&gt; compares how each of the above methods negotiate the trade-off.
+We consider &lt;em&gt;reproductive number&lt;/em&gt; of the disease as the proxy for health, and &lt;em&gt;number of contacts allowed&lt;/em&gt; as a proxy for the economy.
+Each line in the figure is a &lt;em&gt;Gaussian Parametric (GP)&lt;/em&gt; regression fit on simulations ran under varying parameters, thereby yielding a model for each method.
+The results suggest a better trade-off exhibited by any contact tracing framework, though PCT improves further upon BTT.&lt;/p&gt;
+
+&lt;p&gt;Thus, we argue that the PCT framework is essentially a personalization framework that can improve the existing contact tracing methods.
+However, some limitations need to be addressed to harness the full potential of this framework.
+We discuss these in our next post.&lt;/p&gt;
+</description>
+      <pubDate>
+        Thu, 08 Apr 2021 00:00:04 +0000
+      </pubDate>
+      <link>http://pg2455.github.io/blog/2021/ct-4/</link>
+      <guid isPermaLink="true">http://pg2455.github.io/blog/2021/ct-4/</guid>
+    </item>
+    
+    <item>
+      <title>Framework in practice</title>
+      <description>&lt;h3 id=&quot;setup&quot;&gt;Setup&lt;/h3&gt;
+
+&lt;p&gt;In this post, we discuss how the framework is realizable in practice.
+The peer-to-peer Bluetooth communication protocols like &lt;a href=&quot;https://en.wikipedia.org/wiki/Exposure_Notification&quot; target=&quot;_blank&quot;&gt;GAEN&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/Covid_Watch&quot; target=&quot;_blank&quot;&gt;Covid Watch&lt;/a&gt;, and COVI&lt;d-cite key=&quot;alsdurf2020covi&quot;&gt;&lt;/d-cite&gt; were proposed earlier in the course of the pandemic.
+For our purposes, we assume a simplified protocol that exchanges a unique key every time two PCT-configured devices are within 2 meters for at least 15 minutes.
+We will also assume that these devices can communicate warning signals  (i.e., N-bits or an integer between 0 and \( 2^N - 1 \)) via these keys at any time in the future.
+Note that this is similar to COVI protocol&lt;d-cite key=&quot;alsdurf2020covi&quot;&gt;&lt;/d-cite&gt;.
+However, we speculate that other protocols can also exhibit similar functionality.&lt;/p&gt;
+
+&lt;p&gt;We also assume that the app is designed to gather information such as pre-existing conditions, daily symptoms, or diagnostic test results from users.
+This basic UX exists in most of the existing contact tracing apps (e.g., &lt;a href=&quot;https://www.nhs.uk/apps-library/nhs-covid-19/&quot;&gt;NHS COVID-19&lt;/a&gt;, &lt;a href=&quot;https://www.canada.ca/en/public-health/services/diseases/coronavirus-disease-covid-19/covid-alert.html&quot;&gt;COVID Alert&lt;/a&gt;).
+Finally, under the framework, we assume that warning signals of varying intensities received by the user device are also available to the predictor.&lt;/p&gt;
+
+&lt;p&gt;Since the warning signals from the predictor feedback into itself, we want these predictions to be increasingly monotonic in warning signals’ intensity.
+To be specific, for some fixed inputs, replacing the highest intensity warning signal with a warning signal of lower intensity should not increase the estimated viral load.
+This way, these warning signals will die out as one moves away from the source if there is no additional information (e.g., user symptoms) available along the course.&lt;/p&gt;
+
+&lt;p&gt;Formally, this problem is at the heart of distributed inference, which requires agents operating in a network to infer a global hidden state using locally available inputs.
+In our setting, a global hidden state is the viral load of each individual in the population.
+The predictor’s task is to estimate app users’ viral load using the locally available information.
+The existing techniques for distributed inference&lt;d-cite key=&quot;winn2005variational&quot;&gt;&lt;/d-cite&gt;&lt;d-cite key=&quot;murphy1999loopy&quot;&gt;&lt;/d-cite&gt;&lt;d-cite key=&quot;Minka2001_Expectation_Propagation&quot;&gt;&lt;/d-cite&gt;&lt;d-cite key=&quot;baker2020epidemic&quot;&gt;&lt;/d-cite&gt; require some visibility into the contact graph, i.e., who meets whom, which has been a hindrance from the privacy point of view.
+Our reliance on warning signals eliminates the need to store contact graphs, thereby complying with privacy constraints.
+However, it makes the task of distributed inference even more challenging.
+Thus, in this and the following post, we will discuss predictors with gradually increasing sophistication.&lt;/p&gt;
+
+&lt;p&gt;Finally, we expect the predictor to estimate individual viral load for today and some days in the past.
+For SARS-CoV-2, we predict viral load for 14 days in the past as per the guidelines earlier in the pandemic.
+This way, the estimated viral load for a particular encounter-day is discretized into an integer between 0 and \( N \)  and sent to the other device as a warning signal.
+The user is recommended appropriate precautions depending on the estimated viral load for the current day.
+Thus, the following sections will also discuss the design of a recommender after designing a predictor.&lt;/p&gt;
+
+&lt;h3 id=&quot;btt-from-pct&quot;&gt;BTT from PCT&lt;/h3&gt;
+
+&lt;p&gt;The binary test-and-trace (BTT) system uses only the diagnostic test results as its input and recommends self-isolation to everyone who encountered this user in the past 14 days.
+Therefore, the following predictor and recommender enables BTT (N=2)&lt;/p&gt;
+&lt;table class=&quot;table&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th scope=&quot;col&quot;&gt;Predictor&lt;/th&gt;
+      &lt;th scope=&quot;col&quot;&gt;Recommender&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tr&gt;
+  &lt;td class=&quot;col-sm-6&quot;&gt;
+	&lt;ul&gt;
+    		&lt;li&gt;Set the warning signal for today and the past 14-days to &lt;em&gt;4&lt;/em&gt; if the user reports a verified positive test result&lt;/li&gt;
+    		&lt;li&gt;Set the warning signal for today and the past 14-days to &lt;em&gt;2&lt;/em&gt; if the user receives a warning signal with intensity of &lt;em&gt;1&lt;/em&gt;&lt;/li&gt;
+    		&lt;li&gt;Set the warning signal to &lt;em&gt;0&lt;/em&gt; otherwise.&lt;/li&gt;
+	&lt;/ul&gt;
+ &lt;/td&gt;
+  &lt;td class=&quot;col-sm-6&quot;&gt;
+	&lt;ul&gt;
+  	  	&lt;li&gt;If the current warning signal is greater than &lt;em&gt;1&lt;/em&gt; recommend self-isolation else do nothing&lt;/li&gt;
+	&lt;/ul&gt;
+  &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;div class=&quot;caption&quot;&gt;
+  Table 1: Predictor-recommender pair for the PCT framework to yield BTT.
+&lt;/div&gt;
+
+&lt;h3 id=&quot;nhsx-from-pct&quot;&gt;NHSx from PCT&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.nhs.uk/apps-library/nhs-covid-19/&quot;&gt;NHS COVID-19&lt;/a&gt; has a clever scoring mechanism NHSx&lt;d-cite key=&quot;briers2020risk&quot;&gt;&lt;/d-cite&gt; to infer the risk of contagion due to the user who reports symptoms.
+The following predictor and recommender show their approximate formulation on the PCT framework with 2 bits allowed to be passed between the devices.&lt;/p&gt;
+
+&lt;table class=&quot;table&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th scope=&quot;col&quot;&gt;Predictor&lt;/th&gt;
+      &lt;th scope=&quot;col&quot;&gt;Recommender&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tr&gt;
+  &lt;td class=&quot;col-sm-6&quot;&gt;
+	&lt;ul&gt;
+	    &lt;li&gt;Set the current warning signal as &lt;em&gt;4&lt;/em&gt; if the user reports symptoms informative of COVID-19.
+    If the symptoms are reported on day &lt;em&gt;t&lt;sub&gt;s&lt;/sub&gt;&lt;/em&gt;, then the past 14-day's viral load is inferred using a gaussian distribution with the mean at  &lt;em&gt;t&lt;sub&gt;s&lt;/sub&gt;-0.3&lt;/em&gt; days and some fixed variance (section 2.1 of Briers et al.&lt;d-cite key=&quot;briers2020risk&quot;&gt;&lt;/d-cite&gt;).
+    The offset of &lt;em&gt;0.3&lt;/em&gt; is to accommodate the empirical studies suggesting the viral load peaks &lt;em&gt;0.3&lt;/em&gt; days on an average before the symptoms appear.
+    Finally, according to a scoring mechanism that uses this estimated viral load and other encounter attributes (e.g., signal attenuation and duration), a likelihood of contagion is calculated for that encounter.
+    This likelihood is discretized into a warning signal and sent to the other user involved in that encounter.&lt;/li&gt;
+    &lt;li&gt;Set the current warning signal to &lt;em&gt;2&lt;/em&gt; if the sum of warning signals received by the user is greater than some calibrated threshold. Note that we do not need viral load estimation for the user away from the source as we do not propagate this information further.&lt;/li&gt;
+&lt;/ul&gt;
+ &lt;/td&gt;
+  &lt;td class=&quot;col-sm-6&quot;&gt;
+	&lt;ul&gt;
+  	  	&lt;li&gt;If the current warning signal is greater than &lt;em&gt;1&lt;/em&gt; recommend self-isolation else do nothing&lt;/li&gt;
+	&lt;/ul&gt;
+  &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;div class=&quot;caption&quot;&gt;
+  Table 2: Predictor-recommender pair for the PCT framework to yield NHSx&lt;d-cite key=&quot;briers2020risk&quot;&gt;&lt;/d-cite&gt;.
+&lt;/div&gt;
+
+&lt;h3 id=&quot;covid-watch-app-from-pct&quot;&gt;Covid Watch App from PCT&lt;/h3&gt;
+
+&lt;p&gt;Covid Watch App&lt;d-cite key=&quot;wilson2020quantifying&quot;&gt;&lt;/d-cite&gt; being &lt;a href=&quot;https://covid19.arizona.edu/covidwatch&quot;&gt;used at the University of Arizona&lt;/a&gt; has another clever risk scoring mechanism that can be formulated in the PCT framework.&lt;/p&gt;
+
+&lt;table class=&quot;table&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th scope=&quot;col&quot;&gt;Predictor&lt;/th&gt;
+      &lt;th scope=&quot;col&quot;&gt;Recommender&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tr&gt;
+  &lt;td class=&quot;col-sm-6&quot;&gt;
+	&lt;ul&gt;
+		&lt;li&gt;Set warning signal for the current day and the past 14-days using the GAEN API's transmitter risk assessment.
+This happens at the source i.e. the user who reports symptoms or test results.
+The risk assessment protocol might differ depending on the implementation.
+&lt;/li&gt;
+    		&lt;li&gt;Compute the risk for the user receiving the risks from the source according to a well calibrated model that captures physics of interaction.
+Specifically, if the user receives a risk score of &lt;em&gt;r&lt;sub&gt;m&lt;/sub&gt;&lt;/em&gt; for an encounter &lt;em&gt;m&lt;/em&gt;, compute their likelihood of getting infected according to a model that considers several possible viral load transmission scenarios in an interaction.
+These scenarios include various trajectories that a viral load blob might take depending on the encounter's distance and duration.
+For further details, refer to the Figure 1 of Wilson et al.&lt;d-cite key=&quot;wilson2020quantifying&quot;&gt;&lt;/d-cite&gt;.
+&lt;/li&gt;
+	&lt;/ul&gt;
+ &lt;/td&gt;
+  &lt;td class=&quot;col-sm-6&quot;&gt;
+	&lt;ul&gt;
+    		&lt;li&gt;if the (receiving) user's computed risk is greater than some threshold, recommend behaviors according to the tables in Figure 3b and 3c of Wilson et al.&lt;d-cite key=&quot;wilson2020quantifying&quot;&gt;&lt;/d-cite&gt;, which depending on the attenuation of bluetooth signal (measure of encounter distance). &lt;/li&gt;
+	&lt;/ul&gt;
+  &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;div class=&quot;caption&quot;&gt;
+  Table 3: Predictor-recommender pair for the PCT framework to yield Covid Watch App&lt;d-cite key=&quot;wilson2020quantifying&quot;&gt;&lt;/d-cite&gt;.
+&lt;/div&gt;
+
+&lt;h3 id=&quot;an-example-heuristic-for-pct&quot;&gt;An example heuristic for PCT&lt;/h3&gt;
+
+&lt;p&gt;The above predictor-recommender pairs do not propagate the risk scores (or warning signals) beyond 1-hop distance away from the source.
+As a simple example, consider the set of rules in Table 4 that generates warning signals for users 2-hop away from the source (N=2 bits is assumed).
+We have divided the inference into two categories depending on the type of input used.
+User-dependent inferences rely on observable signals like symptoms or test results.
+In contrast, warning-signal inferences rely on the warning signals received from other users.
+These inferences result in their respective warning signal &lt;em&gt;estimates&lt;/em&gt; for the current and the past 14-days.
+The final warning signal for a day is the maximum of these estimates.&lt;/p&gt;
+
+&lt;table class=&quot;table&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th scope=&quot;col&quot;&gt;Predictor&lt;/th&gt;
+      &lt;th scope=&quot;col&quot;&gt;Recommender&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tr&gt;
+  &lt;td class=&quot;col-sm-6&quot;&gt;
+	 &lt;ul&gt;
+      &lt;li&gt; (user-dependent) Estimate the warning signal as &lt;em&gt;3&lt;/em&gt; for the current day and the past 14 days if the user reports a positive test result&lt;/li&gt;
+      &lt;li&gt; (user-dependent) Estimate the warning signal as &lt;em&gt;2&lt;/em&gt; for the current day and the past 8 days if the user reports highly informative symptoms.
+    We use 8 to add a safety margin of 3 days to the incubation period of 5 days. &lt;/li&gt;
+      &lt;li&gt; (user-dependent) Estimate the warning signal to &lt;em&gt;1&lt;/em&gt; for for the current day and the past 8 days if the user reports less informative symptoms (e.g., cold symptoms) &lt;/li&gt;
+      &lt;li&gt; (warning-signal-dependent) For each day &lt;em&gt;d&lt;/em&gt; in the past 14-days and the current day, apply the following rules
+    	   &lt;ul&gt;
+        	&lt;li&gt;Estimate warning signal for &lt;em&gt;d&lt;/em&gt; to &lt;em&gt;2&lt;/em&gt; if a warning signal of &lt;em&gt;3&lt;/em&gt; is recieved on day &lt;em&gt;d&lt;/em&gt;&lt;/li&gt;
+        	&lt;li&gt;Estimate warning signal for &lt;em&gt;d&lt;/em&gt; to &lt;em&gt;1&lt;/em&gt; if a warning signal of &lt;em&gt;2&lt;/em&gt; is recieved on day &lt;em&gt;d&lt;/em&gt;&lt;/li&gt;
+        	&lt;li&gt;Estimate warning signal for &lt;em&gt;d&lt;/em&gt; to &lt;em&gt;0&lt;/em&gt; otherwise&lt;/li&gt;
+    	   &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;li&gt;(aggregation) Finally, set the warning signal for the day &lt;em&gt;d&lt;/em&gt; as the maximum of the above estimations&lt;/li&gt;
+	  &lt;/ul&gt;
+  &lt;/td&gt;
+  &lt;td class=&quot;col-sm-6&quot;&gt;
+	 &lt;ul&gt;
+	    &lt;li&gt;If the current warning signal is &lt;em&gt;3&lt;/em&gt; or &lt;em&gt;2&lt;/em&gt;, recommend self-isolation&lt;/li&gt;
+	    &lt;li&gt;If the current warning signal is &lt;em&gt;1&lt;/em&gt; recommend certain cautionary behaviors like to avoid unnecessary contacts or public transport&lt;/li&gt;
+	    &lt;li&gt;Otherwise there will be baseline recommendations&lt;/li&gt;
+	  &lt;/ul&gt;
+  &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;div class=&quot;caption&quot;&gt;
+  Table 4: A simplified example of a predictor-recommender pair for the PCT framework that propagates warning signals to the user 2-hop away from the source of positive test results.
+&lt;/div&gt;
+
+&lt;p&gt;Through these rules, users 1-hop away from the source of positive test results are asked to be as cautious as the source that reports informative symptoms.
+Hence, it resembles the previous predictor-recommender pairs.
+In addition to that, users 2-hop away from the source of a positive test result are asked to be as cautious as users 1-hop away from the source of highly informative symptoms.
+Thus, the users 2-hop away are cautioned earlier than in the rest of the above methods.&lt;/p&gt;
+
+&lt;p&gt;Finally, with the help of domain expertise, these rules can be modified to be smarter.
+We can also replace the scoring mechanism in the above rules with that of &lt;a href=&quot;/blog/2021/ct-3/#nhsx-from-pct&quot;&gt;NHSx&lt;/a&gt; or &lt;a href=&quot;/blog/2021/ct-3/#covid-watch-app-from-pct&quot;&gt;CovidApp Watch&lt;/a&gt;.
+In the same spirit, we explore the use of a machine learning-based approach to design such predictor-recommender pairs.&lt;/p&gt;
+</description>
+      <pubDate>
+        Thu, 08 Apr 2021 00:00:03 +0000
+      </pubDate>
+      <link>http://pg2455.github.io/blog/2021/ct-3/</link>
+      <guid isPermaLink="true">http://pg2455.github.io/blog/2021/ct-3/</guid>
+    </item>
+    
+    <item>
+      <title>Search for a unified framework</title>
+      <description>&lt;h3 id=&quot;motivation&quot;&gt;Motivation&lt;/h3&gt;
+
+&lt;p&gt;Thinking of digital test-and-trace as a personalization framework has several advantages, especially when experts across different domains need to come together to address the problem.
+Such a unified framework can potentially serve the following purposes -&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt; &lt;strong&gt;Facilitate collaboration&lt;/strong&gt;: It can serve as a common language between researchers across various disciplines, e.g., epidemiologists, privacy experts, computer scientists, etc.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Domain transfer&lt;/strong&gt;: Researchers or practitioners in other domains may develop this framework further to apply it to their respective field of expertise.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Algorithm adaptability&lt;/strong&gt;: In the face of a new contagious virus, not everything about the virus will be known on day zero.
+    The attributes of such a virus evolve with lab results and scientific experiments.
+    Moreover, these attributes might be specific to a location (e.g. variants of Sars-CoV-2&lt;d-cite key=&quot;burki2021understanding&quot;&gt;&lt;/d-cite&gt;).
+    Thus, a framework lets practitioners across the globe adapt the algorithms readily as more about the virus is known.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;epidemiology--virology&quot;&gt;Epidemiology &amp;amp; Virology&lt;/h3&gt;
+
+&lt;p&gt;A general framework will need to capture how the virus replicates and spreads from one host organism to another.
+Epidemiologists and virologists study these mechanisms.
+Before we bake in the technological constraints, it will help to familiarize ourselves with some basics of the respective fields.&lt;/p&gt;
+
+&lt;p&gt;If the virus can infect the host, the host’s state is termed as &lt;em&gt;susceptible&lt;/em&gt;.
+Once the host is infected, the virus keeps replicating until the host’s immunity is strong enough to combat it.
+The evolving quantity &lt;em&gt;viral load&lt;/em&gt;, studied by virologists, is the number of these virus cells inside the host after the infection.
+However, the host organism starts emitting this virus (e.g., via breath) a short time after the infection when there are enough of them in the body.
+This state of the host is termed as &lt;em&gt;infectious&lt;/em&gt;.
+At any time, the quantity of virus emitted is proportional to the viral load.
+For the short period when the concentration of the virus is not enough to be emitted by the host, the state is referred to as &lt;em&gt;exposed&lt;/em&gt;.
+Finally, once the virus has been eliminated, leaving behind the antibodies to prevent future contagion, the host’s state is termed as &lt;em&gt;recovered&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Symptoms do not show up until the &lt;em&gt;incubation period&lt;/em&gt; (e.g., mean of 5.3 days for Sars-CoV-2&lt;d-cite key=&quot;lauer2020incubation&quot;&gt;&lt;/d-cite&gt;) of the virus.
+In the context of Covid-19, the infectiousness onset happens roughly two days before symptoms appear&lt;d-cite key=&quot;lauer2020incubation&quot;&gt;&lt;/d-cite&gt;&lt;d-cite key=&quot;to2020temporal&quot;&gt;&lt;/d-cite&gt;.
+Note that the term &lt;em&gt;infected&lt;/em&gt; can refer to the infectious and exposed state.
+However, it does not necessarily mean that the host is infectious (or contagious).
+The four states of &lt;em&gt;susceptible&lt;/em&gt;, &lt;em&gt;exposed&lt;/em&gt;, &lt;em&gt;infectious&lt;/em&gt;, &lt;em&gt;recovered&lt;/em&gt; (SEIR) are mutually exclusive, and often used in state-based modeling of contagious diseases.&lt;/p&gt;
+
+&lt;p&gt;Although the shape of the viral load curve will vary depending on the individual factors (e.g., age, sex, or pre-existing conditions), we consider a piecewise linear curve shown in Figure 3.
+This simplification follows from the empirical study conducted by To et al. &lt;d-cite key=&quot;to2020temporal&quot;&gt;&lt;/d-cite&gt;.
+Viral load is a measure of the number of viral particles in a milliliter of blood.
+However, for our purposes, we consider a proportional quantity which we call &lt;em&gt;effective viral load&lt;/em&gt;.
+A piecewise linear curve gives us the freedom to adapt the framework to different individual characteristics.
+It is also valid to assume a vanilla distribution (e.g., gamma) with just 2 degrees of freedom.&lt;/p&gt;
+
+&lt;div class=&quot;row mt-3&quot;&gt;
+  &lt;div class=&quot;col-sm mt-3 mt-md-0&quot;&gt;
+    &lt;img class=&quot;img-fluid rounded z-depth-1&quot; src=&quot;/images/blog/ct/evl.png&quot; /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;caption&quot;&gt;
+  Figure 3: Effective viral load (unitless) is our proxy for viral load (number of viral particles in each milliliter of blood).
+&lt;/div&gt;
+
+&lt;h3 id=&quot;demands-on-the-framework&quot;&gt;Demands on the framework&lt;/h3&gt;
+
+&lt;p&gt;Imagine an oracle that knows everyone’s viral load at any time (wlog, we assume viral load for susceptibles to be zero).
+It would be relatively easy to control the outbreak without causing much economic disruption by recommending individuals with a non-zero viral load to self-isolate.
+Therefore, the framework should help us create such an oracle or a predictor that estimates an individual’s effective viral load.&lt;/p&gt;
+
+&lt;p&gt;As an input to the predictor, we would want to use relevant data points such as personal attributes, diagnostic results, symptoms, and encounters.
+These inputs, however, have associated uncertainties arising from vacillating user behavior or the insufficient research developments.
+For example, the RT-PCR test, the most promising diagnostic test for SARS-CoV-2, has a false negative rate of 33% at the viral load peak&lt;d-cite key=&quot;li2020false&quot;&gt;&lt;/d-cite&gt;.
+It is also unreasonable to rely on users to input their symptoms or personal information all the time.
+The risk of infection associated with encounters will depend heavily on the characteristics such as location, distance, or duration.&lt;/p&gt;
+
+&lt;p&gt;Finally, we consider the framework in practice when people with appropriately configured devices (typically, in the form of an app) will use it.
+We may ask for user information like symptoms or pre-existing conditions through a deliberate user-behavior design of such an app.
+To respect the privacy of the users, we would want these inputs to never leave the device.
+Thus, the framework should use such individual information in isolation.
+Further, to use the peer-to-peer Bluetooth communication protocol, our framework should respect its constraints.
+&lt;a href=&quot;/blog/2021/ct-1/#test-and-trace&quot;&gt;As discussed in the previous article&lt;/a&gt;, we would want the framework to pass N-bits of information.
+N’s smaller values make it favorable for user privacy, so we restrict it to 1, 2, 3, or 4.&lt;/p&gt;
+
+&lt;p&gt;Since we want to capture the underlying contagion dynamics, the framework should model how much viral load might have been emitted during the encounter.
+We would want the communication channel between two user devices to communicate this viral load via N-bits.
+However, because the viral load predictions are dependent on inputs that change with time, we must use the communication channel for updates.
+Thus, we call these messages &lt;em&gt;warning signals&lt;/em&gt; in this series, but are also referred to by &lt;em&gt;risk messages&lt;/em&gt; in Bengio et al.&lt;d-cite key=&quot;bengio2020predicting&quot;&gt;&lt;/d-cite&gt; and Gupta et al.&lt;d-cite key=&quot;gupta2020covi&quot;&gt;&lt;/d-cite&gt;.
+Finally, given an individual’s estimated viral load, we would want to recommend user behaviors from a set of well-defined directives (e.g., work from home, avoid public transport) designed by user-behavior researchers in conjunction with PHEs.
+Such a system of recommending behaviors is empirically deemed effective by Ayres et al.&lt;d-cite key=&quot;ayres2020make&quot;&gt;&lt;/d-cite&gt;.&lt;/p&gt;
+
+&lt;p&gt;To recap the above discussion, we want the framework to exhibit the following properties :&lt;/p&gt;
+&lt;ul&gt;
+	&lt;li&gt;&lt;strong&gt;Capture contagion&lt;/strong&gt;: The framework should model the amount of viral load emitted from an infectious host during the encounter.
+To model such transmission, we would want to send this information encoded in N-bits as warning signals to the devices involved in an encounter.
+This way, we can send warning signals of varying intensities.
+&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Use relevant inputs&lt;/strong&gt;: For an individual, in addition to the warning signals received, the framework may or may not have access to the following informative signals: symptoms, diagnostic test results, personal attributes.
+A well-designed predictor uses all of these inputs to estimate an individual's viral load. &lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Adapt to inputs&lt;/strong&gt;: Because these inputs are observed over time, the framework, at regular intervals, should allow for a correction in the intensity of the past warning signals.
+    For example, if the predictor estimates a warning signal of 5 based on today's symptoms, a negative test result two days later would make the predictor estimate a warning signal of 0. &lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Recommend behavior&lt;/strong&gt;: Framework should be able to recommend increasingly restrictive cautionary behaviors depending on their infection risk.
+These recommendations are the only lever for the framework to control the outbreak while minimizing economic disruption.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;proactive-contact-tracing&quot;&gt;Proactive Contact Tracing&lt;/h3&gt;
+
+&lt;p&gt;The ability to adapt to inputs enables the framework to update its prediction as more information flows in the user network.
+For a scenario where diagnostic tests are administered after the symptoms appear (e.g., if tests are a scarce resource), a framework that relies on symptoms will potentially react faster.
+Similarly, a predictor relying on warning signals will be even faster.
+Therefore, we call this framework &lt;em&gt;Proactive Contact Tracing&lt;/em&gt; (PCT) due to its ability to generate early warning signals.&lt;/p&gt;
+
+&lt;p&gt;The accuracy of these warning signals is dependent on the predictor.
+The N-bits of the communication channel can also be used to transmit the confidence in these predictions.
+Due to the uncertainty in predictions, we would want to recommend less restrictive behaviors when appropriate.
+Thus, PCT is a personalization framework to minimize the true viral load of the population.&lt;/p&gt;
+
+&lt;p&gt;In the following post, we explore how to design a reasonably accurate predictor for the PCT framework.&lt;/p&gt;
+</description>
+      <pubDate>
+        Thu, 08 Apr 2021 00:00:02 +0000
+      </pubDate>
+      <link>http://pg2455.github.io/blog/2021/ct-2/</link>
+      <guid isPermaLink="true">http://pg2455.github.io/blog/2021/ct-2/</guid>
+    </item>
+    
+    <item>
+      <title>Why do we need contact tracing?</title>
+      <description>&lt;h3 id=&quot;trade-off&quot;&gt;Trade-off&lt;/h3&gt;
+
+&lt;p&gt;Since March 2020, countries worldwide have taken unprecedented measures such as regional lockdowns, strict social distancing measures, or curfews to curb the transmission of SARS-CoV-2.
+Among many other societal issues, the Covid-19 pandemic has also brought to surface a widely ignored trade-off between economy and public health.
+While the economists face the problem of minimizing economic disruption, which comes at the cost of public health, the health officials face the opposite problem of minimizing the transmission of the virus, which comes at the cost of economic disruption.&lt;/p&gt;
+
+&lt;p&gt;The above trade-off is well explained by Production Possibilities Frontiers (PPF) in the &lt;a href=&quot;https://blog.usejournal.com/health-before-wealth-the-economic-logic-9c5414ae259c&quot; target=&quot;_blank&quot;&gt; blogpost by Prof. Joshua Gans&lt;/a&gt;.
+PPF is an abstract notion defining a trade-off between two quantities (in our context, economy, and health).
+Specifically, it says that one cannot expect to gain more of one quantity without losing the other, thereby exhibiting an optimal point for maximizing simultaneous gains.
+Further, external factors influence PPFs to move outwards (e.g., via technological innovation) or inwards (e.g., war, pandemic).&lt;/p&gt;
+
+&lt;p&gt;In Figure 1, PPF during the pandemic (brown) is different from the PPF for the normal times (black) in two ways&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt; &lt;strong&gt;Shrinkage&lt;/strong&gt;: We are unable to produce as many units of economy or health compared to the normal times, and &lt;/li&gt;
+  &lt;li&gt; &lt;strong&gt;Bite&lt;/strong&gt;: A concave dent in the PPF during the pandemic, representing a poor way to negotiate the trade-off, i.e., to improve health, we need to give up a lot of units of economy.
+  Compare this to the trade-off during normal times (black line), where a small health improvement comes at the cost of a proportionate amount in economy.
+  Note that this bite's depth is a function of how dangerous the virus is, i.e., the rate of transmission and severity of the disease.
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;div class=&quot;row mt-3&quot;&gt;
+  &lt;div class=&quot;col-sm-6 mt-3 mt-md-0&quot;&gt;
+    &lt;img class=&quot;img-fluid rounded z-depth-1&quot; src=&quot;/images/blog/ct/ppf.png&quot; /&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;col-sm-6 mt-3 mt-md-0&quot;&gt;
+    &lt;img class=&quot;img-fluid rounded z-depth-1&quot; src=&quot;/images/blog/ct/ppf_recovery.png&quot; /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;caption&quot;&gt;
+  Figure 1: &lt;strong&gt;(left)&lt;/strong&gt; Shrinkage of PPF from its pre-pandemic levels (black) to pandemic levels (brown). &lt;strong&gt;(right)&lt;/strong&gt; All interventions are aimed at regaining (green) the pre-pandemic PPF via causing expansion in either of the health or economic dimensions.
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Thus, various policies have a meta objective of restoring the PPF to the levels before the pandemic.
+The examples include non-technical policies like injecting money into the economy or increasing hospital capacity and technological developments like vaccines or test-and-trace.
+While the vaccine development is underway, the test-and-trace system serves as a band-aid solution to open up the economy while controlling the outbreak.&lt;/p&gt;
+
+&lt;h3 id=&quot;test-and-trace&quot;&gt;Test and Trace&lt;/h3&gt;
+
+&lt;p&gt;Broadly, Test-and-trace involves notifying the past encounters of an index case (defined as an individual detected positive for the contagious disease) to recommend self-isolation.
+Thus, instead of treating the entire population as risky (e.g., in lockdown), test-and-trace cherry-picks highly risky individuals in the hope of controlling the transmission without closing down the economy.&lt;/p&gt;
+
+&lt;p&gt;Manual test-and-trace (MTT) involves public health employees (PHE) contacting the secondary cases (past encounters of an index case) via a direct call or an in-person search.
+PHEs can use their practiced judgment to diagnose a secondary case (e.g., based on their age, sex, or pre-existing conditions).
+However, the following factors add to its disadvantages, especially with regards to the Covid-19 pandemic&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;(A) &lt;strong&gt;Poor recollection by an index case&lt;/strong&gt; - In a disease like Covid-19, symptoms typically appear after 5 days and recovery takes 21 days&lt;d-cite key=&quot;lauer2020incubation&quot;&gt;&lt;/d-cite&gt;.
+  Thus, it is often challenging for the index cases to remember all of their past encounters. &lt;/li&gt;
+  &lt;li&gt;(B) &lt;strong&gt;A large number of secondary cases and delayed communication&lt;/strong&gt;-
+ The growth rate of Covid-19 infections is much larger than the available force of PHEs can handle with their labor intensive process of tracing secondary cases.
+ Asymptomatic (infected people who do not show any symptoms) cases demand a recursive tracing of these secondary cases.
+ Currently, studies estimate 20-40% of the population are asymptomatic for Covid-19 infection&lt;d-cite key=&quot;he2020temporal&quot;&gt;&lt;/d-cite&gt;&lt;d-cite key=&quot;luo&quot;&gt;&lt;/d-cite&gt;. &lt;/li&gt;
+  &lt;li&gt;(C) &lt;strong&gt;Personalization&lt;/strong&gt;- Symptoms experienced by a Covid-19 case vary according to attributes like age or pre-existing conditions.
+  Moreover, these symptoms are similar to those that appear in seasonal diseases like cold and flu&lt;d-cite key=&quot;gaythorpe2020report&quot;&gt;&lt;/d-cite&gt;.
+  Given the burden on PHEs, a trigger for tracing, i.e., identifying an infected individual, needs to be accurate, which requires a lot of domain expertise in considering several factors (e.g., the prevalence of cold in a region, age).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Technology has potentially addressed some of the above shortcomings.
+As a result, &lt;a href=&quot;https://en.wikipedia.org/wiki/Bluetooth_Low_Energy&quot;&gt;Bluetooth Low Energy&lt;/a&gt; devices like smartphones can be configured to record encounters with other smartphones in the vicinity.
+For example, if two smartphones share the same space for a particular duration, a hash key (e.g., 01ad93gd4er123) is generated in each device that serves as a future communication channel between them.
+The criterion to record an encounter for Covid-19 identifies the devices to be present within 2 meters of another for a minimum of 15 minutes&lt;d-cite key=&quot;ferretti2020quantifying&quot;&gt;&lt;/d-cite&gt;.
+Due to privacy concerns, the channel can transmit only N-bits of information(e.g., N can be 1, 2, 3, or 4).
+The extent of these devices’ adoption determines how effective this technology will be to address the problems (A) and (B) above.&lt;/p&gt;
+
+&lt;p&gt;However, given a fixed adoption rate,  we ask how to address the problem (C) of &lt;strong&gt;personalization&lt;/strong&gt;.
+Such personalization at scale will require more attention because these devices may record more contacts than accessible via memory recall (e.g., two strangers sitting at adjacent tables in a cafe).&lt;/p&gt;
+
+&lt;p&gt;In its most basic form (widely practiced), all traced devices are notified to recommend self-isolation.
+This system depends on the positive-or-negative test result and outputs quarantine-or-no-quarantine recommendations.
+It is, therefore,  referred to as binary test-and-trace (BTT) in this series of articles.&lt;/p&gt;
+
+&lt;p&gt;Thus, at our disposal, we have two types of test-and-trace systems, each with its advantages and disadvantages.
+MTT uses expert judgment, which is not available to BTT, while it is slow and labor intensive, which is addressed by BTT.
+This necessitates a test-and-trace system that combines the expert judgment of MTT with scalable and instant communication channels of BTT.
+Doing this will require creating prediction models that cannot be relied upon for accurate results all the time.
+It is an indication to incorporate increasingly cautionary measures such as avoiding public transport or work-from-home depending on the uncertainty in predictions.&lt;/p&gt;
+
+&lt;div class=&quot;row mt-3&quot;&gt;
+  &lt;div class=&quot;col-sm mt-3 mt-md-0&quot;&gt;
+    &lt;img class=&quot;img-fluid rounded z-depth-1&quot; src=&quot;/images/blog/ct/tt-compare.png&quot; /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;caption&quot;&gt;
+  Figure 2: The third column combines MTT and BTT's strengths by using the (some) clues available to PHEs and the instant communication channel of BTT&lt;d-footnote&gt;Icons made by Freepik, fjstudio, Pixel Perfect , photo3idea_studio, Gregor Cresnar, Vitaly Gorbachev from &lt;a href=&quot;www.flaticon.com&quot;&gt;www.flaticon.com&lt;/a&gt;&lt;/d-footnote&gt;.
+&lt;/div&gt;
+
+&lt;p&gt;The problem of personalization from a limited amount of data available through user device has been attempted by various groups like NHSx&lt;d-cite key=&quot;briers2020risk&quot;&gt;&lt;/d-cite&gt; or CovidWatch App&lt;d-cite key=&quot;wilson2020quantifying&quot;&gt;&lt;/d-cite&gt;.
+However, a unified approach to this problem may help us devise better solutions.
+Therefore, we think of digital test-and-trace systems as a personalization framework.&lt;/p&gt;
+</description>
+      <pubDate>
+        Thu, 08 Apr 2021 00:00:01 +0000
+      </pubDate>
+      <link>http://pg2455.github.io/blog/2021/ct-1/</link>
+      <guid isPermaLink="true">http://pg2455.github.io/blog/2021/ct-1/</guid>
+    </item>
+    
+    <item>
+      <title>Contact tracing as a personalization framework</title>
+      <description>&lt;p&gt;The Covid-19 pandemic has forced policy experts to make challenging trade-offs between public health and economic activity.
+As a result, countries have gone through a series of lockdowns, experiencing the perils of a yo-yo economy.
+Digital Contact Tracing should have been an obvious technical solution to such a globally prevalent problem, i.e., to control the disease outbreak yet allowing regular daily activity.
+But it failed. Why?
+Perhaps, we lack a rigorous understanding of contact tracing.
+It involves people belonging to various professions spanning epidemiology to computer science and behavioural studies.
+Perhaps, there isn’t a rigorous framework that combines these disciplines and gives everyone an entry point to explore their ideas and improve contact tracing.
+We need a framework to help us better respond to a future pandemic (please, not again).&lt;/p&gt;
+
+&lt;p&gt;As a team of researchers in computer science, machine learning, and epidemiology, we worked extensively to understand how contact tracing technology can be improved further.
+As a result, we proposed a framework called &lt;em&gt;Proactive Contact Tracing&lt;/em&gt; that we developed and evaluated with a simulator.
+&lt;a href=&quot;https://mila.quebec/en/project/covi/&quot;&gt;While all of the work is in the public domain&lt;/a&gt;, in this series of posts, I will attempt to explain the essence of contact tracing, argue that it is primarily a personalization problem, lay down the building blocks of such a framework, and illustrate how existing methods are just different manifestations of this framework.
+I will conclude with future directions and the necessity to improve the framework.&lt;/p&gt;
+
+&lt;p&gt;Read along for more details&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2021/ct-1/&quot;&gt;Why do we need contact tracing?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2021/ct-2/&quot;&gt;Search for a unified framework&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2021/ct-3/&quot;&gt;Framework in practice&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2021/ct-4/&quot;&gt;Deep learning for the framework&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2021/ct-5/&quot;&gt;Limitations and Open Questions&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2021/ct-6/&quot;&gt; Why should we care now?&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;acknowledgements&quot;&gt;Acknowledgements&lt;/h2&gt;
+
+&lt;p&gt;I would like to thank &lt;a href=&quot;https://yoshuabengio.org/profile/&quot; target=&quot;_blank&quot;&gt;Prof. Yoshua Bengio&lt;/a&gt; for &lt;a href=&quot;https://yoshuabengio.org/2020/06/11/science-and-innovation-in-times-of-a-pandemic/&quot; target=&quot;_blank&quot;&gt;initiating this massive effort to deliver an innovative contact tracing solution&lt;/a&gt;.
+His involvement and dedication to solve the problem were crucial to navigate the gory complexities involved in this entire project.
+As a researcher, it allowed me to use my skills to contribute to social good and taught me to be a better cross-disciplinary collaborator.&lt;/p&gt;
+
+&lt;p&gt;This series of articles wouldn’t have been possible without a massive collaboration.
+It was heartwarming to see how everyone involved in the project was ready to devote their time and skills to develop the &lt;a href=&quot;https://mila.quebec/en/project/covi/&quot;&gt;COVI&lt;/a&gt; mobile app that implements the framework discussed in this blog series.
+Without their involvement, it would not have been possible to iterate and build this framework.&lt;/p&gt;
+
+&lt;p&gt;The whole project evolved organically, with people taking responsibility for their share of work.
+It naturally involved massive cross-disciplinary brainstorming sessions.
+As a result, our first 2-3 months were spent understanding the objectives, constraints, and challenges of an appropriate Bluetooth communication protocol.
+Thus, I would like to thank &lt;a href=&quot;#people-covi-paper&quot;&gt;all the people involved in COVI White Paper&lt;d-cite key=&quot;alsdurf2020covi&quot;&gt;&lt;/d-cite&gt;&lt;a&gt;&lt;/a&gt; for their time to engage in fruitful discussions.
+It wouldn’t have been possible to sustain the momentum without their involvement.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;After the Québec government nixed the idea of using the contact tracing app altogether, subsequent months were involved in prototyping the framework using the simulator.
+We hoped to put our ideas in the public domain to be improved further.
+These efforts culminated in &lt;a href=&quot;https://github.com/mila-iqia/COVI-AgentSim&quot; target=&quot;_blank&quot;&gt;COVI-AgentSim&lt;d-cite key=&quot;gupta2020covi&quot;&gt;&lt;/d-cite&gt;&lt;/a&gt;, a simulator to prototype our proposed framework, and &lt;a href=&quot;https://github.com/mila-iqia/COVI-AgentSim&quot; target=&quot;_blank&quot;&gt;COVI-ML&lt;/a&gt;&lt;d-cite key=&quot;bengio2020predicting&quot;&gt;&lt;/d-cite&gt;, a potential deep learning solution to execute the framework.
+Thus, I would like to thank &lt;a href=&quot;#people-covi-all&quot;&gt;the people&lt;/a&gt; involved in these efforts for their time, energy, perseverance, and creativity.
+A special thanks to &lt;a href=&quot;http://www.teganmaharaj.com/&quot;&gt;Tegan Maharaj&lt;/a&gt;, &lt;a href=&quot;https://ei.is.tuebingen.mpg.de/person/nrahaman&quot;&gt;Nasim Rahaman&lt;/a&gt;, &lt;a href=&quot;http://www.martin-weiss.me/&quot;&gt;Martin Weiss&lt;/a&gt;, &lt;a href=&quot;https://www.linkedin.com/in/hannahalsdurf/?originalSubdomain=ca&quot;&gt;Hannah Alsdurf&lt;/a&gt;, &lt;a href=&quot;https://www.linkedin.com/in/nanorminoyan/?originalSubdomain=ca&quot;&gt;Nanor Minoyan&lt;/a&gt;, &lt;a href=&quot;https://www.linkedin.com/in/soren-harnois-leblanc-rd-msc-phd-c-158050194/?originalSubdomain=ca&quot;&gt;Soren Harnois Leblanc&lt;/a&gt;, &lt;a href=&quot;https://www.linkedin.com/in/joanna-merckx-md-msc-3b1a2a147/?originalSubdomain=ca&quot;&gt;Joanna Merckx&lt;/a&gt;, &lt;a href=&quot;https://www.linkedin.com/in/andrew-robert-williams/?originalSubdomain=ca&quot;&gt;Andrew Williams&lt;/a&gt;, &lt;a href=&quot;https://www.linkedin.com/in/plstcharles/?originalSubdomain=ca&quot;&gt;Pierre-Luc St. Charles&lt;/a&gt;, and &lt;a href=&quot;https://vict0rs.ch/about/&quot;&gt;Victor Schmidt&lt;/a&gt; for slogging together and managing various aspects of this work.&lt;/p&gt;
+
+&lt;p&gt;Lastly, all of the above works wouldn’t have been possible without the funding from NSERC, CIHR, CIFAR, FRQNT, Scale AI, and compute resources of MPI-IS cluster, Compute Canada &amp;amp; Calcul Quebec, in particular, the Beluga cluster.&lt;/p&gt;
+
+&lt;p&gt;Finally, I’d like to thank &lt;a href=&quot;https://yoshuabengio.org/profile/&quot; target=&quot;_blank&quot;&gt;Prof. Yoshua Bengio&lt;/a&gt;, &lt;a href=&quot;https://www.rlf.org.uk/fellowships/tim-ecott/&quot; target=&quot;_blank&quot;&gt;Tim Ecott&lt;/a&gt; (RLF Fellow, Exeter College), &lt;a href=&quot;https://www.is.mpg.de/~bs&quot; target=&quot;_blank&quot;&gt;Prof. Bernhard Schölkopf&lt;/a&gt;, and  &lt;a href=&quot;https://www.linkedin.com/in/yang-zhang-616a44190/?originalSubdomain=ca&quot; target=&quot;_blank&quot;&gt;Yang Zhang&lt;/a&gt; for their helpful feedback in writing this blog.&lt;/p&gt;
+
+&lt;h2 id=&quot;people&quot;&gt;People&lt;/h2&gt;
+
+&lt;h5 id=&quot;people-covi-paper&quot;&gt;COVI White paper&lt;/h5&gt;
+
+&lt;p&gt;Hannah Alsdurf, Edmond Belliveau, Yoshua Bengio, Tristan Deleu, Daphne Ippolito, Richard Janda, Max Jarvie, Tyler Kolody, Sekoul Krastev, Tegan Maharaj, Robert Obryk, Dan Pilat, Valérie Pisano, Benjamin Prud’homme, Meng Qu, Nasim Rahaman, Irina Rish, Jean-François Rousseau, Victor Schmidt, Abhinav Sharma, Brooke Struck, Jian Tang, Martin Weiss, Yun William Yu, Sumukh Aithal, Behrouz Babaki, Henri Barbeau, Edmond Belliveau, Vincent Berenz, Olexa Bilaniuk, Amélie Bissonnette-Montminy, Pierre Boivin, Emélie Brunet, Joé Bussière, Gaétan Marceau Caron, René Cadieux, Pierre Luc Carrier, Hyunghoon Cho, Anthony Courchesne, Linda Dupuis, Justine Gauthier, Joumana Ghosn, Gauthier Gidel, Marc-Henri Gires, Simon Guist, Deborah Hinton, Bogdan Hlveca, Bernd Holznagel, Samuel Huberman, Shrey Jain, Jameson Jones-Doyle, Dilshan Kathriarachchi, Giancarlo Kerg, Soundarya Krishnan, David Lazar, Frédéric Laurin, Sacha Leprêtre, Stéphane Létourneau, Alexandre Limoges, Danielle Langlois, Vincent Martineau, Lucas Mathieu, Philippe Matte, Rim Mohsen, Eilif Muller, Ermanno Napolitano,  David Noreau, Ivan Oreshnikov, Satya Ortiz-Gagné, Jean-Claude Passy, Marie Pellat, Dan Popovici, Daniel Powell, Brad Rabin, Catherine Saine, Shanya Sharma, Kareem Shehata, Pierre-Luc St-Charles, Marie-Claude Surprenant, Mélisande Teng, Julien Tremblay-Gravel, David Wu, and Lenka Zdeborova&lt;/p&gt;
+
+&lt;h5 id=&quot;people-covi-all&quot;&gt; COVI-AgentSim &amp;amp; COVI-ML&lt;/h5&gt;
+
+&lt;p&gt;Tegan Maharaj, Martin Weiss, Nasim Rahaman, Hannah Alsdurf, Abhinav Sharma, Nanor Minoyan, Soren Harnois Leblanc, Victor Schmidt,  Pierre-Luc St. Charles, Tristan Deleu, Andrew Williams, Akshay Patel, Meng Qu, Olexa Bilaniuk, Gaétan Marceau Caron, Pierre Luc Carrier, Satya Ortiz-Gagné,  Marc-Andre Rousseau, David Buckeridge, Joumana Ghosn, Yang Zhang,  Bernhard Schölkopf, Jian Tang, Irina Rish, Christopher Pal, Joanna Merckx,  Eilif B. Muller, Yoshua Bengio&lt;/p&gt;
+</description>
+      <pubDate>
+        Thu, 08 Apr 2021 00:00:00 +0000
+      </pubDate>
+      <link>http://pg2455.github.io/blog/2021/ct-0/</link>
+      <guid isPermaLink="true">http://pg2455.github.io/blog/2021/ct-0/</guid>
+    </item>
+    
   </channel>
 </rss>
