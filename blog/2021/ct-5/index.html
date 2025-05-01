@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Limitations and Open Questions</title>
+
+  <meta name="author" content="Prateek Gupta" />
+  <meta name="description" content="Prateek Gupta | Personal Website" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="/vendor/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d7c6b63fdf.js" crossorigin="anonymous"></script>
+  <link href="/vendor/css/academicons.min.css" rel="stylesheet">
+  <link href="/vendor/pygments/default.css" rel="stylesheet">
+  <link href="/css/bamos.css" rel="stylesheet">
+  <link href="/css/updates.css" rel="stylesheet">
+  <link href="/css/sharingbuttons.css" rel="stylesheet">
+  <link href="/css/pgupta.css" rel="stylesheet">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+
+  <!-- MathJax -->
+  
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams',
+        inlineMath: [['\\(', '\\)']]
+      },
+      svg: {
+          fontCache: 'global'
+      }
+    };
+  </script>
+
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" id="MathJax-script" defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js">
+  </script>
+
+  <script src="/vendor/js/distillpub/template.v2.js"></script>
+  <script src="/vendor/js/distillpub/transforms.v2.js"></script>
+  
+
+  
+  <style type="text/css">
+    h3, h2, h1 {
+  padding-top: 0!important;
+}
+
+  </style>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="navbar-header">
+						  <a href="/" class="navbar-brand">
+                  <div>
+                      <img src="/images/me-face.png" class="img-circle"></img>
+                      Prateek Gupta
+                  </div>
+              </a>
+						<button class="navbar-toggle" type="button" data-toggle="collapse"
+                    data-target="#navbar-main">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="navbar-collapse collapse" id="navbar-main">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="/">About</a>
+							</li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      Teaching <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/teaching/tutorials">Tutorials</a></li>
+                      <li><a href="/teaching/courses">Courses</a></li>
+                      <li><a href="/teaching/hackathons">Hackathons</a></li>
+                  </ul>
+              </li>
+              
+  							<li>
+  								<a href="/blog/">Blog</a>
+  							</li>
+              
+              <li>
+								<a href="/more/">More</a>
+							</li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right" style="font-size: 1.5em">
+							<li>
+								<a href="http://github.com/pg2455" target="_blank" class="social-icon">
+									<i class="fab fa-github"></i></a>
+							</li>
+              <li>
+                <a href="https://scholar.google.com/citations?user=fvn0COgAAAAJ" target="_blank" class="social-icon">
+                  <i class="ai ai-google-scholar"></i></a>
+              </li>
+							<li>
+								<a href="http://twitter.com/pguptacs" target="_blank" class="social-icon">
+									<i class="fab fa-x-twitter"></i></a>
+							</li>
+              <li>
+                <a href="http://www.linkedin.com/in/link2prateek" target="_blank" class="social-icon">
+                  <i class="fab fa-linkedin"></i></a>
+              </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+  <br/>
+<div class="container">
+<div class="row">
+<div class="col-md">
+    <d-title>
+      <h1>Limitations and Open Questions</h1>
+      <p>Contact tracing as a personalization framework</p>
+    </d-title>
+
+    <d-article>
+      <span>
+        <em>Published: April  8, 2021</em>
+        <br>
+        <!-- From: http://sharingbuttons.io/ -->
+
+<!-- Sharingbutton Twitter -->
+<a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?text=Limitations and Open Questions by @pguptacs &amp;url=http://pg2455.github.io/blog/2021/ct-5/" target="_blank" aria-label="">
+  <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg version="1.1" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+        <g>
+            <path d="M23.444,4.834c-0.814,0.363-1.5,0.375-2.228,0.016c0.938-0.562,0.981-0.957,1.32-2.019c-0.878,0.521-1.851,0.9-2.886,1.104 C18.823,3.053,17.642,2.5,16.335,2.5c-2.51,0-4.544,2.036-4.544,4.544c0,0.356,0.04,0.703,0.117,1.036 C8.132,7.891,4.783,6.082,2.542,3.332C2.151,4.003,1.927,4.784,1.927,5.617c0,1.577,0.803,2.967,2.021,3.782 C3.203,9.375,2.503,9.171,1.891,8.831C1.89,8.85,1.89,8.868,1.89,8.888c0,2.202,1.566,4.038,3.646,4.456 c-0.666,0.181-1.368,0.209-2.053,0.079c0.579,1.804,2.257,3.118,4.245,3.155C5.783,18.102,3.372,18.737,1,18.459 C3.012,19.748,5.399,20.5,7.966,20.5c8.358,0,12.928-6.924,12.928-12.929c0-0.198-0.003-0.393-0.012-0.588 C21.769,6.343,22.835,5.746,23.444,4.834z"/>
+        </g>
+    </svg>
+    </div>
+  </div>
+</a>
+
+<!-- Sharingbutton Facebook -->
+<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=http://pg2455.github.io/blog/2021/ct-5/" target="_blank" aria-label="">
+  <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg version="1.1" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+        <g>
+            <path d="M18.768,7.465H14.5V5.56c0-0.896,0.594-1.105,1.012-1.105s2.988,0,2.988,0V0.513L14.171,0.5C10.244,0.5,9.5,3.438,9.5,5.32 v2.145h-3v4h3c0,5.212,0,12,0,12h5c0,0,0-6.85,0-12h3.851L18.768,7.465z"/>
+        </g>
+    </svg>
+    </div>
+  </div>
+</a>
+
+<!-- Sharingbutton Google+ -->
+<a class="resp-sharing-button__link" href="https://plus.google.com/share?url=http://pg2455.github.io/blog/2021/ct-5/" target="_blank" aria-label="">
+  <div class="resp-sharing-button resp-sharing-button--google resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg version="1.1" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+        <g>
+            <path d="M11.366,12.928c-0.729-0.516-1.393-1.273-1.404-1.505c0-0.425,0.038-0.627,0.988-1.368 c1.229-0.962,1.906-2.228,1.906-3.564c0-1.212-0.37-2.289-1.001-3.044h0.488c0.102,0,0.2-0.033,0.282-0.091l1.364-0.989 c0.169-0.121,0.24-0.338,0.176-0.536C14.102,1.635,13.918,1.5,13.709,1.5H7.608c-0.667,0-1.345,0.118-2.011,0.347 c-2.225,0.766-3.778,2.66-3.778,4.605c0,2.755,2.134,4.845,4.987,4.91c-0.056,0.22-0.084,0.434-0.084,0.645 c0,0.425,0.108,0.827,0.33,1.216c-0.026,0-0.051,0-0.079,0c-2.72,0-5.175,1.334-6.107,3.32C0.623,17.06,0.5,17.582,0.5,18.098 c0,0.501,0.129,0.984,0.382,1.438c0.585,1.046,1.843,1.861,3.544,2.289c0.877,0.223,1.82,0.335,2.8,0.335 c0.88,0,1.718-0.114,2.494-0.338c2.419-0.702,3.981-2.482,3.981-4.538C13.701,15.312,13.068,14.132,11.366,12.928z M3.66,17.443 c0-1.435,1.823-2.693,3.899-2.693h0.057c0.451,0.005,0.892,0.072,1.309,0.2c0.142,0.098,0.28,0.192,0.412,0.282 c0.962,0.656,1.597,1.088,1.774,1.783c0.041,0.175,0.063,0.35,0.063,0.519c0,1.787-1.333,2.693-3.961,2.693 C5.221,20.225,3.66,19.002,3.66,17.443z M5.551,3.89c0.324-0.371,0.75-0.566,1.227-0.566l0.055,0 c1.349,0.041,2.639,1.543,2.876,3.349c0.133,1.013-0.092,1.964-0.601,2.544C8.782,9.589,8.363,9.783,7.866,9.783H7.865H7.844 c-1.321-0.04-2.639-1.6-2.875-3.405C4.836,5.37,5.049,4.462,5.551,3.89z"/>
+            <polygon points="23.5,9.5 20.5,9.5 20.5,6.5 18.5,6.5 18.5,9.5 15.5,9.5 15.5,11.5 18.5,11.5 18.5,14.5 20.5,14.5 20.5,11.5  23.5,11.5 	"/>
+        </g>
+    </svg>
+    </div>
+  </div>
+</a>
+
+<!-- Sharingbutton LinkedIn -->
+<a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http://pg2455.github.io/blog/2021/ct-5/&amp;title=Limitations and Open Questions&amp;summary=Limitations and Open Questions&amp;source=http://pg2455.github.io/blog/2021/ct-5/" target="_blank" aria-label="">
+  <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg version="1.1" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+        <g>
+            <path d="M6.527,21.5h-5v-13h5V21.5z M4.018,6.5H3.988C2.478,6.5,1.5,5.318,1.5,4.019c0-1.329,1.008-2.412,2.547-2.412 c1.541,0,2.488,1.118,2.519,2.447C6.565,5.354,5.588,6.5,4.018,6.5z M15.527,12.5c-1.105,0-2,0.896-2,2v7h-5c0,0,0.059-12,0-13h5 v1.485c0,0,1.548-1.443,3.938-1.443c2.962,0,5.062,2.144,5.062,6.304V21.5h-5v-7C17.527,13.396,16.632,12.5,15.527,12.5z"/>
+        </g>
+    </svg>
+    </div>
+  </div>
+</a>
+
+<!-- Sharingbutton Reddit -->
+<a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=http://pg2455.github.io/blog/2021/ct-5/" target="_blank" aria-label="">
+  <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg version="1.1" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+        <path d="M24,11.5c0-1.654-1.346-3-3-3c-0.964,0-1.863,0.476-2.422,1.241c-1.639-1.006-3.747-1.64-6.064-1.723 c0.064-1.11,0.4-3.049,1.508-3.686c0.72-0.414,1.733-0.249,3.01,0.478C17.189,6.317,18.452,7.5,20,7.5c1.654,0,3-1.346,3-3 s-1.346-3-3-3c-1.382,0-2.536,0.944-2.883,2.217C15.688,3,14.479,2.915,13.521,3.466c-1.642,0.945-1.951,3.477-2.008,4.551 C9.186,8.096,7.067,8.731,5.422,9.741C4.863,8.976,3.964,8.5,3,8.5c-1.654,0-3,1.346-3,3c0,1.319,0.836,2.443,2.047,2.844 C2.019,14.56,2,14.778,2,15c0,3.86,4.486,7,10,7s10-3.14,10-7c0-0.222-0.019-0.441-0.048-0.658C23.148,13.938,24,12.795,24,11.5z  M2.286,13.366C1.522,13.077,1,12.351,1,11.5c0-1.103,0.897-2,2-2c0.635,0,1.217,0.318,1.59,0.816 C3.488,11.17,2.683,12.211,2.286,13.366z M6,13.5c0-1.103,0.897-2,2-2s2,0.897,2,2c0,1.103-0.897,2-2,2S6,14.603,6,13.5z  M15.787,18.314c-1.063,0.612-2.407,0.949-3.787,0.949c-1.387,0-2.737-0.34-3.803-0.958c-0.239-0.139-0.321-0.444-0.182-0.683 c0.139-0.24,0.444-0.322,0.683-0.182c1.828,1.059,4.758,1.062,6.59,0.008c0.239-0.138,0.545-0.055,0.683,0.184 C16.108,17.871,16.026,18.177,15.787,18.314z M16,15.5c-1.103,0-2-0.897-2-2c0-1.103,0.897-2,2-2s2,0.897,2,2 C18,14.603,17.103,15.5,16,15.5z M21.713,13.365c-0.397-1.155-1.201-2.195-2.303-3.048C19.784,9.818,20.366,9.5,21,9.5 c1.103,0,2,0.897,2,2C23,12.335,22.468,13.073,21.713,13.365z"/>
+    </svg>
+    </div>
+  </div>
+</a>
+
+<!-- Sharingbutton E-Mail -->
+<a class="resp-sharing-button__link" href="mailto:?subject=Limitations and Open Questions&amp;body=http://pg2455.github.io/blog/2021/ct-5/" target="_self" aria-label="">
+  <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg version="1.1" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+        <path d="M22,4H2C0.897,4,0,4.897,0,6v12c0,1.103,0.897,2,2,2h20c1.103,0,2-0.897,2-2V6C24,4.897,23.103,4,22,4z M7.248,14.434 l-3.5,2C3.67,16.479,3.584,16.5,3.5,16.5c-0.174,0-0.342-0.09-0.435-0.252c-0.137-0.239-0.054-0.545,0.186-0.682l3.5-2 c0.24-0.137,0.545-0.054,0.682,0.186C7.571,13.992,7.488,14.297,7.248,14.434z M12,14.5c-0.094,0-0.189-0.026-0.271-0.08l-8.5-5.5 C2.997,8.77,2.93,8.46,3.081,8.229c0.15-0.23,0.459-0.298,0.691-0.147L12,13.405l8.229-5.324c0.232-0.15,0.542-0.084,0.691,0.147 c0.15,0.232,0.083,0.542-0.148,0.691l-8.5,5.5C12.189,14.474,12.095,14.5,12,14.5z M20.934,16.248 C20.842,16.41,20.673,16.5,20.5,16.5c-0.084,0-0.169-0.021-0.248-0.065l-3.5-2c-0.24-0.137-0.323-0.442-0.186-0.682 s0.443-0.322,0.682-0.186l3.5,2C20.988,15.703,21.071,16.009,20.934,16.248z"/>
+    </svg>
+    </div>
+  </div>
+</a>
+
+
+        
+          <h3>Summary</h3>
+          <ul>
+  <li><em>Limitations of the proposed framework are discussed</em></li>
+  <li><em>Possible ways to alleviate these limitations are also discussed</em></li>
+</ul>
+
+        
+      </span>
+
+      <hr style="margin-top: 0;">
+      <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+        
+          <span style="float:left"><i class="fas fa-2x fa-arrow-left"></i> &thinsp; <a style="text-decoration: none" href="/blog/2021/ct-4"><em>Deep learning for the framework</a></em></span>
+        
+
+        
+          <span style="float:right"><a style="text-decoration: none" href="/blog/2021/ct-6"><em>Why should we care now?</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+        
+      </div>
+
+      <p>So far, we discussed the PCT framework in the spirit of a personalization tool that incorporates relevant data points to recommend cautionary behaviors to app-users.
+These recommendations are intended to control the outbreak while minimizing economic disruption.
+The framework is grounded in epidemiology and virology while respecting technological constraints such as user privacy and Bluetooth communication protocol.
+Finally, apart from various rule-based instantiations, we also saw a deep learning solution to implement the framework.</p>
+
+<p>Still, this is just the first step towards having a better contact tracing framework.
+Hopefully, addressing some of the shortcomings can help us better prepare for the future.
+While the <a href="/blog/2021/ct-6/">subsequent post</a> discusses why we should care, in this post, we focus on some of the limitations and possible ways to mitigate them.</p>
+
+<ul>
+    <li><strong>Simulator Reliability</strong>: A machine learning model relies on access to a simulator.
+However, the simulator is a  crude approximation of reality.
+Thus, we need a way to improve the simulator to represent reality as closely as possible.
+Currently, we used domain randomization<d-cite key="tobin2017domain"></d-cite> to hedge against this issue to train robust deep learning models.
+To align the simulator more closely to reality, we propose incorporating real-world app usage data (after the app is launched) along with the simulated data to improve the simulator (Figure 5).
+The details are a bit involved, but the high-level idea is to parametrize the simulator (using neural networks with learnable weights) so that the differences in the simulated data and the real-world observations can tune the weights.
+<div class="row mt-3">
+  <div class="col mt-3 mt-md-0">
+    <img class="img-fluid rounded z-depth-1" src="/images/blog/ct/step3.png" />
+  </div>
+	<div class="caption">
+		<strong>Figure 5</strong>: We can align the simulator to reality by using app-usage data (green arrow) with simulated data. The methods like wake-sleep algorithm<d-cite key="hinton1995wake"></d-cite> and amaortized variational inference<d-cite key="kingma2013auto"></d-cite> can be used here.
+	</div>
+</div>
+In doing so, we learn the simulator (generative model as neural network) and the predictor (also called inference model) in an iterative fashion.
+The wake-sleep algorithm<d-cite key="hinton1995wake"></d-cite> and amortized variational inference<d-cite key="kingma2013auto"></d-cite> are two methods that can be employed here.
+Interested readers can find more involved details of the above methods in our <a href="/data/blog/sim-real.pdf" target="_blank">write-up</a> (work of <a href="https://mila.quebec/en/person/tristan-deleu/">Tristan Deleu</a> and <a href="https://mila.quebec/en/person/meng-qu/">Meng Qu</a>), prepared while the plans to launch <a href="https://mila.quebec/en/covi-protecting-the-health-and-privacy-of-canadians/">COVI</a>, the app with the PCT framework, were still alive.
+</li>
+    <li><strong>Reinforcement Learning</strong>: We used <a href="/blog/2021/ct-4/#deep-learning-for-pct">iterative training</a> procedure for training a deep learning model to tackle the problem of distribution shift in data.
+However, the reinforcement learning (RL) paradigm is better suited to tackle this problem.
+An appropriate RL formulation for predictor design can have <em>actions</em> as the level of behavior restrictions recommended to the app-user and <em>rewards</em> as carefully combined metrics of disease prevalence and mobility.
+Due to RL's training requirements, we need access to a faster simulator than what we have at the moment.
+<div class="row mt-3">
+  <div class="col mt-3 mt-md-0">
+    <img class="img-fluid rounded z-depth-1" src="/images/blog/ct/step4.png" />
+  </div>
+	<div class="caption">
+		<strong>Figure 6</strong>: The problem of predictor design is better suited as an RL formulation (inside the computer screen on the left). We used <a href="/blog/2021/ct-4/#deep-learning-for-pct">iterative training</a> for deep learning model to tackle the problem of distribution shifts. However, RL is better suited to tackle this problem.
+	</div>
+</div>
+</li>
+    <li><strong>Interpretable models</strong>: We think that for better user-adherence, we should be able to give an app-user the explanation behind the recommended behaviors.
+For example, if an app-user is asked to avoid public transport, an explanation (e.g., the appearance of symptoms in the past contact) will make the app-user more likely to follow the recommendation.
+The rule-based predictors are better suited to serve this purpose.
+However, it is not easy to extract an explanation from the <a href="/blog/2021/ct-4/">deep learning model discussed in the previous post</a>.
+To this end, apart from leveraging <a href="https://explainml-tutorial.github.io/">interpretability research</a><d-cite key="gilpin2018explaining"></d-cite><d-cite key="murdoch2019interpretable"></d-cite><d-cite key="rudin2019stop"></d-cite> being done for deep learning models, we think a hybrid approach might also be helpful.
+For example, the rules can rely on the likelihood of the app-user showing symptoms or test results in the next seven days, which is an output of a learned deep learning model.
+<div class="row mt-3">
+  <div class="col mt-3 mt-md-0">
+    <img class="img-fluid rounded z-depth-1" src="/images/blog/ct/step6.png" />
+  </div>
+	<div class="caption">
+		<strong>Figure 7</strong>: In addition to leveraging <a href="https://explainml-tutorial.github.io/">interpretability research</a><d-cite key="gilpin2018explaining"></d-cite><d-cite key="murdoch2019interpretable"></d-cite><d-cite key="rudin2019stop"></d-cite> to design deep learning models capable of generating explanations, we can also opt for a hybrid predictor that has deep learning powered rules.
+	</div>
+</div>
+</li>
+    <li><strong>Biases</strong>: As in many applied projects, addressing the sources of biases is crucial for it to perform at a scale wider than considered for prototyping.
+There are various sources of bias that could creep into our plan.
+To start with, assumptions built into the simulator can be biased towards team member's personal experiences.
+Further, suppose we were to incorporate real-world app-usage data to improve the simulator.
+In that case, data for training the predictor might become more accurate for the demographics that adopted the app compared to the new adopters from different demographics.
+We would expect a thorough understanding of the sources of biases before launching an app to be aware of where it may or may not work.
+</li>
+    <li><strong>Offline Reinforcement Learning</strong>: Building a simulator takes time.
+Various assumptions that go into building a simulator might differ from one virus to another (e.g., viral load curves or mobility patterns).
+Additionally, we would not have a reliable simulator until sufficient data from scientific experiments and clinical observations are collected.
+
+In such a case, we think that the research in Offline-RL<d-cite key="levine2020offline"></d-cite> could be used to address the above problem.
+The researchers have been applying it to solve problems related to autonomous driving and healthcare.
+One does not have access to a high-fidelity simulator in these domains.
+In our context, a roll-out of some basic rules will yield observation-reward pairs.
+The objective of Offline-RL will be to learn a policy that improves upon the rolled-out policy (rule-based predictor) without trying them out on a simulator.
+
+<div class="row mt-3">
+  <div class="col mt-3 mt-md-0">
+    <img class="img-fluid rounded z-depth-1" src="/images/blog/ct/step7.png" />
+  </div>
+	<div class="caption">
+		<strong>Figure 7</strong>: Offline-RL<d-cite key="levine2020offline"></d-cite> could potentially help when a fully reliable simulator is not available (e.g., at the very beginning of a pandemic)
+	</div>
+</div>
+
+There are three reasons for the above proposal.
+<ul>
+<li>First, at the onset of a pandemic, when there is not much information about the virus (through clinical observations and scientific experiments) to build a reliable simulator, a conservative rule-based policy could be rapidly deployed.
+This will not only help us collect initial data points but also, through Offline-RL, we will be able to improve upon the rule-based policy.
+Subsequent iterations will be very much like the traditional RL.</li>
+
+<li>Second, in the absence of a scalable and fast simulator, we can hope that Offline-RL on the rule-based policy can give us a better policy with lesser iterations.
+For example, a supervised framework requires three iterations of training where each iteration collects data from more than 1K simulation runs.
+It takes 2-3 weeks to have a policy.
+If time is a constrained resource such that only one iteration is possible, we can hope to have a better policy through Offline-RL in one iteration as compared to the supervised policy.
+Note that it is cheaper to run rule-based policies as compared to neural network policies (3 hours for rule-based vs 10 hours for deep learning with 10K agents).</li>
+
+<li>Finally, a deep learning solution might not be trusted well by authorities from the very beginning.
+So, it might be a useful practice to have a curriculum of deployment which gradually, and reliably, injects a smarter solution into the system.</li>
+</ul></li>
+
+    <li><strong>Backward Tracing</strong> - <a href="https://www.theatlantic.com/health/archive/2020/09/k-overlooked-variable-driving-pandemic/616548/">Covid-19 is an overdispersed phenomenon, in which a few people infect many while many infect a few</a>.
+    Thus, the reproductive number for Covid-19 may not paint as bad a picture of the outbreak as it might be in reality.
+    For example, the reproductive number of <em>2</em> means that an infected person typically transmits the virus to two other people.
+    However, due to dispersion, it may be that a few people infect 10 while a lot of them infect just 1, such that there are 2 mean contagions per infected person.
+    Therefore, it is increasingly important to detect the source of infection as early as possible.
+This is the objective of backward tracing, which differs from forward tracing (the central idea of this series) as we are interested in identifying individuals whom the source (e.g., person who reports a positive test result) might have infected.
+
+Recall that the PCT framework relies on warning signals that encode transmitted viral load (for an encounter) in N-bits.
+It serves as a proxy for the <em>likelihood of infecting</em> the other person involved in an encounter.
+Though non-trivial, we think that reserving some bits (out of N-bits sent in a warning signal) for the <em>likelihood of getting infected</em> could help to identify the source of infection.
+A deep learning-based solution could leverage the ground truth to get better at this prediction.
+However, appropriate rules for a rule-based predictor are not clear at the moment.
+</li>
+<li><strong>Network Optimization</strong>:
+Recall that every time a predictor updates an individual's estimated viral load, it is sent across as a warning signal through a communication channel.
+Such warning signal updates could heavily consume the network bandwidth while being redundant.
+For example, suppose the rule-based predictor only cares about the maximum warning signal.
+In that case, it might be economical to prioritize bandwidth to high-intensity warning signals while ignoring the lower ones.
+
+Thus, not all warning signals are going to be informative.
+Moreover, the prioritization of these signals may or may not depend on the predictor used for the PCT framework.
+Finally, it might be helpful to include this constraint as a part of the machine learning training procedure.
+We think that addressing this challenge will help us improve the framework even further.
+In a similar spirit, work done by Mitra et al.<d-cite key="mitra2020distributed"></d-cite> addresses this problem in distributed inference setting.
+</li>
+<li><strong>Multiple viruses</strong>:
+In the event of an outbreak, unless theoretically impossible, caused by more than one virus (e.g., influenza and coronavirus) at the same time, we would want to understand how we can modify the framework.
+A conservative approach would be to use the PCT framework with a viral-load profile of a "proxy-virus" with the viral load as a maximum of the two viruses.  
+However, one could also think of efficient use of N-bits sent through the communication channels so that the information about the type of virus and the corresponding viral load is sent.
+The situation will likely test the trade-off between privacy (number of bits sent) and the framework's efficacy (controlling the outbreak while minimizing economic disruption).
+</li>
+</ul>
+
+<p>Having discussed the possible limitations and corresponding ways to alleviate them, it is natural to ask if and when these improvements will help.
+We discuss this in our next post.</p>
+
+
+      <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+        
+          <span style="float:left"><i class="fas fa-2x fa-arrow-left"></i> &thinsp; <a style="text-decoration: none" href="/blog/2021/ct-4"><em>Deep learning for the framework</a></em></span>
+        
+
+        
+          <span style="float:right"><a style="text-decoration: none" href="/blog/2021/ct-6"><em>Why should we care now?</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+        
+      </div>
+
+    </d-article>
+
+    <d-appendix>
+      <d-footnote-list></d-footnote-list>
+      <d-citation-list></d-citation-list>
+    </d-appendix>
+
+    <d-bibliography src="/vendor/bibliography/ct.bib">
+    </d-bibliography>
+
+    <d-article>
+    <div id="disqus_thread"></div>
+    </d-article>
+</div>
+</div>
+</div>
+
+
+
+
+<footer class="fixed-bottom-footer">
+  <div class="jumbotron mt-0" id="footer-container">
+    Powered by <a href="http://jekyllrb.com">Jekyll</a>, blog template adapted from <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+  </div>
+</footer>
+
+
+  <script src="/js/sp.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/vendor/js/jquery.min.js"></script>
+  <script src="/vendor/js/bootstrap.min.js"></script>
+  <script src="/vendor/js/anchor.min.js"></script>
+  <script src="/vendor/js/jquery.toc.js"></script>
+  <script type="text/javascript">
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-187458159-1', 'auto');
+   ga('send', 'pageview');
+
+   $("#toc").toc({
+       'headings': 'h2,h3'
+   });
+   anchors.add('h2,h3');
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if there is a hash in the URL
+        const hash = window.location.hash;
+        if (hash) {
+            // Find the element that matches the hash
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                // Add the highlight class to the element
+                targetElement.classList.add('highlight');
+                
+                // If there are collapsible sections related to this hash, open them
+                const relatedSections = ['lessons', 'practical', 'objective'];
+                relatedSections.forEach(section => {
+                    const elem = document.getElementById(section + '_' + hash.slice(1));
+                    if (elem) {
+                        elem.style.display = 'block'; // Change display style to 'block' to show the section
+                    }
+                });
+
+                // Set a timeout to remove the highlight after 5 seconds
+                setTimeout(() => {
+                    targetElement.classList.remove('highlight');
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        }
+    });
+
+</script>
+
+</body>
+
+</html>
