@@ -73,6 +73,49 @@ layout: base
              class="profile-image"
              alt="Me."/>
       </a>
+      {% if site.data.updates.size > 0 %}
+        <div class="text-center updates-wrapper">
+          <button id="updates-btn" class="updates-button">
+            <i class="fas fa-bell"></i>
+            <span class="updates-count">{{ site.data.updates.size }}</span>
+          </button>
+          <!-- Updates Dropdown -->
+          <div id="updates-dropdown" class="updates-dropdown">
+            <div class="updates-header">
+              <h4>Recent Updates</h4>
+            </div>
+            <div class="updates-list">
+              {% assign sorted_updates = site.data.updates | sort: 'date' | reverse %}
+              {% for update in sorted_updates %}
+                <div class="update-item">
+                  <div class="update-icon">
+                    {% if update.category == 'publication' %}
+                      <i class="fas fa-file-alt"></i>
+                    {% elsif update.category == 'abstract-acceptance' %}
+                      <i class="fas fa-microphone-alt"></i>
+                    {% elsif update.category == 'school' %}
+                      <i class="fas fa-graduation-cap"></i>
+                    {% else %}
+                      <i class="fas fa-star"></i>
+                    {% endif %}
+                  </div>
+                  <div class="update-content">
+                    <div class="update-text">{{ update.content }}</div>
+                    <div class="update-meta">
+                      <span class="update-date">{{ update.date | date: "%B %-d, %Y" }}</span>
+                      {% if update.url %}
+                        <a href="{{ update.url }}" target="_blank" class="update-link">
+                          Learn More <i class="fas fa-external-link-alt"></i>
+                        </a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
     </div>
   </div>
 
