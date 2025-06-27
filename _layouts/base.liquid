@@ -14,7 +14,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <script src="https://kit.fontawesome.com/{{ site.fontawesome.id }}.js" crossorigin="anonymous"></script>
   <link href="/vendor/css/academicons.min.css" rel="stylesheet">
-  <link href="/vendor/pygments/default.css" rel="stylesheet">
+  <link href="/vendor/pygments/monokai.css" rel="stylesheet">
   <link href="/css/bamos.css" rel="stylesheet">
   <link href="/css/updates.css" rel="stylesheet">
   <link href="/css/sharingbuttons.css" rel="stylesheet">
@@ -155,8 +155,8 @@
             // Find the element that matches the hash
             const targetElement = document.querySelector(hash);
             if (targetElement) {
-                // Add the highlight class to the element
-                targetElement.classList.add('highlight');
+                // Add the section-highlight class to the element
+                targetElement.classList.add('section-highlight');
                 
                 // If there are collapsible sections related to this hash, open them
                 const relatedSections = ['lessons', 'practical', 'objective'];
@@ -169,7 +169,7 @@
 
                 // Set a timeout to remove the highlight after 5 seconds
                 setTimeout(() => {
-                    targetElement.classList.remove('highlight');
+                    targetElement.classList.remove('section-highlight');
                 }, 5000); // 5000 milliseconds = 5 seconds
             }
         }

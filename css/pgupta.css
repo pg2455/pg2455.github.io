@@ -165,7 +165,8 @@ a.button1:hover {
   }
 }
 
-.highlight {
+/* Used to highlight sections referenced by URL hashes */
+.section-highlight {
   background-color: #E0F2F1; /* Pale green for a soothing background */
   padding: 10px; /* Adds space around the text */
   border-radius: 8px; /* Smooth rounded corners */
@@ -176,7 +177,7 @@ a.button1:hover {
   font-weight: bold;
   color: #005662; /* A darker shade that contrasts well with a pale green background */
   animation: fadeIn 1s ease-in-out;
-  scroll-margin-top: 100px; 
+  scroll-margin-top: 100px;
 }
 
 
@@ -370,6 +371,27 @@ a.button1:hover {
 .navbar-nav .social-icon:hover .ai-google-scholar {
   color: #3367d6;
   transform: scale(1.1);
+}
+
+/* --------------------------------------------- */
+/* Code block styling                            */
+/* --------------------------------------------- */
+
+/* Outer container produced by Rouge */
+.highlighter-rouge {
+  background-color: #2d2d2d;
+  color: #f8f8f2;
+  border-radius: 6px;
+  padding: 0.75em;
+  margin: 1em 0;
+  overflow-x: auto;
+}
+
+.highlighter-rouge pre,
+.highlighter-rouge code {
+  background: transparent;
+  color: inherit;
+  font-size: 0.9em;
 }
 
 
