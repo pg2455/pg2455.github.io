@@ -415,4 +415,16 @@ pre {
   position: relative;
 }
 
+d-article a:not(:has(code)):not(code a):not(pre a) {
+  color: #1565c0 !important;
+  text-decoration: underline !important;
+  border-bottom: none !important;
+  transition: color 0.2s;
+}
+d-article a:not(:has(code)):not(code a):not(pre a):hover, d-article a:not(:has(code)):not(code a):not(pre a):focus {
+  color: #0d47a1 !important;
+  text-decoration: underline !important;
+  border-bottom: none !important;
+}
+
 
