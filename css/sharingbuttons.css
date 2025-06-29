@@ -185,3 +185,70 @@
   background-color: #3a80c1;
   border-color: #3a80c1;
 }
+
+/* Share popover styles */
+.share-popover {
+  display: none;
+  position: absolute;
+  right: 0;
+  left: auto;
+  top: 2.5em;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  padding: 0.5em 0.5em;
+  z-index: 1000;
+  min-width: 220px;
+  max-width: 320px;
+}
+.share-popover-content {
+  display: flex;
+  gap: 1.2em;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0.5em 0.5em;
+}
+.share-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 0.5em;
+  display: flex;
+  align-items: center;
+}
+.share-btn svg {
+  transition: fill 0.2s;
+}
+.share-btn:focus svg,
+.share-btn:hover svg {
+  fill: #0077b5;
+}
+.share-popover-content a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  transition: background 0.2s, box-shadow 0.2s;
+  background: #f7f7f7;
+}
+.share-popover-content a:hover {
+  background: #e6e6e6;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+@media (max-width: 600px) {
+  .share-popover {
+    right: 0;
+    left: auto;
+    min-width: 160px;
+    max-width: 95vw;
+  }
+  .share-popover-content {
+    gap: 0.5em;
+  }
+}
