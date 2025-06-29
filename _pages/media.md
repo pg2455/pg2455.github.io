@@ -7,85 +7,49 @@ permalink: /media/
 ## Article Authored
 
 <div markdown="0">
-<a href="https://www.weforum.org/stories/2024/12/agentic-ai-financial-services-autonomy-efficiency-and-inclusion/" class="article-card" target="_blank">
-  <div class="article-content">
-    <div class="article-main">
-      <div class="article-title">
-        <span class="title-text">
-          How Agentic AI will transform financial services with autonomy, efficiency and inclusion
-        </span>
-      </div>
-      <div class="outlet">
-        <div class="outlet-info">
-          <img src="https://www.weforum.org/favicon.ico" alt="WEF" class="outlet-icon">
-          <span class="source">World Economic Forum</span>
+  {% assign authored_sorted = site.data.media.authored | sort: "date" | reverse %}
+  {% for item in authored_sorted %}
+    <a href="{{ item.link }}" class="article-card" target="_blank">
+      <div class="article-content">
+        <div class="article-main">
+          <div class="article-title">
+            <span class="title-text">{{ item.title }}</span>
+          </div>
+          <div class="outlet">
+            <div class="outlet-info">
+              <img src="{{ item.outlet_icon }}" alt="{{ item.outlet }}" class="outlet-icon">
+              <span class="source">{{ item.outlet }}</span>
+            </div>
+            <span class="date">{{ item.date | date: "%b %Y" }}</span>
+          </div>
         </div>
-        <span class="date">Dec 2024</span>
       </div>
-    </div>
-  </div>
-</a>
+    </a>
+  {% endfor %}
 </div>
 
 ## Media Coverage Featuring My Work
 
 <div class="coverage-list" markdown="0">
-  <a href="https://elpais.com/tecnologia/2024-10-24/los-humanos-ya-repiten-palabras-que-aprenden-de-chatgpt-como-ahondar-o-meticuloso.html" class="coverage-item" target="_blank">
-    <div class="coverage-content">
-      <div class="coverage-main">
-        <div class="coverage-title">
-          <span class="title-text">
-            Los humanos ya repiten palabras que aprenden de ChatGPT, como “ahondar” o “meticuloso”
-          </span>
-        </div>
-        <div class="outlet">
-          <div class="outlet-info">
-            <img src="https://elpais.com/favicon.ico" alt="El País" class="outlet-icon">
-            <span class="source">El País</span>
+  {% assign coverage_sorted = site.data.media.coverage | sort: "date" | reverse %}
+  {% for item in coverage_sorted %}
+    <a href="{{ item.link }}" class="coverage-item" target="_blank">
+      <div class="coverage-content">
+        <div class="coverage-main">
+          <div class="coverage-title">
+            <span class="title-text">{{ item.title }}</span>
           </div>
-          <span class="date">Oct 2024</span>
+          <div class="outlet">
+            <div class="outlet-info">
+              <img src="{{ item.outlet_icon }}" alt="{{ item.outlet }}" class="outlet-icon">
+              <span class="source">{{ item.outlet }}</span>
+            </div>
+            <span class="date">{{ item.date | date: "%b %Y" }}</span>
+          </div>
         </div>
       </div>
-    </div>
-  </a>
-
-  <a href="https://www.tagesspiegel.de/wissen/grusel-experiment-von-berliner-forschern-hier-konnen-sie-der-ki-das-furchten-lehren-12616670.html" class="coverage-item" target="_blank">
-    <div class="coverage-content">
-      <div class="coverage-main">
-        <div class="coverage-title">
-          <span class="title-text">
-            "Horror experiment by Berlin researchers: Here you can teach the AI to fear"
-          </span>
-        </div>
-        <div class="outlet">
-          <div class="outlet-info">
-            <img src="https://www.tagesspiegel.de/favicon.ico" alt="Tagesspiegel" class="outlet-icon">
-            <span class="source">Tagesspiegel</span>
-          </div>
-          <span class="date">Oct 2024</span>
-        </div>
-      </div>
-    </div>
-  </a>
-
-  <a href="https://www.cbc.ca/news/canada/montreal/quebec-premier-considers-covi-contact-tracing-app-1.5576122" class="coverage-item" target="_blank">
-    <div class="coverage-content">
-      <div class="coverage-main">
-        <div class="coverage-title">
-          <span class="title-text">
-            "Testing the public's trust: Québec premier mulls adopting contact-tracing app"
-          </span>
-        </div>
-        <div class="outlet">
-          <div class="outlet-info">
-            <img src="https://www.cbc.ca/favicon.ico" alt="CBC News" class="outlet-icon">
-            <span class="source">CBC News</span>
-          </div>
-          <span class="date">May 2020</span>
-        </div>
-      </div>
-    </div>
-  </a>
+    </a>
+  {% endfor %}
 </div>
 
 <style>
