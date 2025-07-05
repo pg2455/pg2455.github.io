@@ -426,5 +426,3 @@ d-article a:not(:has(code)):not(code a):not(pre a):hover, d-article a:not(:has(c
   text-decoration: underline !important;
   border-bottom: none !important;
 }
-
-

@@ -2,118 +2,101 @@
 layout: base
 ---
 
-<br/>
-<div class="container">
-<div class="row">
-<div class="col-md">
-    <d-title>
-      <h1>{{ page.title }}</h1>
-      <p>{{ page.description }}</p>
-      <p>
-        <span class="meta-date" style="color: #888; font-size: 0.9em;">
-          <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 0.3em;"></i>{{ page.date | date: "%B %e, %Y" }}
-        </span>
-        {% comment %}
-        {% comment %} The sharing buttons need improvement {% endcomment %}
-            <button class="share-btn" id="share-btn" aria-label="Share this post" style="display: inline-block; background: none; border: none; cursor: pointer; padding: 0;">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 8C19.1046 8 20 7.10457 20 6C20 4.89543 19.1046 4 18 4C16.8954 4 16 4.89543 16 6C16 6.26522 16.0527 6.51737 16.1464 6.75L8.75 10.75C8.35118 10.2836 7.73044 10 7 10C5.89543 10 5 10.8954 5 12C5 13.1046 5.89543 14 7 14C7.73044 14 8.35118 13.7164 8.75 13.25L16.1464 17.25C16.0527 17.4826 16 17.7348 16 18C16 19.1046 16.8954 20 18 20C19.1046 20 20 19.1046 20 18C20 16.8954 19.1046 16 18 16C17.2696 16 16.6488 16.2836 16.25 16.75L8.85355 12.75C8.94727 12.5174 9 12.2652 9 12C9 11.7348 8.94727 11.4826 8.85355 11.25L16.25 7.25C16.6488 7.71637 17.2696 8 18 8Z" fill="#888"/>
-              </svg>
+<head>
+  <link rel="stylesheet" href="/css/distill.css">
+</head>
+
+<body>
+  <div class="distill-flex-container">
+    <aside class="distill-toc-sidebar">
+      <my-toc></my-toc>
+    </aside>
+    <main class="distill-main-content">
+      <div class="row">
+        <div class="col-md">
+          <d-title>
+            <h1>{{ page.title }}</h1>
+            <p>{{ page.description }}</p>
+            <p>
+              <span class="meta-date" style="color: #888; font-size: 0.9em;">
+                <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 0.3em;"></i>{{ page.date | date: "%B %e, %Y" }}
+              </span>
+              {% comment %}
+              {% comment %} The sharing buttons need improvement {% endcomment %}
+                  <button class="share-btn" id="share-btn" aria-label="Share this post" style="display: inline-block; background: none; border: none; cursor: pointer; padding: 0;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M18 8C19.1046 8 20 7.10457 20 6C20 4.89543 19.1046 4 18 4C16.8954 4 16 4.89543 16 6C16 6.26522 16.0527 6.51737 16.1464 6.75L8.75 10.75C8.35118 10.2836 7.73044 10 7 10C5.89543 10 5 10.8954 5 12C5 13.1046 5.89543 14 7 14C7.73044 14 8.35118 13.7164 8.75 13.25L16.1464 17.25C16.0527 17.4826 16 17.7348 16 18C16 19.1046 16.8954 20 18 20C19.1046 20 20 19.1046 20 18C20 16.8954 19.1046 16 18 16C17.2696 16 16.6488 16.2836 16.25 16.75L8.85355 12.75C8.94727 12.5174 9 12.2652 9 12C9 11.7348 8.94727 11.4826 8.85355 11.25L16.25 7.25C16.6488 7.71637 17.2696 8 18 8Z" fill="#888"/>
+                    </svg>
+                  </button>
+                  <div class="post-meta-header" style="display: flex; align-items: center; gap: 1em; margin-top: 1em; flex-wrap: wrap; max-width: 100%;">
+                    <div id="share-popover" class="share-popover">
+                      {% include sharingbuttons.html %}
+                    </div>
+                  </div>
+              {% endcomment %}
+            </p>
+          </d-title>
+          <!-- Mobile TOC Accordion (no duplicate heading) -->
+          <div class="mobile-toc-container" id="mobile-toc-container" style="margin-bottom: 18px; margin-top: 18px;">
+            <button class="mobile-toc-toggle-btn" id="mobile-toc-toggle-btn" aria-controls="mobile-toc-content" aria-expanded="false" style="margin-bottom: 0;">
+              Table of Contents <span style="float:right;">&#x25BC;</span>
             </button>
-            <div class="post-meta-header" style="display: flex; align-items: center; gap: 1em; margin-top: 1em; flex-wrap: wrap; max-width: 100%;">
-              <div id="share-popover" class="share-popover">
-                {% include sharingbuttons.html %}
-              </div>
+            <div class="mobile-toc-content" id="mobile-toc-content" style="background: #f8f9fb; border-top: 1px solid #eee; border-radius: 0 0 6px 6px; margin-top: 0;">
+              <my-toc></my-toc>
             </div>
-        {% endcomment %}
-      </p>
-    </d-title>
-
-    <hr style="margin-top: 0;">
-    <d-article>
-      {% if page.summary %}
-        <h3>Summary</h3>
-        {{ page.summary }}
-      {% endif %}
-
-      {{ content }}
-
-      <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
-        {% if page.series and page.previous %}
-          <span style="float:left"><i class="fas fa-2x fa-arrow-left"></i> &thinsp; <a style="text-decoration: none" href="/blog/{{ page.date | date: "%Y" }}/{{ page.series.name }}-{{ page.series.id | minus: 1 }}"><em>{{ page.previous.title }}</a></em></span>
-        {% endif %}
-
-        {% if page.series and page.next %}
-          <span style="float:right"><a style="text-decoration: none" href="/blog/{{ page.date | date: "%Y" }}/{{ page.series.name }}-{{ page.series.id | plus: 1 }}"><em>{{ page.next.title }}</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
-        {% endif %}
+          </div>
+          <hr style="margin-top: 0;">
+          <d-article>
+            {% if page.summary %}
+              <h3>Summary</h3>
+              {{ page.summary }}
+            {% endif %}
+            {{ content }}
+            <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+              {% if page.series and page.previous %}
+                <span style="float:left"><i class="fas fa-2x fa-arrow-left"></i> &thinsp; <a style="text-decoration: none" href="/blog/{{ page.date | date: "%Y" }}/{{ page.date | date: "%m" }}/{{ page.series.name }}-{{ page.series.id | minus: 1 }}"><em>{{ page.previous.title }}</a></em></span>
+              {% endif %}
+              {% if page.series and page.next %}
+                <span style="float:right"><a style="text-decoration: none" href="/blog/{{ page.date | date: "%Y" }}/{{ page.date | date: "%m" }}/{{ page.series.name }}-{{ page.series.id | plus: 1 }}"><em>{{ page.next.title }}</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+              {% endif %}
+            </div>
+          </d-article>
+          <d-appendix>
+            <d-footnote-list></d-footnote-list>
+            <d-citation-list></d-citation-list>
+          </d-appendix>
+          <d-bibliography src="/vendor/bibliography/{{ page.bibliography }}">
+          </d-bibliography>
+          <d-article>
+          </d-article>
+          <script src="https://giscus.app/client.js"
+              data-repo="pg2455/pg2455.github.io"
+              data-repo-id="MDEwOlJlcG9zaXRvcnk3MTMxMzI3MQ=="
+              data-category="General"
+              data-category-id="DIC_kwDOBEAnd84CqnG0"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="light_high_contrast"
+              data-lang="en"
+              data-loading="lazy"
+              crossorigin="anonymous"
+              async>
+          </script>
+        </div>
       </div>
-
-    </d-article>
-
-    <d-appendix>
-      <d-footnote-list></d-footnote-list>
-      <d-citation-list></d-citation-list>
-    </d-appendix>
-
-    <d-bibliography src="/vendor/bibliography/{{ page.bibliography }}">
-    </d-bibliography>
-
-    <d-article>
-    <div id="disqus_thread"></div>
-    </d-article>
-
-    <script src="https://giscus.app/client.js"
-        data-repo="pg2455/pg2455.github.io"
-        data-repo-id="MDEwOlJlcG9zaXRvcnk3MTMxMzI3MQ=="
-        data-category="General"
-        data-category-id="DIC_kwDOBEAnd84CqnG0"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="light_high_contrast"
-        data-lang="en"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
-</script>
-</div>
-</div>
-</div>
-
-{% if page.comments %}
-<script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
-    /**
-    var disqus_config = function () {
-    this.page.url = "{{ page.url }}";  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = "{{ page.id }}"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://{{ site.usernames.disqus }}.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-    **/
-    var disqus_shortname  = '{{ site.usernames.disqus }}';
-    var disqus_identifier = '{{ page.id }}';
-    var disqus_title      = {{ page.title | jsonify }};
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>{% endif %}
-
-<script src="/js/js/share-popover.js"></script>
-
-<footer class="fixed-bottom-footer">
-  <div class="jumbotron mt-0" id="footer-container">
-    Powered by <a href="http://jekyllrb.com">Jekyll</a>, blog template adapted from <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+    </main>
   </div>
-</footer>
+
+  <script src="/js/share-popover.js"></script>
+
+  <footer class="fixed-bottom-footer">
+    <div class="jumbotron mt-0" id="footer-container">
+      Powered by <a href="http://jekyllrb.com">Jekyll</a>, blog template adapted from <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+    </div>
+  </footer>
+
+  <script src="/js/distill.js"></script>
+</body>
