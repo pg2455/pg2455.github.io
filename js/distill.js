@@ -30,28 +30,24 @@
       let ToC = `
         <style>
         my-toc { contain: layout style; display: block; }
-        my-toc ul { padding-left: 0; }
-        my-toc ul > ul { padding-left: 24px; }
+        .toc-indent { margin-left: 1.5em; display: block; margin-top: 0.2em; }
+        .toc-major { display: block; margin-top: 1em; margin-bottom: 0; }
         my-toc a { border-bottom: none; text-decoration: none; }
         </style>
         <nav role="navigation" class="table-of-contents"></nav>
-        <h2>Table of contents</h2>
-        <ul>`;
+        <h2>Table of contents</h2>\n`;
       headings.forEach(function(el) {
         const isInTitle = el.parentElement.tagName == 'D-TITLE';
         const isException = el.getAttribute('no-toc');
         if (isInTitle || isException) return;
         const title = el.textContent;
         const link = '#' + el.getAttribute('id');
-        let newLine = '<li>' + '<a href="' + link + '">' + title + '</a>' + '</li>';
         if (el.tagName == 'H3') {
-          newLine = '<ul>' + newLine + '</ul>';
+          ToC += '<span class="toc-indent"><a href="' + link + '">' + title + '</a></span>\n';
         } else {
-          newLine += '<br>';
+          ToC += '<span class="toc-major"><a href="' + link + '">' + title + '</a></span>\n';
         }
-        ToC += newLine;
       });
-      ToC += '</ul></nav>';
       toc.innerHTML = ToC;
     });
   });

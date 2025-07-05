@@ -7,6 +7,11 @@ d-article {
   border-top: 2px solid #e0e0e0;
 }
 
+d-article h3 {
+  margin-top: 0 !important;
+  padding-top: 1em;
+}
+
 .navbar {
   margin-bottom: 0 !important;
 }
@@ -120,3 +125,7 @@ d-article {
   font-size: 1.2em;
   font-weight: 600;
 } 
+
+.MathJax {
+  font-size: 1.3em !important;
+}
