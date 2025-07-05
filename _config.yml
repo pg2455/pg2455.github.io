@@ -32,7 +32,7 @@ collections:
     permalink: /news/:path/
 
   posts:
-    permalink: /blog/:year/:title/
+    permalink: /blog/:year/:month/:title/
 
 # -----------------------------------------------------------------------------
 # Jekyll settings

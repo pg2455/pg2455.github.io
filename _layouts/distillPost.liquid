@@ -45,30 +45,45 @@ layout: base
               <my-toc></my-toc>
             </div>
           </div>
-          <hr style="margin-top: 0;">
           <d-article>
-            {% if page.summary %}
-              <h3>Summary</h3>
-              {{ page.summary }}
+            <!-- Summary Block -->
+          {% if page.summary %}
+              <div>
+                <h3>Summary</h3>
+                {{ page.summary }}
+              </div>
+          {% endif %}
+          <!-- Series Navigation -->
+          <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            {% if page.series and page.previous and page.previous.series.name == page.series.name %}
+              <span style="float:left"><i class="fas fa-2x fa-arrow-left"></i> &thinsp; <a style="text-decoration: none" href="/blog/{{ page.date | date: "%Y" }}/{{ page.date | date: "%m" }}/{{ page.series.name }}-{{ page.series.id | minus: 1 }}"><em>{{ page.previous.title }}</a></em></span>
             {% endif %}
+
+            {% if page.series and page.next and page.next.series.name == page.series.name %}
+              <span style="float:right"><a style="text-decoration: none" href="/blog/{{ page.date | date: "%Y" }}/{{ page.date | date: "%m" }}/{{ page.series.name }}-{{ page.series.id | plus: 1 }}"><em>{{ page.next.title }}</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            {% endif %}
+          </div>
+          {% if page.summary or (page.series and (page.previous or page.next)) %}
+          <hr style="margin: 0 0 0 0; padding-top: 0; padding-bottom: 2px; border-top: 2px solid #e0e0e0;">
+          {% endif %}
             {{ content }}
+          
+          <!-- Series Navigation -->
             <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
-              {% if page.series and page.previous %}
-                <span style="float:left"><i class="fas fa-2x fa-arrow-left"></i> &thinsp; <a style="text-decoration: none" href="/blog/{{ page.date | date: "%Y" }}/{{ page.date | date: "%m" }}/{{ page.series.name }}-{{ page.series.id | minus: 1 }}"><em>{{ page.previous.title }}</a></em></span>
-              {% endif %}
-              {% if page.series and page.next %}
-                <span style="float:right"><a style="text-decoration: none" href="/blog/{{ page.date | date: "%Y" }}/{{ page.date | date: "%m" }}/{{ page.series.name }}-{{ page.series.id | plus: 1 }}"><em>{{ page.next.title }}</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
-              {% endif %}
-            </div>
+            {% if page.series and page.previous and page.previous.series.name == page.series.name %}
+              <span style="float:left"><i class="fas fa-2x fa-arrow-left"></i> &thinsp; <a style="text-decoration: none" href="/blog/{{ page.date | date: "%Y" }}/{{ page.date | date: "%m" }}/{{ page.series.name }}-{{ page.series.id | minus: 1 }}"><em>{{ page.previous.title }}</a></em></span>
+            {% endif %}
+
+            {% if page.series and page.next and page.next.series.name == page.series.name %}
+              <span style="float:right"><a style="text-decoration: none" href="/blog/{{ page.date | date: "%Y" }}/{{ page.date | date: "%m" }}/{{ page.series.name }}-{{ page.series.id | plus: 1 }}"><em>{{ page.next.title }}</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            {% endif %}
+          </div>
           </d-article>
           <d-appendix>
             <d-footnote-list></d-footnote-list>
             <d-citation-list></d-citation-list>
           </d-appendix>
-          <d-bibliography src="/vendor/bibliography/{{ page.bibliography }}">
-          </d-bibliography>
-          <d-article>
-          </d-article>
+          <d-bibliography src="/vendor/bibliography/{{ page.bibliography }}"></d-bibliography>
           <script src="https://giscus.app/client.js"
               data-repo="pg2455/pg2455.github.io"
               data-repo-id="MDEwOlJlcG9zaXRvcnk3MTMxMzI3MQ=="
