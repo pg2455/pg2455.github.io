@@ -1,9 +1,10 @@
 import os
 import re
 import sys
-import bibtexparser
-from urllib.parse import urlparse, unquote
 import shutil
+from markdown_utils import (
+    parse_bibtex, bib_entry_to_string, fix_math_notation, suggest_title_from_url, find_image_paths
+)
 
 # --- CONFIG ---
 def get_bib_path_from_md(md_path):
@@ -22,47 +23,6 @@ def get_bib_path_from_md(md_path):
     # Assume vendor/bibliography/ as root
     return os.path.join(os.path.dirname(os.path.dirname(__file__)), 'vendor', 'bibliography', bibfile)
 
-# --- MATH FIXERS ---
-def fix_math_notation(md):
-    # Block math: $$...$$ => \\[ ... \\]
-    md = re.sub(r'\$\$(.+?)\$\$', r'\\[\1\\]', md, flags=re.DOTALL)
-    # Inline math: $...$ => \\( ... \\)
-    # Avoid replacing already-correct \\( ... \\)
-    md = re.sub(r'(?<!\\)\$(.+?)\$', r'\\( \1 \\)', md)
-    return md
-
-# --- BIBTEX HANDLING ---
-def parse_bibtex(bib_path):
-    with open(bib_path, 'r') as bibfile:
-        bib_database = bibtexparser.load(bibfile)
-    url_to_key = {}
-    title_to_key = {}
-    for entry in bib_database.entries:
-        if 'url' in entry:
-            url_to_key[entry['url']] = entry['ID']
-        if 'title' in entry:
-            title_to_key[entry['title'].lower()] = entry['ID']
-    return url_to_key, title_to_key, bib_database
-
-def suggest_title_from_url(url):
-    parsed = urlparse(url)
-    path = parsed.path
-    last = unquote(path.strip('/').split('/')[-1])
-    last = re.sub(r'--[A-Za-z0-9]+$', '', last)
-    title = re.sub(r'[-_]', ' ', last).title()
-    domain = parsed.netloc.split('.')[-2].capitalize() if '.' in parsed.netloc else parsed.netloc.capitalize()
-    if title:
-        return f"{domain}: {title}"
-    return domain
-
-def bib_entry_to_string(entry):
-    bib = f"@{entry['ENTRYTYPE']}{{{entry['ID']},\n"
-    for k, v in entry.items():
-        if k not in ['ENTRYTYPE', 'ID']:
-            bib += f"  {k} = {{{v}}},\n"
-    bib = bib.rstrip(',\n') + "\n}\n\n"
-    return bib
-
 # --- MAIN SCRIPT ---
 def main(md_path):
     bib_path = get_bib_path_from_md(md_path)
@@ -71,29 +31,21 @@ def main(md_path):
     md = fix_math_notation(md)
 
     # --- IMAGE MOVING LOGIC ---
-    # Determine post-folder from markdown filename and parent directory
     md_abs_path = os.path.abspath(md_path)
     md_dir = os.path.dirname(md_abs_path)
     md_base = os.path.basename(md_path)
     parent_dir = os.path.basename(md_dir)
-    # Check if parent_dir matches YYYY-MM-DD-title
     m = re.match(r'^(\d{4}-\d{2}-\d{2})-(.+)$', parent_dir)
     if m:
-        # Use images/blog/title/name-of-the-file/
         title = m.group(2)
         post_folder = os.path.join(title, md_base.replace('.md', ''))
     else:
-        # Fallback to previous logic
         post_folder = md_base.replace('.md', '')
     images_root = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'images', 'blog'))
     post_image_dir = os.path.join(images_root, post_folder)
     os.makedirs(post_image_dir, exist_ok=True)
 
-    # Find <img src=...> and ![alt](...) images
-    img_tag_pattern = r'<img[^>]+src=["\"]([^"\"]+)["\"]'
-    md_img_pattern = r'!\[[^\]]*\]\(([^)]+)\)'
-    img_paths = re.findall(img_tag_pattern, md)
-    img_paths += re.findall(md_img_pattern, md)
+    img_paths = find_image_paths(md)
     img_moved = False
     for img_path in set(img_paths):
         if img_path.startswith('http://') or img_path.startswith('https://') or img_path.startswith('/images/blog/'):
@@ -130,8 +82,8 @@ def main(md_path):
             link_to_bib[url] = key
             continue
         # Prompt for BibTeX key and title, allow skip
-        parsed = urlparse(url)
-        domain = parsed.netloc.split('.')[-2] if '.' in parsed.netloc else parsed.netloc
+        parsed = re.match(r'https?://([^/]+)/', url)
+        domain = parsed.group(1).split('.')[-2] if parsed else 'ref'
         year = re.search(r'(20\d{2})', url)
         year = year.group(1) if year else 'xxxx'
         titleword = re.sub(r'[^a-zA-Z0-9]', '', text.split()[0].lower()) if text else 'ref'
@@ -142,13 +94,6 @@ def main(md_path):
         if bib.strip().lower() == 'skip':
             print(f"[SKIP] Skipped BibTeX entry and citation for: {url}")
             continue
-        # if not bib.strip():
-        #     bib = suggested_key
-        #     if not text.strip() or text == "here":
-        #         suggested_title = suggest_title_from_url(url)
-        #         text = input(f"Enter a title for {url} (or press Enter to use: '{suggested_title}'): ")
-        #         if not text.strip():
-        #             text = suggested_title
         link_to_bib[url] = bib
         new_entry = {
             'ENTRYTYPE': 'misc',
