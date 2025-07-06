@@ -70,3 +70,49 @@ def move_images(img_paths, src_dir, dest_dir, skip_prefixes=("http://", "https:/
             shutil.copy(abs_img_path, dest_path)
             moved[img_path] = dest_path
     return moved 
+
+
+def get_or_create_bibtex_key(url, text, url_to_key, title_to_key, bib_database):
+    key = None
+    if url in url_to_key:
+        key = url_to_key[url]
+    elif text and text.lower() in title_to_key:
+        key = title_to_key[text.lower()]
+    if key:
+        print(f"[INFO] Found BibTeX entry for {url}: {key}")
+        return key, None
+    # Prompt for BibTeX key and title, allow skip
+    parsed = re.match(r'https?://([^/]+)/', url)
+    domain = parsed.group(1).split('.')[-2] if parsed else 'ref'
+    year = re.search(r'(20\d{2})', url)
+    year = year.group(1) if year else 'xxxx'
+    titleword = re.sub(r'[^a-zA-Z0-9]', '', text.split()[0].lower()) if text else 'ref'
+    suggested_key = f"{domain}{year}{titleword}"
+    print(f"[INFO] External link found: {url}")
+    print(f"Suggested BibTeX key: {suggested_key}")
+    bib = input(f"Enter BibTeX key for this link (or press Enter to use suggested, or type 'skip' to skip): ")
+    if bib.strip().lower() == 'skip':
+        print(f"[SKIP] Skipped BibTeX entry and citation for: {url}")
+        return None, None
+    if not bib.strip():
+        bib = suggested_key
+        if not text.strip() or text == "here":
+            suggested_title = suggest_title_from_url(url)
+            text = input(f"Enter a title for {url} (or press Enter to use: '{suggested_title}'): ")
+            if not text.strip():
+                text = suggested_title
+    # Check if key already exists
+    key_exists = any(entry['ID'] == bib for entry in bib_database.entries)
+    if key_exists:
+        print(f"[INFO] Using existing BibTeX entry: {bib}")
+        return bib, None
+    else:
+        new_entry = {
+            'ENTRYTYPE': 'misc',
+            'ID': bib,
+            'title': text,
+            'url': url
+        }
+        bib_database.entries.append(new_entry)
+        print(f"[INFO] Added new BibTeX entry: {bib}")
+        return bib, new_entry 

@@ -7,7 +7,7 @@ import datetime
 import shutil
 import sys
 from markdown_utils import (
-    parse_bibtex, bib_entry_to_string, fix_math_notation, suggest_title_from_url, find_image_paths
+    parse_bibtex, bib_entry_to_string, fix_math_notation, suggest_title_from_url, find_image_paths, get_or_create_bibtex_key
 )
 from urllib.parse import urlparse, unquote
 
@@ -115,40 +115,12 @@ def get_titleword(text):
     return re.sub(r'[^a-zA-Z0-9]', '', text.split()[0].lower()) if text else 'ref'
 
 for url, text in external_links:
-    key = None
-    if url in url_to_key:
-        key = url_to_key[url]
-    elif text.lower() in title_to_key:
-        key = title_to_key[text.lower()]
-    if key:
-        print(f"\033[92m[INFO] Found BibTeX entry for {url}: {key}\033[0m")
-        link_to_bib[url] = key
+    bib, new_entry = get_or_create_bibtex_key(url, text, url_to_key, title_to_key, bib_database)
+    if bib is None:
         continue
-    domain = get_domain(url)
-    year = re.search(r'(20\d{2})', url)
-    year = year.group(1) if year else 'xxxx'
-    titleword = get_titleword(text)
-    suggested_key = f"{domain}{year}{titleword}"
-    print(f"\033[93m[INFO] External link found: {url}\033[0m")
-    print(f"Suggested BibTeX key: {suggested_key}")
-    bib = input(f"\033[91mEnter BibTeX key for this link (or press Enter to use suggested): \033[0m")
-    if not bib.strip():
-        bib = suggested_key
-        if not text.strip() or text == "here":
-            suggested_title = suggest_title_from_url(url)
-            text = input(f"\033[91mEnter a title for {url} (or press Enter to use: '{suggested_title}'): \033[0m")
-            if not text.strip():
-                text = suggested_title
     link_to_bib[url] = bib
-    new_entry = {
-        'ENTRYTYPE': 'misc',
-        'ID': bib,
-        'title': text,
-        'url': url
-    }
-    bib_database.entries.append(new_entry)
-    new_bib_entries.append(new_entry)
-    print(f"\033[96m[INFO] Added new BibTeX entry: {bib}\033[0m")
+    if new_entry:
+        new_bib_entries.append(new_entry)
 
 if new_bib_entries:
     with open(bib_path, 'a') as bibfile:
