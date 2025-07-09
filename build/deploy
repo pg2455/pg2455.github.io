@@ -2,7 +2,7 @@
 
 # source: https://github.com/alshedivat/al-folio/blob/master/bin/deploy
 
-SRC_BRANCH="master"
+SRC_BRANCH="${1:-master}"
 DEPLOY_BRANCH="gh-pages"
 
 # Exit if any subcommand fails
