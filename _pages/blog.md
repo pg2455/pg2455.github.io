@@ -24,7 +24,7 @@ permalink: /blog/
                 <a href="{{ post.url }}"><strong style="margin: 0 0 5px 0; font-size:1.25em; display: inline-block; text-align: left; width: 100%;">{{ post.title }}</strong></a>
                 <ul style="margin: 10px 0 0 0; text-align:left;">
             {% else %}
-              <li style="margin: 0 0 5px 0; font-size:1.1em; text-align:left;"><a href="{{ post.url }}"><em>{{ post.title }}</em></a></li>
+              <li style="margin: 0 0 5px 0; font-size:1.1em; text-align:left;"><a href="{{ post.url }}">{{ post.title }}</a></li>
             {% endif %}
             {% if forloop.last %}
             </ul>

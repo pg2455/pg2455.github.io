@@ -1,4 +1,4 @@
-Hi! I’m a Postdoctoral Researcher at the <a href="https://www.mpib-berlin.mpg.de/chm" target="_blank">Max Planck Institute's Center for Humans and Machines</a>. I’m fascinated by the potential of AI to deepen our understanding of science and society.More recently, I have been diving deeper into LLM-centric research. 
+Hi! I’m a Postdoctoral Researcher at the <a href="https://www.mpib-berlin.mpg.de/chm" target="_blank">Max Planck Institute's Center for Humans and Machines</a>. I’m fascinated by the potential of AI to deepen our understanding of science and society. More recently, I have been diving deeper into LLM-centric research. 
 
 Here are some of the questions I’m currently exploring:
 
@@ -35,7 +35,7 @@ Outside research, I create open-access educational content in machine learning (
 
 <table class="table table-hover">
   <tr>
-    <td class="col-md-3">Sept. 2017 - May 2023</td>
+    <td class="col-md-3">Sept 2017 - May 2023</td>
     <td>
         <strong>PhD in Machine Learning</strong>
         <br>
@@ -47,7 +47,7 @@ Outside research, I create open-access educational content in machine learning (
     </td>
   </tr>
   <tr>
-    <td class="col-md-3">Sept. 2013 - Feb. 2015</td>
+    <td class="col-md-3">Sept 2013 - Feb 2015</td>
     <td>
         <strong>Master of Science in Operations Research</strong>
           (3.96/4.00)
@@ -59,7 +59,7 @@ Outside research, I create open-access educational content in machine learning (
     </td>
   </tr>
   <tr>
-    <td class="col-md-3">Sept. 2009 - Aug. 2013</td>
+    <td class="col-md-3">Sept 2009 - Aug 2013</td>
     <td>
         <strong>Bachelor of Technology</strong>
         <br>
@@ -80,7 +80,7 @@ For a complete list of my publications, please visit my <a href="https://scholar
 ## <i class="fa fa-chevron-right"></i> Experience
 <table class="table table-hover">
 <tr>
-  <td class='col-md-3'>Feb. 2024 - Present</td>
+  <td class='col-md-3'>Feb 2024 - Present</td>
   <td>
     <strong>Postdoctoral Researcher</strong> | Max Planck Institute | Berlin, Germany
   </td>
@@ -92,37 +92,37 @@ For a complete list of my publications, please visit my <a href="https://scholar
   </td>
 </tr>
 <tr>
-  <td class='col-md-3'>June 2018 - Oct. 2020</td>
+  <td class='col-md-3'>June 2018 - Oct 2020</td>
   <td>
     <strong>Visiting Researcher</strong> | MILA | Montréal, Canada
   </td>
 </tr>
 <tr>
-  <td class='col-md-3'>June 2015 - Sept. 2017</td>
+  <td class='col-md-3'>June 2015 - Sept 2017</td>
   <td>
     <strong>Data Scientist</strong> | GenesisMedia LLC | New York City, U.S
   </td>
 </tr>
 <tr>
-  <td class='col-md-3'>Feb. 2015 - June 2015</td>
+  <td class='col-md-3'>Feb 2015 - June 2015</td>
   <td>
     <strong>Data Scientist</strong> | American Express | New York City, U.S
   </td>
 </tr>
 <tr>
-  <td class='col-md-3'>May 2014 - Aug. 2014</td>
+  <td class='col-md-3'>May 2014 - Aug 2014</td>
   <td>
     <strong>R&D Data Scientist Intern</strong> | The New York Times | New York City, U.S
   </td>
 </tr>
 <tr>
-  <td class='col-md-3'>Jan. 2014 - May 2014</td>
+  <td class='col-md-3'>Jan 2014 - May 2014</td>
   <td>
     <strong>Machine Learning Intern</strong> | Wiser | New York City, U.S (Part-time)
   </td>
 </tr>
 <tr>
-  <td class='col-md-3'>May 2012 - Aug. 2012</td>
+  <td class='col-md-3'>May 2012 - Aug 2012</td>
   <td>
     <strong>Research Intern</strong> | Innovation Labs, Tata Consultancy Services | Pune, India
   </td>
