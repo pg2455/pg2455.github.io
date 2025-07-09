@@ -58,7 +58,7 @@ permalink: /media/
   text-decoration: none;
   color: inherit;
   background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-  padding: 2.5rem;
+  padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   margin: 2rem 0 3rem 0;
@@ -76,7 +76,7 @@ permalink: /media/
 .article-content, .coverage-content {
   display: flex;
   justify-content: space-between;
-  gap: 2rem;
+  gap: 1rem;
   align-items: flex-start;
 }
 
@@ -89,10 +89,10 @@ permalink: /media/
 }
 
 .title-text {
-  font-size: 1.8rem;
+  font-size: 1.1em;
   color: #2c3e50;
   line-height: 1.4;
-  font-weight: 500;
+  /* font-weight: 500; */
   letter-spacing: -0.02em;
 }
 
@@ -127,20 +127,22 @@ permalink: /media/
 }
 
 .outlet-icon {
-  width: 32px;
-  height: 32px;
+  width: 1.3em;
+  height: 1.3em;
   object-fit: contain;
+  vertical-align: middle;
 }
 
 .source {
-  font-weight: 700;
+  /* font-weight: 600; */
   color: #2980b9;
-  font-size: 1.4rem;
+  font-size: 1em;
+  vertical-align: middle;
 }
 
 .date {
   color: #666;
-  font-size: 1.4rem;
+  font-size: 1em;
   font-weight: 500;
 }
 
@@ -154,7 +156,7 @@ permalink: /media/
   display: block;
   text-decoration: none;
   color: inherit;
-  padding: 1.5rem;
+  padding: 1rem;
   background: white;
   border: 1px solid #eee;
   border-radius: 8px;
@@ -168,11 +170,11 @@ permalink: /media/
   color: inherit;
 }
 
-h2 {
-  font-size: 2rem;
-  color: #333;
+h2 { 
+  /* font-size: rem; */
+  /* color: #333; */
   margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid #eee;
-}
+} 
 </style> 
