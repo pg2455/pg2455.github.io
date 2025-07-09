@@ -25,7 +25,7 @@ Here are some of the questions I’m currently exploring:
   </li>
 </ul>
 
-I completed my Ph.D. at the <a href="https://www.ox.ac.uk/" target="_blank">University of Oxford</a>, where I developed deep learning approaches for exact combinatorial optimization. My doctoral work was supported by <a href="https://turing.ac.uk" target="_blank">The Alan Turing Institute</a> and advised by <a href="http://mpawankumar.info/" target="_blank">Pawan Kumar</a>, <a href="https://cerc-datascience.polymtl.ca/person/dr-andrea-lodi/" target="_blank">Andrea Lodi</a>, and <a href="https://yoshuabengio.org/profile/" target="_blank">Yoshua Bengio</a>. I was also affiliated with <a href="https://mila.quebec/en/" target="_blank">Mila</a> in Montréal.
+I completed my Ph.D. at the <a href="https://www.ox.ac.uk/" target="_blank">University of Oxford</a>, where I developed deep learning approaches for exact combinatorial optimization. My doctoral work was supported by <a href="https://turing.ac.uk" target="_blank">The Alan Turing Institute</a> and advised by <a href="https://scholar.google.com/citations?user=BfmcfEAAAAAJ&hl=en" target="_blank">Pawan Kumar</a>, <a href="https://tech.cornell.edu/people/andrea-lodi/" target="_blank">Andrea Lodi</a>, and <a href="https://yoshuabengio.org/profile/" target="_blank">Yoshua Bengio</a>. I was also affiliated with <a href="https://mila.quebec/en/" target="_blank">Mila</a> in Montréal.
 
 Outside research, I create open-access educational content in machine learning (<a href="/teaching/">see here</a>) and enjoy collaborative, cross-disciplinary work. I stay active through table tennis, swimming, gymnastics, and rowing — and I’m always curious about new ideas through books, stories, and conversations.
 
@@ -42,7 +42,7 @@ Outside research, I create open-access educational content in machine learning (
       University of Oxford | Oxford, United Kingdom
       <br> The Alan Turing Institute | London, United Kingdom
         <p style='margin-top:-1em;margin-bottom:0em' markdown='1'>
-        <br> Advisors: [Pawan Kumar](https://scholar.google.com/citations?user=BfmcfEAAAAAJ&hl=en), [Andrea Lodi](https://tech.cornell.edu/people/andrea-lodi/),  [Yoshua Bengio](https://yoshuabengio.org/profile/)
+        <br> Advisors: [Pawan Kumar](https://scholar.google.com/citations?user=BfmcfEAAAAAJ&hl=en){:target="_blank"}, [Andrea Lodi](https://tech.cornell.edu/people/andrea-lodi/){:target="_blank"},  [Yoshua Bengio](https://yoshuabengio.org/profile/){:target="_blank"}
         </p>
     </td>
   </tr>
@@ -136,7 +136,7 @@ For a complete list of my publications, please visit my <a href="https://scholar
   <tr>
     <td class='col-md-3'><b>Events</b></td>
     <td>
-      <a href="https://ai4abm.org/workshop_icml2022/">ICML AI for Agent-based Modelling Workshop</a>, Co-Organizer, 2022<br>
+      ICML AI for Agent-based Modelling Workshop, Co-Organizer, 2022<br>
       <a href="https://mila-iqia.github.io/climate-cooperation-competition/">AI for Global Climate Cooperation Challenge</a>, Co-organizer, 2022
     </td>
   </tr>
@@ -164,7 +164,7 @@ For a complete list of my publications, please visit my <a href="https://scholar
   <td class='col-md-2'>2017 - 2022</td>
   <td>
     The Alan Turing Institute Doctoral Scholarship<br>
-    3rd place, UK-wide 10th <a href="http://www.drawards.org.uk/" target="_blank">Doctoral Researcher Awards</a> 2021 <span class="cv-note">(5 min thesis presentation)</span>
+    3rd place, UK-wide 10th Doctoral Researcher Awards, 2021
   </td>
 </tr>
 <tr>
@@ -201,7 +201,7 @@ PyTorch, TensorFlow, Jax, NumPy, Pandas, SciPy, Langchain, Flask, D3, jQuery, Si
 <tr>
   <td class="col-md-2"> Non-Formal Education </td>
   <td>
-  (2020-2021) <a href="https://www.mpls.ox.ac.uk/training/courses/scientific-entrepreneurship" target="_blank">Scientific Entrepreneurship</a>, University of Oxford, U.K <span class="cv-note">(based on Harvard Business Cases)</span><br>
+  (2020-2021) Scientific Entrepreneurship, University of Oxford, U.K <span class="cv-note">(based on Harvard Business Cases)</span><br>
   (2018) <a href="https://www.microsoft.com/en-us/research/event/ai-summer-school-2018/" target="_blank" style="text-decoration: none;">Microsoft Research AI Summer School</a>, Cambridge, U.K <span class="cv-note">(acceptance with funding)</span><br>
   (2018) <a href="http://humanaligned.ai/index-2018.html" target="_blank">Human-aligned AI Summer School</a>, Prague, Czech Republic <span class="cv-note">(acceptance with funding)</span><br>
 
