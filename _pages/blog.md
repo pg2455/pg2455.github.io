@@ -5,7 +5,7 @@ permalink: /blog/
 ---
 # Prateek's Blog Post
 <br>
-{% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
+{% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y-%m'" %}
 
 {% for year in postsByYear %}
   <table class="table table-hover">
