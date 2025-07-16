@@ -29,3 +29,11 @@ coverage:
     outlet: "The Verge"
     outlet_icon: "https://www.theverge.com/favicon.ico"
     date: 2025-06-20 
+
+  - title: "ChatGPT Is Changing the Words We Use in Conversation"
+    link: "https://www.scientificamerican.com/article/chatgpt-is-changing-the-words-we-use-in-conversation/"
+    outlet: "Scientific American"
+    outlet_icon: "https://www.scientificamerican.com/favicon.ico"
+    date: 2025-07-15
+
+  
