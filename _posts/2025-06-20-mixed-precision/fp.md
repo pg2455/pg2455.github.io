@@ -16,16 +16,16 @@ bibliography: llm.bib
 ---
 
 <div style="background-color: rgba(245, 245, 204, 0.5); padding: 10px; border-radius: 8px; border: 1px solid #e0e0b0;">
-The impressive emergent capabilities of LLMs have largely been observed as a result of scaling them to massive sizes—sometimes with hundreds of billions of parameters (e.g., 470B or 600B). These models are enormous, with some requiring up to 500GB of disk space.
+The impressive emergent capabilities of LLMs have largely been observed as a result of scaling them to massive sizes, sometimes with hundreds of billions of parameters (e.g., 470B or 600B). These models are enormous, with some requiring up to 500GB of disk space.
 
 In response, the community has been working in two directions simultaneously:
 
 * On one hand, there's a push to compress the intelligence of large models into smaller, more efficient ones.
 * On the other hand, there's continued momentum toward even larger models, with trillions of parameters on the horizon.
 
-One promising direction to enable this is to reduce the precision used in representing model parameters. Traditionally, neural networks have been trained using 32-bit floating point numbers (FP32). To scale models more efficiently, many are now trained using 16-bit precision (FP16 or BF16)—and some even use mixed-precision formats, where certain parameters are stored in FP8 or lower.
+One promising direction to enable this is to reduce the precision used in representing model parameters. Traditionally, neural networks have been trained using 32-bit floating point numbers (FP32). To scale models more efficiently, many are now trained using 16-bit precision (FP16 or BF16), and some even use mixed-precision formats, where certain parameters are stored in FP8 or lower.
 
-This shift introduces the need for **mixed-precision training**—techniques that maintain reliable learning despite operating at reduced numerical precision. I explore that in detail in the [next post](/blog/2025/06/mixed-precision-mp).
+This shift introduces the need for **mixed-precision training**, techniques that maintain reliable learning despite operating at reduced numerical precision. I explore that in detail in the [next post](/blog/2025/06/mixed-precision-mp).
 
 But before going there, I want to revisit a more fundamental question:
 **What is floating point representation, really?**
@@ -126,17 +126,17 @@ print("Extra overhead (bytes):", sys.getsizeof(d) - 2)
         Number of bits: 16
         Extra overhead (bytes): 78
 
-The way we perform arithmetic—addition, subtraction, multiplication, and division—is conceptually different from how machines handle these operations.
+The way we perform arithmetic, addition, subtraction, multiplication, and division, is conceptually different from how machines handle these operations.
 Machines operate at the level of bits, relying on bitwise manipulations to carry out even the simplest computations.
 
-Each numeric representation (e.g., `float32`, `float16`, `bfloat16`) requires dedicated kernels—low-level routines optimized for performing arithmetic on that specific format.Libraries like `NumPy` and `PyTorch` support floating point arithmetic using representations smaller than 64 bits (e.g., `float32`, `float16`, `bfloat16`). These libraries also include optimizations that enable efficient computation on lower-precision formats—often by using additional memory to support alignment, buffering, or fused operations. As a result, we notice higher memory overhead than expected.
+Each numeric representation (e.g., `float32`, `float16`, `bfloat16`) requires dedicated kernels, low-level routines optimized for performing arithmetic on that specific format. Libraries like `NumPy` and `PyTorch` support floating point arithmetic using representations smaller than 64 bits (e.g., `float32`, `float16`, `bfloat16`). These libraries also include optimizations that enable efficient computation on lower-precision formats, often by using additional memory to support alignment, buffering, or fused operations. As a result, we notice higher memory overhead than expected.
 
 ## Illusion vs. Reality of Representation
 
-Computers are **discrete representation machines**—they store and process information in finite, countable steps, typically as sequences of 1s and 0s.
+Computers are **discrete representation machines**; they store and process information in finite, countable steps, typically as sequences of 1s and 0s.
 Any sense of continuity, such as representing real numbers, is ultimately an illusion in a digital computer. In reality, these values are always approximated using a finite number of bits.
 
-For example, when we store a floating-point number, we are not storing the real number itself, but rather a discrete approximation of it—limited by the number of bits allocated for the representation.
+For example, when we store a floating-point number, we are not storing the real number itself, but rather a discrete approximation of it, limited by the number of bits allocated for the representation.
 
 > Between any two representable numbers, there are infinitely many real values the computer cannot distinguish.
 
@@ -157,7 +157,7 @@ print(f"{a: 0.64f}")
 This output reveals the true stored representation of `0.1`—which, as you can see, is not exactly 0.1.
 This discrepancy arises from the limitations of binary floating-point formats: many decimal fractions simply cannot be represented exactly in binary.
 
-**Note:** This is usually not a problem—unless high precision is critical in your application.
+**Note:** This is usually not a problem, unless high precision is critical in your application.
 
 **But how can this limitation lead to surprising behavior?**
 
@@ -180,7 +180,7 @@ Representation of 0.1: 0.1000000000000000055511151231257827021181583404541015625
 Although mathematically `0.3 - 0.2` *should* equal `0.1`, the result is just slightly off, causing the equality check to return `False`.
 
 > **Note:** When comparing floating-point numbers, you should avoid exact equality checks.
-> Instead, use an **approximate comparison**—checking whether the numbers are "close enough" within a small tolerance. `np.is_close` does exactly that.
+> Instead, use an **approximate comparison**, checking whether the numbers are "close enough" within a small tolerance. `np.is_close` does exactly that.
 
 
 ## How are numbers represented in floating point?
@@ -207,7 +207,7 @@ Let's break this down:
 -   \\( (1.M)_2 \\): This is the significand. It encodes the **precision** (the significant digits of the number). For normal numbers, there is an *implicit* leading `1` followed by the mantissa bits `M`. For subnormals (see below), there is no leading `1`, i.e., it is represented as \\( (0.M)_2 \\). The subscript `2` indicates this is a binary representation.
 -   \\( 2^{(E - \text{bias})} \\): This is the scale factor. `E` is the decimal value of the exponent bits, and `bias` is a predefined constant.
 
-**Note:** The expression above mirrors scientific notation in base 10 — for example:
+**Note:** The expression above mirrors scientific notation in base 10, for example:
 
 \\[
 -1 \times 3.539820 \times 10^{-9}
@@ -270,7 +270,7 @@ These numbers are smaller than the smallest normal, providing a gradual underflo
 
 ### Visualizing How Floating Point Numbers Sit on the Real Number Line
 
-Let’s explore where key floating-point numbers lie on the number line — particularly around zero, where subnormals come into play.
+Let’s explore where key floating-point numbers lie on the number line, particularly around zero, where subnormals come into play.
 
 - **Smallest positive normal number** is when  `E=1` and `M=0`: \\( 2^{1-bias} \\)
 - **Largest positive subnormal number** is when `E=0` and `M=2^m -1`, i.e., all `1`s: \\( 2^{1-bias} \times (0.M)_2 = 2^{1-bias} \times (1 - 2^{-m}) \\).
@@ -303,11 +303,11 @@ Thus, the **spacing between consecutive floating-point numbers at a given expone
 2^{exp-bias} \times 2^{-m},
 \\]
 
-Computing the difference between the smallest normal number and the largest subnormal number, we obtain the step size of \\( 2^{1-bias-m} \\), where \\( m \\) is the number of mantissa bits. By design, the difference between the smallest positive subnormal number and \\( 0 \\) is also \\( 2^{1-bias-m} \\). This consistent spacing ensures that subnormals provide a smooth and uniform transition from the smallest normal number down to zero—preventing a sudden gap in the number line
+Computing the difference between the smallest normal number and the largest subnormal number, we obtain the step size of \\( 2^{1-bias-m} \\), where \\( m \\) is the number of mantissa bits. By design, the difference between the smallest positive subnormal number and \\( 0 \\) is also \\( 2^{1-bias-m} \\). This consistent spacing ensures that subnormals provide a smooth and uniform transition from the smallest normal number down to zero, preventing a sudden gap in the number line.
 
 > Without subnormals, there would be a sudden gap between the smallest normal number and zero, creating a significant gap in the number line. 
 
-Subnormals elegantly solve this problem by filling the gap between the smallest normal number and zero. They maintain the same step size of \\( 2^{1-bias-m} \\), creating a uniform transition from the smallest normal number down to zero—preventing a sudden gap in the number line.
+Subnormals elegantly solve this problem by filling the gap between the smallest normal number and zero. They maintain the same step size of \\( 2^{1-bias-m} \\).
 
 Let's illustrate this **scale dependent precision and uniform transition to `0`** this via code. Here, I have used FP8 E4M3 format, which uses `S EEEE MMM` format for representation, i.e., 1 sign-bit, 4 exponent bits, and 3 mantissa bits.
 ```python
@@ -394,7 +394,7 @@ The IEEE 754 standard reserves certain bit patterns for special values. The valu
 | **Exponent Bits** | **Mantissa Bits** | **Represents** |
 |-------------------|-------------------|----------------|
 | All 0s            | All 0s            | **Zero** (`+0` or `-0`, depending on the sign bit) |
-| All 0s            | Non-zero          | **Subnormal Numbers**. Represented as \( (-1)^S \times (0.M)_2 \times 2^{1 - \text{bias}} \) |
+| All 0s            | Non-zero          | **Subnormal Numbers**. Represented as \\( (-1)^S \times (0.M)_2 \times 2^{1 - \text{bias}} \\) |
 | All 1s            | All 0s     | **Infinity** (`+inf` or `-inf`) |
 | All 1s            | Non-zero    | NaN (Not a Number) |
 
@@ -433,7 +433,7 @@ As the figure shows, the lower half of FP16's range is densely populated with va
 
 > Floating-point formats are **intentionally designed to offer higher resolution near zero**, where most computations actually happen.
 
-This precision bias benefits not only deep learning but also many other fields—like scientific computing and signal processing—where small values dominate and accuracy in the low range is essential.
+This precision bias benefits not only deep learning but also many other fields, like scientific computing and signal processing, where small values dominate and accuracy in the low range is essential.
 
 
 ## What is Overflow and Underflow?
@@ -455,7 +455,7 @@ But there are also numbers outside this range that cannot be represented at all:
   * Rounded to zero, or
   * Represented as subnormals if the format supports it (as we discussed earlier).
 
-> Underflow doesn’t usually cause crashes, but overflow often does—especially if not handled gracefully.
+> Underflow doesn’t usually cause crashes, but overflow often does, especially if not handled gracefully.
 
 ## What are different types of representation? 
 
@@ -510,10 +510,10 @@ print(tabulate(table, headers=headers))
     float8_e4m3fn             8    448              -448                  0.015625     0.125
 
 
-We’ve already seen that more mantissa bits lead to finer granularity, i.e., a smaller step size between two representable numbers in a given format. The `Eps` values in the table above represent the smallest distinguishable difference from 1.0—mathematically, this is the contribution from the Least Significant Bit (LSB) or the last mantissa bit and equals \( 2^{-m} \), where \( m \) is the number of mantissa bits.
+We’ve already seen that more mantissa bits lead to finer granularity, i.e., a smaller step size between two representable numbers in a given format. The `Eps` values in the table above represent the smallest distinguishable difference from 1.0—mathematically, this is the contribution from the Least Significant Bit (LSB) or the last mantissa bit and equals \\( 2^{-m} \\), where \\( m \\) is the number of mantissa bits.
 
 > In simple terms, if a number smaller than `Eps` is added to 1.0, the result will still be 1.0 due to rounding.
 
 Naturally, **low-precision formats** like FP8, which have fewer mantissa bits, **suffer from coarse granularity**. This can lead to numerical instability, especially when representing small gradients or performing subtle updates during training.
 
-To mitigate these issues, special training frameworks are required that can compensate for the reduced precision. This is what we will explore in the next post - [Understanding Mixed-Precision Training Techniques]((/blog/2025/06/mixed-precision-mp)).
+To mitigate these issues, special training frameworks are required that can compensate for the reduced precision. This is what we will explore in the next post: [Understanding Mixed-Precision Training Techniques]((/blog/2025/06/mixed-precision-mp)).

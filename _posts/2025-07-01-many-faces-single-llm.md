@@ -12,30 +12,30 @@ mathjax: true
 bibliography: llm.bib
 ---
 
-We've come a long way—from single-task LLMs (like translation or classification) to general-purpose models capable of performing a wide range of tasks. 
-Giving these models the ability to **call tools** has elevated them to the status of "agents"—systems with the apparent capacity to act on their environment.
+We've come a long way, from single-task LLMs (like translation or classification) to general-purpose models capable of performing a wide range of tasks. 
+Giving these models the ability to **call tools** has elevated them to the status of "agents", systems with the apparent capacity to act on their environment.
 
 "AI agents" is now a term you hear everywhere. 
-But the mental image people form when they hear "agent" can vary dramatically—some imagine superintelligent machines capable of transforming the society, while others imagine nefarious systems plotting to overthrow humanity.
+But the mental image people form when they hear "agent" can vary dramatically. Some imagine superintelligent machines capable of transforming the society, while others imagine nefarious systems plotting to overthrow humanity.
 
-Sometimes, I find myself so caught up in this narrative that I forget to zoom out and remember what's really going on under the hood—how these systems are actually constructed.
+Sometimes, I find myself so caught up in this narrative that I forget to zoom out and remember what's really going on under the hood: how these systems are actually constructed.
 
 This post is a reflection and a reminder: **what is behind these agents**.
 
 ## Enriching Context
 
-At the core, each "agent" is just a call to an LLM with a structured input—often referred to as a **prompt** or **context**. It typically consists of:
+At the core, each "agent" is just a call to an LLM with a structured input, often referred to as a **prompt** or **context**. It typically consists of:
 
-* **Instructions** — How the LLM should behave or reason (“You are an expert physicist”).
-* **Task** — The goal or problem to solve (“Explain the theory of relativity”).
-* **Contextual Support** — Supporting information, such as examples, prior conversation turns, tool outputs, or formatting guidance.
+* **Instructions**: How the LLM should behave or reason (“You are an expert physicist”).
+* **Task**: The goal or problem to solve (“Explain the theory of relativity”).
+* **Contextual Support**: Supporting information, such as examples, prior conversation turns, tool outputs, or formatting guidance.
 
 Whether a task is handled by a single LLM or given to others, it's all about crafting the right context to elicit the best possible response.
 Even in multi-agent systems, where tasks are handed off, these "other agents" are often just the same LLM being prompted differently.
 
 ## Human-AI Collaboration: Who is the tool?
 
-Although I understood how LLMs work, I was so immersed in chatting with ChatGPT that I momentarily forgot it's just an LLM under the hood—reprocessing the same base input over and over, each time with a slightly richer context.
+Although I understood how LLMs work, I was so immersed in chatting with ChatGPT that I momentarily forgot it's just an LLM under the hood, reprocessing the same base input over and over, each time with a slightly richer context.
 
 Here's what that might look like in a simple session:
 
@@ -63,7 +63,7 @@ Now that instruction becomes part of the new context, and the LLM tries again. T
 
 ### Deciding to enrich its own context
 
-What if I had given no instruction at all—just the task:
+What if I had given no instruction at all, just the task:
 
 > Explain the theory of relativity. You're free to take on any persona to make the explanation effective.
 
@@ -79,7 +79,7 @@ Now the updated context includes:
 
 > *"I am Richard Feynman, and here's how I explain the theory of relativity..."*
 
-In this case, the LLM is **writing to its own contextual support** to improve its performance. This mirrors how agents delegate tasks to specialized sub-agents—essentially, **same LLM, different prompts**. This might as well be referred to as **Agent Calling**,  unless you explicitly model the workflow.
+In this case, the LLM is **writing to its own contextual support** to improve its performance. This mirrors how agents delegate tasks to specialized sub-agents; essentially, **same LLM, different prompts**. This might as well be referred to as **Agent Calling**,  unless you explicitly model the workflow.
 
 > "other agents" are just creative reuses of the LLM with new instructions and context.
 
@@ -87,7 +87,7 @@ In this case, the LLM is **writing to its own contextual support** to improve it
 ## Tool Calling
 
 Now imagine the input also mentions external tools. The LLM might decide it's best to call a calculator, a search engine, or a code interpreter.
-So we call these tools. This **tool use** enriches the context with new information—like equations, results, or facts—which is then fed back into the next LLM call.
+So we call these tools. This **tool use** enriches the context with new information, like equations, results, or facts, which is then fed back into the next LLM call.
 
 Again, it's all about context enrichment.
 
@@ -106,11 +106,11 @@ Again, it's all about context enrichment.
 ## Agent Calling
 
 
-When other agents and their functionalities are available as callable options, I tend to think of this as **agent calling**—or simply using **more intelligent tools**. While I haven't yet seen work where new agents are entirely *programmed* by a previous LLM (i.e., constructed from scratch), that too should be possible in principle.
+When other agents and their functionalities are available as callable options, I tend to think of this as **agent calling**, or simply using **more intelligent tools**. While I haven't yet seen work where new agents are entirely *programmed* by a previous LLM (i.e., constructed from scratch), that too should be possible in principle.
 
-In many cases, these agents aren't fundamentally different entities—they're just **LLMs used as intelligent tools**. Some are initialized with predefined prompts like *"You are a physicist,"* while others are dynamically created at runtime, taking on whatever instructions the current LLM chooses to provide.
+In many cases, these agents aren't fundamentally different entities; they're just **LLMs used as intelligent tools**. Some are initialized with predefined prompts like *"You are a physicist,"* while others are dynamically created at runtime, taking on whatever instructions the current LLM chooses to provide.
 
-> Other tools may be simple deterministic functions. But **agent-tools** are LLMs themselves—capable not just of retrieving knowledge, but of **generating it**.
+> Other tools may be simple deterministic functions. But **agent-tools** are LLMs themselves, capable not just of retrieving knowledge, but of **generating it**.
 
 
 <div style="display: flex; flex-direction: column; align-items: center; margin: 0.5em; margin-bottom:0.25em;">

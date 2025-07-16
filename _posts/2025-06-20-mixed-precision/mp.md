@@ -16,9 +16,9 @@ bibliography: llm.bib
 ---
 
 <div style="background-color: rgba(245, 245, 204, 0.5); padding: 10px; border-radius: 8px; border: 1px solid #e0e0b0;">
-Several clever innovations have made it feasible to train large language models (LLM) with hundreds of billions of parameters—some even reaching 600B. However, there’s also increasing pressure to make them efficient to train and use for inference.
+Several clever innovations have made it feasible to train large language models (LLM) with hundreds of billions of parameters, some even reaching 600B. However, there’s also increasing pressure to make them efficient to train and use for inference.
 
-One area that has proven especially impactful is **mixed-precision training**—a technique where certain model parameters are stored and computed in lower precision formats (like FP8), while others remain in higher precision formats (like FP16 or FP32). For example, the FP8 format is used in certain modules of [DeepSeek models](https://arxiv.org/abs/2412.19437)<d-cite key="liu2024deepseek"></d-cite><d-cite key="liu2024deepseek"></d-cite>. Notably, FP8 has a much coarser precision (with a smallest step size of 0.125) compared to FP16 (0.000976562) or BF16 (0.0078125). 
+One area that has proven especially impactful is **mixed-precision training**, a technique where certain model parameters are stored and computed in lower precision formats (like FP8), while others remain in higher precision formats (like FP16 or FP32). For example, the FP8 format is used in certain modules of [DeepSeek models](https://arxiv.org/abs/2412.19437)<d-cite key="liu2024deepseek"></d-cite><d-cite key="liu2024deepseek"></d-cite>. Notably, FP8 has a much coarser precision (with a smallest step size of 0.125) compared to FP16 (0.000976562) or BF16 (0.0078125). 
 
 This led me to wonder: *How is it even possible to train something as intelligent as a large language model using such low-precision numbers?* What does it mean to “compress” intelligence into fewer bits?
 
@@ -62,7 +62,7 @@ For instance, Deepseek-V3 recently trained their LLMs using FP8 format for certa
 ## What to Store in Lower Precision Format?
 
 Choosing which components of a model to store in lower versus higher precision depends on several practical considerations:
- - **Memory Usage:** Parameters or intermediate tensors that consume a large amount of memory—such as activations—are often good candidates for lower precision storage.
+ - **Memory Usage:** Parameters or intermediate tensors that consume a large amount of memory, such as activations, are often good candidates for lower precision storage.
  - **Byte Transfer:** When data transfer becomes a bottleneck, using lower precision formats helps by reducing the volume of bytes transmitted.
  - **Compute Density:** For operations dominated by matrix multiplications (e.g., attention or MLPs), using lower precision inputs with higher precision accumulation can strike a balance between efficiency and accuracy.
 
@@ -94,7 +94,7 @@ Master weights are high-precision copies of model parameters (typically stored i
 
 This matters during training. Consider a case when a particular weight parameter \\( W_i \\) is large, e.g., around 5. If we represent this in lower formats like FP8, the representable numbers in FP8 around 5 have a coarser step size. This means that any update \\( \Delta W_i \\) that is less than the step size is as good as no update because it leaves the weight unchanged. 
 
-> In a low-precision format, the magnitude of \\( W_i \\) might cause the fine-grained update \\( \Delta W_i \\) to be completely lost—i.e., the value doesn't change at all. The lower precision simply lacks the granularity to represent such a small update at that scale.
+> In a low-precision format, the magnitude of \\( W_i \\) might cause the fine-grained update \\( \Delta W_i \\) to be completely lost, i.e., the value doesn't change at all. The lower precision simply lacks the granularity to represent such a small update at that scale.
 
 **Under the hood:** Learning rate multiplication further reduces the magnitude of the weight update, increasing the risk of underflow in low-precision formats. To avoid this, the update is not written to a low-precision buffer. Instead, it is applied directly to the high-precision master weights, ensuring that small updates are not lost due to limited numerical resolution.
 
@@ -227,8 +227,8 @@ This can be done in three ways:
 
 **Naive or elementwise:** Simply downcast by rounding the input to the nearest representatable value in the target format. For example, converting input from FP16 (which can represent large numbers) to FP8 E4M3 (which has a smaller range). 
 This has serious limitations:
-  - **Underflow**: Very small values become zero
-  - **Overflow**: Values outside the representable range becomes `NaN` or `inf`.
+  - **Underflow:** Very small values become zero
+  - **Overflow:** Values outside the representable range becomes `NaN` or `inf`.
   - **Precision loss:** Fine-grained differences are lost. 
 
 Here is a simple code to illustrate such loss in precision:
