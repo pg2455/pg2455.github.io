@@ -1,7 +1,7 @@
 ---
 layout: distillPost
 title:  "Understanding Mixed-Precision Training"
-date: 2025-07-16 00:00:01
+date: 2025-07-24 00:00:01
 description: 
 
 

@@ -1,7 +1,7 @@
 ---
 layout: distillPost
 title:  "Understanding How Floating Point Representations Work"
-date: 2025-07-16 00:00:00
+date: 2025-07-24 00:00:00
 description: 
 
 
