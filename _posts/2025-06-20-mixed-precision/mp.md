@@ -18,7 +18,7 @@ bibliography: llm.bib
 <div style="background-color: rgba(245, 245, 204, 0.5); padding: 10px; border-radius: 8px; border: 1px solid #e0e0b0;">
 Several clever innovations have made it feasible to train large language models (LLM) with hundreds of billions of parameters, some even reaching 600B. However, there’s also increasing pressure to make them efficient to train and use for inference.
 
-One area that has proven especially impactful is **mixed-precision training**, a technique where certain model parameters are stored and computed in lower precision formats (like FP8), while others remain in higher precision formats (like FP16 or FP32). For example, the FP8 format is used in certain modules of [DeepSeek models](https://arxiv.org/abs/2412.19437)<d-cite key="liu2024deepseek"></d-cite><d-cite key="liu2024deepseek"></d-cite>. Notably, FP8 has a much coarser precision (with a smallest step size of 0.125) compared to FP16 (0.000976562) or BF16 (0.0078125). 
+One area that has proven especially impactful is **mixed-precision training**, a technique where certain model parameters are stored and computed in lower precision formats (like FP8), while others remain in higher precision formats (like FP16 or FP32). For example, the FP8 format is used in certain modules of [DeepSeek models](https://arxiv.org/abs/2412.19437)<d-cite key="liu2024deepseek"></d-cite><d-cite key="liu2024deepseek"></d-cite>. Notably, FP8 has a much coarser precision (with the multiplicative step size of 0.125) compared to FP16 (0.000976562) or BF16 (0.0078125). 
 
 This led me to wonder: *How is it even possible to train something as intelligent as a large language model using such low-precision numbers?* What does it mean to “compress” intelligence into fewer bits?
 

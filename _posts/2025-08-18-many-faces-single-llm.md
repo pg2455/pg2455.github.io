@@ -1,7 +1,7 @@
 ---
 layout: distillPost
 title: LLM with a Thousand Faces
-date: 2025-07-15
+date: 2025-08-18
 description: A reflection on the structure and behavior of LLM-based agents, and what lies beneath the surface.
 _styles: >
   h3, h2, h1 {

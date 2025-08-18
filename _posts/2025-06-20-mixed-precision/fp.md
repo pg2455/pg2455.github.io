@@ -399,6 +399,75 @@ The IEEE 754 standard reserves certain bit patterns for special values. The valu
 | All 1s            | Non-zero    | NaN (Not a Number) |
 
 
+### Unequal Spacing: A Concrete Example with FP8 E4M3
+
+*Thanks to [Puneet Dokania](https://puneetkdokania.github.io/) for providing feedback. This detailed walkthrough should help anyone trying to grasp FP representation.*
+
+Let's work through a concrete example to understand how step sizes vary across different scales in floating-point representation. We'll use the FP8 E4M3 format, which has 1 sign bit, 4 exponent bits, and 3 mantissa bits.
+
+**Understanding the format:**
+- **Exponent bits (EEEE)**: 4 bits with bias = 2³ - 1 = 7
+- **Mantissa bits (MMM)**: 3 bits, giving us 8 possible values (0 through 7)
+- **Largest exponent**: EEEE = 1110₂ = 14 (1111₂ is reserved for NaN/infinity)
+
+**Step size calculation:**
+The step size at any given exponent is determined by the contribution of the least significant mantissa bit:
+\\[
+\text{Step size} = 2^{(\text{exponent} - \text{bias})} \times 2^{-\text{num\_mantissa\_bits}}
+\\]
+
+For FP8 E4M3, this becomes:
+\\[
+\text{Step size} = 2^{(\text{exponent} - 7)} \times 2^{-3} = 2^{(\text{exponent} - 10)}
+\\]
+
+**Let's trace through the mantissa arrangements:**
+With 3 mantissa bits, we have 8 possible combinations (000₂ through 111₂):
+
+| Binary | Fraction | Value |
+|--------|----------|-------|
+| 000₂   | 0/8      | 0.000 |
+| 001₂   | 1/8      | 0.125 |
+| 010₂   | 2/8      | 0.250 |
+| 011₂   | 3/8      | 0.375 |
+| 100₂   | 4/8      | 0.500 |
+| 101₂   | 5/8      | 0.625 |
+| 110₂   | 6/8      | 0.750 |
+| 111₂   | 7/8      | 0.875 |
+
+> Thus, in FP8 E4M3, at any given exponent, there are exactly 8 representable numbers, each separated by a step size of 2⁻³ = 0.125 times the scale factor.
+
+**Step sizes across the range:**
+- **Largest exponent (14)**: Step size = 2^(14-10) = 2⁴ = 16
+  The representable numbers at this scale are:
+  \\[
+  2^{14} \times (1.000, 1.125, 1.250, 1.375, 1.500, 1.625, 1.750, 1.875)
+  \\]
+  Which gives us: 16384, 18432, 20480, 22528, 24576, 26624, 28672, 30720
+  
+  Notice that each number is **16,384 units apart** - a massive step size!
+
+- **Smallest exponent (1)**: Step size = 2^(1-10) = 2⁻⁹ ≈ 0.00195
+  The representable numbers at this scale are:
+  \\[
+  2^{-6} \times (1.000, 1.125, 1.250, 1.375, 1.500, 1.625, 1.750, 1.875)
+  \\]
+  Which gives us: 0.015625, 0.017578, 0.019531, 0.021484, 0.023438, 0.025391, 0.027344, 0.029297
+  
+  Here each number is only **0.001953 units apart** - much finer precision!
+
+- **Subnormal numbers (exponent 0)**: Step size = 2^(1-7-3) = 2⁻⁹ ≈ 0.00195
+  The representable numbers are:
+  \\[
+  2^{-6} \times (0.125, 0.250, 0.375, 0.500, 0.625, 0.750, 0.875)
+  \\]
+  Which gives us: 0.001953, 0.003906, 0.005859, 0.007813, 0.009766, 0.011719, 0.013672
+  
+  Even finer spacing near zero!
+
+This demonstrates the **unequal spacing** characteristic of floating-point: numbers near zero are much more densely packed than large numbers. The step size grows exponentially with the magnitude, which is why we can represent both very small and very large numbers with the same number of bits.
+
+
 ### Arithmetic with Subnormals
 
 Operations involving subnormals often require special handling in hardware:
