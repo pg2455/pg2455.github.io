@@ -6,8 +6,6 @@
 
   <meta name="author" content="{{ site.name }}" />
   <meta name="description" content="{{ site.description }}" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
   <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
 
   <link href="/vendor/css/bootstrap.min.css" rel="stylesheet">
@@ -34,7 +32,10 @@
     window.MathJax = {
       tex: {
         tags: 'ams',
-        inlineMath: [['\\(', '\\)']]
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[','\\]']],
+        packages: {'[+]': ['ams']},
+        processEscapes: true
       },
       svg: {
           fontCache: 'global'
@@ -44,9 +45,7 @@
 
   <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@{{ site.mathjax.version }}/es5/tex-mml-chtml.js"></script>
   <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script type="text/javascript" id="MathJax-script" defer
-    src="https://cdn.jsdelivr.net/npm/mathjax@{{ site.mathjax.version }}/es5/tex-svg.js">
-  </script>
+
 
   <script src="{{ '/vendor/js/distillpub/template.v2.js' | relative_url }}"></script>
   <script src="{{ '/vendor/js/distillpub/transforms.v2.js' | relative_url }}"></script>
