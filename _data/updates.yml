@@ -5,6 +5,11 @@
 #   content: Your update text here
 #   url: (optional) Link to more information
 
+- date: 2025-08-16
+  category: "publication"
+  content: "<strong>New paper on arXiv:</strong><br>'<em>Large Language Models Enable Personalized Nudges to Promote Carbon Offsetting Among Air Travellers</em>'<br><small>Results show LLM-informed personalized nudges increase offsetting rates by 3-7% and yield an additional 2.3 million tonnes of CO₂ mitigated annually in aviation.<br>Arxiv: <a href='https://arxiv.org/abs/2508.12045' target='_blank' class='update-arxiv-link'>2508.12045</a></small>"
+  url: https://arxiv.org/abs/2508.12045
+
 - date: 2025-04-07
   category: "school"
   content: "<strong>Accepted at the Cooperative AI Summer School!</strong> I will be visiting London from July 9th to July 13th."
