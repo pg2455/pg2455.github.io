@@ -14,6 +14,12 @@ mathjax: true
 bibliography: llm.bib
 ---
 
+
+<div style="background-color: #f0f8ff; padding: 10px; border-radius: 8px; border: 1px solid #b0c4de;">
+This tutorial is also accessible as a notebook here: <a href="https://github.com/pg2455/toy_flashattention/tree/main">Toy FlashAttention Notebook</a>
+</div>
+<br>
+
 **What is Attention?**
 At a high level, attention ([Vaswani et al.](https://arxiv.org/abs/1706.03762)<d-cite key="vaswani2017attention"></d-cite>) is a mechanism that allows a neural network to focus on the most relevant pieces of information when making a decision. Instead of treating all input tokens (words, pixels, etc.) equally, it learns to weigh them differently depending on the current context.
 
