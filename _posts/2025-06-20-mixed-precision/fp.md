@@ -249,6 +249,8 @@ A binary number like \\( (1.m_1m_2m_3m_4)_2 \\) is converted to a decimal fracti
 \text{Value} = (-1)^S \times \left(1 + \sum_{i=1}^{\text{num\_mantissa\_bits}} m_i \cdot 2^{-i}\right) \times 2^{(E - \text{bias})}
 \\]
 
+To find out how to view the binary representation behind floating point numbers, please see the Appendix. 
+
 ## Normal vs Subnormal Numbers
 
 IEEE 754 standard distinguishes between two types of floating-point numbers:
@@ -586,3 +588,51 @@ We’ve already seen that more mantissa bits lead to finer granularity, i.e., a 
 Naturally, **low-precision formats** like FP8, which have fewer mantissa bits, **suffer from coarse granularity**. This can lead to numerical instability, especially when representing small gradients or performing subtle updates during training.
 
 To mitigate these issues, special training frameworks are required that can compensate for the reduced precision. This is what we will explore in the next post: [Understanding Mixed-Precision Training Techniques]((/blog/2025/06/mixed-precision-mp)).
+
+
+
+## Appendix
+
+### How to check binary representation behind the floating point numbers?
+
+This is a neat trick that I recently learned while debugging mixed-precision arithmetic. We can use PyTorch's `.view()` method to perform a **"reinterpret cast"**, a technique systems programmers often use in C++.
+
+Most PyTorch users only use `view()` to change the *shape* of a tensor (similar to `reshape`). However, it has a secondary "superpower": it can reinterpret the **datatype** of the data in memory without changing the actual bits.
+
+This allows us to peek under the hood and see exactly how a floating-point number is stored in IEEE 754 format.
+
+#### 1\. The PyTorch Way: Using `.view()`
+
+To see the bits of a `float32`, we view it as an `int32`. The memory stays the same, but PyTorch now treats those 32 bits as an integer, which we can easily print in binary. It stops caring about what the bits "mean" mathematically (exponent, mantissa, sign). In contrast, if you tried to use `.to(torch.int32)`, PyTorch would perform a *mathematical* conversion, rounding `0.01` down to `0`.
+
+```python
+import torch
+
+# Create a float32 tensor
+val = 0.01
+s = torch.tensor(val, dtype=torch.float32)
+
+# "Reinterpret" the bits as a 32-bit integer
+# We use .item() to get the Python integer out, then format it.
+# :032b means "32 bits wide, padded with zeros"
+binary_str = f"{s.view(torch.int32).item():032b}"
+
+print(f"Decimal: {val}")
+print(f"Binary:  {binary_str}")
+
+# Output:
+# Decimal: 0.01
+# Binary:  00111100001000111101011100001010
+```
+
+This trick works for other precisions too, which is essential for comparing `float16` vs `bfloat16`. Just remember to mask the output for 16-bit types so Python doesn't print extra sign bits:
+
+```python
+# For float16 (Half Precision), view as int16
+s_fp16 = torch.tensor(0.01, dtype=torch.float16)
+print(f"FP16: {s_fp16.view(torch.int16).item() & 0xffff:016b}")
+```
+
+#### 2\. The Python Way: Using `struct`
+
+What if you aren't using PyTorch? Standard Python `float` objects are actually 64-bit doubles (similar to C's `double`). Python doesn't have a built-in `view` method or `bin()` for floats, so we have to use the `struct` module to manipulate the bytes directly.
