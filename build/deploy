@@ -12,12 +12,32 @@ echo "Deploying..."
 echo "Source branch: $SRC_BRANCH"
 echo "Deploy branch: $DEPLOY_BRANCH"
 
-# Check if there are any uncommitted changes
+# Safety check: Warn about uncommitted changes
 if ! git diff-index --quiet HEAD --; then
-    echo "Changes to the following files are uncommitted:"
+    echo "⚠️  WARNING: You have uncommitted changes!"
+    echo "The following files have uncommitted changes:"
     git diff-index --name-only HEAD --
-    echo "Please commit the changes before proceeding."
-    echo "Aborting."
+    echo ""
+    echo "🚨 DANGER: The deploy script will DELETE all untracked files and directories!"
+    echo "This includes any work-in-progress folders like '_new', '_drafts', etc."
+    echo ""
+    echo "To proceed safely:"
+    echo "1. Commit your changes: git add . && git commit -m 'your message'"
+    echo "2. Or stash them: git stash"
+    echo ""
+    echo "Aborting deployment to prevent data loss."
+    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
+fi
+
+# Additional safety check: Warn about untracked files/directories
+if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+    echo "⚠️  WARNING: You have untracked files that will be DELETED by deployment!"
+    echo "The following untracked files/directories will be permanently deleted:"
+    git ls-files --others --exclude-standard
+    echo ""
+    echo "This includes folders like '_new', '_drafts', or any other untracked directories."
+    echo "For safety, deployment is aborted. Please commit or remove these files first."
+    echo "Aborting deployment to prevent data loss."
     [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
 fi
 
