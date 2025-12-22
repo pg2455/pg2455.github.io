@@ -26,6 +26,10 @@ def bib_entry_to_string(entry):
 
 # --- Math Notation Fixing ---
 def fix_math_notation(md):
+    # Already escaped block math: \[ ... \] => \\[ ... \\]
+    md = re.sub(r'\\\[(.+?)\\\]', r'\\\\[\1\\\\]', md, flags=re.DOTALL)
+    # Already escaped inline math: \( ... \) => \\( ... \\)
+    md = re.sub(r'\\\((.+?)\\\)', r'\\\\(\1\\\\)', md)
     # Block math: $$...$$ => \[ ... \]
     md = re.sub(r'\$\$(.+?)\$\$', r'\\[\1\\]', md, flags=re.DOTALL)
     # Inline math: $...$ => \( ... \)
