@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Why do we need contact tracing?</title>
+
+  <meta name="author" content="Prateek Gupta" />
+  <meta name="description" content="Prateek Gupta | Personal Website" />
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="/vendor/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d7c6b63fdf.js" crossorigin="anonymous"></script>
+  <link href="/vendor/css/academicons.min.css" rel="stylesheet">
+  <link href="/vendor/pygments/monokai.css" rel="stylesheet">
+  <link href="/css/bamos.css" rel="stylesheet">
+  <link href="/css/updates.css" rel="stylesheet">
+  <link href="/css/sharingbuttons.css" rel="stylesheet">
+  <link href="/css/pgupta.css" rel="stylesheet">
+
+  <!-- Prism.js CSS (default theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+
+  <!-- MathJax -->
+  
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams',
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[','\\]']],
+        packages: {'[+]': ['ams']},
+        processEscapes: true
+      },
+      svg: {
+          fontCache: 'global'
+      }
+    };
+  </script>
+
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+
+  <script src="/vendor/js/distillpub/template.v2.js"></script>
+  <script src="/vendor/js/distillpub/transforms.v2.js"></script>
+  
+
+  
+  <style type="text/css">
+    h3, h2, h1 {
+  padding-top: 0!important;
+}
+
+  </style>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div class="navbar navbar-default">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="navbar-header">
+						  <a href="/" class="navbar-brand">
+                  <div>
+                      <img src="/images/me-face.png" class="img-circle"></img>
+                      Prateek Gupta
+                  </div>
+              </a>
+						<button class="navbar-toggle" type="button" data-toggle="collapse"
+                    data-target="#navbar-main">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="navbar-collapse collapse" id="navbar-main">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="/">About</a>
+							</li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      Teaching <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/teaching/tutorials">Tutorials</a></li>
+                      <li><a href="/teaching/courses">Courses</a></li>
+                      <li><a href="/teaching/hackathons">Hackathons</a></li>
+                  </ul>
+              </li>
+              
+  							<li>
+  								<a href="/blog/">Blog</a>
+  							</li>
+              
+						</ul>
+						<ul class="nav navbar-nav navbar-right" style="font-size: 1.5em">
+							<li>
+								<a href="http://github.com/pg2455" target="_blank" class="social-icon">
+									<i class="fab fa-github"></i></a>
+							</li>
+              <li>
+                <a href="https://scholar.google.com/citations?user=fvn0COgAAAAJ" target="_blank" class="social-icon">
+                  <i class="ai ai-google-scholar"></i></a>
+              </li>
+							<li>
+								<a href="http://twitter.com/pguptacs" target="_blank" class="social-icon">
+									<i class="fab fa-x-twitter"></i></a>
+							</li>
+              <li>
+                <a href="http://www.linkedin.com/in/link2prateek" target="_blank" class="social-icon">
+                  <i class="fab fa-linkedin"></i></a>
+              </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  <head>
+  <link rel="stylesheet" href="/css/distill.css">
+</head>
+
+<body>
+  <div class="distill-flex-container">
+    <aside class="distill-toc-sidebar">
+      <my-toc></my-toc>
+    </aside>
+    <main class="distill-main-content">
+      <div class="row">
+        <div class="col-md">
+          <d-title>
+            <h1>Why do we need contact tracing?</h1>
+            <p>Contact tracing as a personalization framework</p>
+            <p>
+              <span class="meta-date" style="color: #888; font-size: 0.9em;">
+                <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 0.3em;"></i>April  8, 2021
+              </span>
+              
+            </p>
+          </d-title>
+          <!-- Mobile TOC Accordion (no duplicate heading) -->
+          <div class="mobile-toc-container" id="mobile-toc-container" style="margin-bottom: 18px; margin-top: 18px;">
+            <button class="mobile-toc-toggle-btn" id="mobile-toc-toggle-btn" aria-controls="mobile-toc-content" aria-expanded="false" style="margin-bottom: 0;">
+              Table of Contents <span style="float:right;">&#x25BC;</span>
+            </button>
+            <div class="mobile-toc-content" id="mobile-toc-content" style="background: #f8f9fb; border-top: 1px solid #eee; border-radius: 0 0 6px 6px; margin-top: 0;">
+              <my-toc></my-toc>
+            </div>
+          </div>
+          <d-article>
+            <!-- Summary Block -->
+          
+              <div>
+                <h3>Summary</h3>
+                <ul>
+  <li><em>A Test-and-Trace system is a band-aid solution to open up the economy while controlling the outbreak</em></li>
+  <li><em>A framework that combines the strengths of the manual and digital systems will help devise better solutions</em></li>
+</ul>
+
+              </div>
+          
+          <!-- Series Navigation -->
+          <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+              <span style="float:left"><i class="fas fa-2x fa-arrow-left"></i> &thinsp; <a style="text-decoration: none" href="/blog/2021/04/ct-0"><em>Contact tracing as a personalization framework</a></em></span>
+            
+
+            
+              <span style="float:right"><a style="text-decoration: none" href="/blog/2021/04/ct-2"><em>Search for a unified framework</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            
+          </div>
+          
+          <hr style="margin: 0 0 0 0; padding-top: 0; padding-bottom: 2px; border-top: 2px solid #e0e0e0;">
+          
+            <h3 id="trade-off">Trade-off</h3>
+
+<p>Since March 2020, countries worldwide have taken unprecedented measures such as regional lockdowns, strict social distancing measures, or curfews to curb the transmission of SARS-CoV-2.
+Among many other societal issues, the Covid-19 pandemic has also brought to surface a widely ignored trade-off between economy and public health.
+While the economists face the problem of minimizing economic disruption, which comes at the cost of public health, the health officials face the opposite problem of minimizing the transmission of the virus, which comes at the cost of economic disruption.</p>
+
+<p>The above trade-off is well explained by Production Possibilities Frontiers (PPF) in the <a href="https://blog.usejournal.com/health-before-wealth-the-economic-logic-9c5414ae259c" target="_blank"> blogpost by Prof. Joshua Gans</a>.
+PPF is an abstract notion defining a trade-off between two quantities (in our context, economy, and health).
+Specifically, it says that one cannot expect to gain more of one quantity without losing the other, thereby exhibiting an optimal point for maximizing simultaneous gains.
+Further, external factors influence PPFs to move outwards (e.g., via technological innovation) or inwards (e.g., war, pandemic).</p>
+
+<p>In Figure 1, PPF during the pandemic (brown) is different from the PPF for the normal times (black) in two ways</p>
+<ul>
+  <li> <strong>Shrinkage</strong>: We are unable to produce as many units of economy or health compared to the normal times, and </li>
+  <li> <strong>Bite</strong>: A concave dent in the PPF during the pandemic, representing a poor way to negotiate the trade-off, i.e., to improve health, we need to give up a lot of units of economy.
+  Compare this to the trade-off during normal times (black line), where a small health improvement comes at the cost of a proportionate amount in economy.
+  Note that this bite's depth is a function of how dangerous the virus is, i.e., the rate of transmission and severity of the disease.
+  </li>
+</ul>
+
+<p><br /></p>
+<div class="row mt-3">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    <img class="img-fluid rounded z-depth-1" src="/images/blog/ct/ppf.png" />
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    <img class="img-fluid rounded z-depth-1" src="/images/blog/ct/ppf_recovery.png" />
+  </div>
+</div>
+<div class="caption">
+  Figure 1: <strong>(left)</strong> Shrinkage of PPF from its pre-pandemic levels (black) to pandemic levels (brown). <strong>(right)</strong> All interventions are aimed at regaining (green) the pre-pandemic PPF via causing expansion in either of the health or economic dimensions.
+</div>
+<p><br /></p>
+
+<p>Thus, various policies have a meta objective of restoring the PPF to the levels before the pandemic.
+The examples include non-technical policies like injecting money into the economy or increasing hospital capacity and technological developments like vaccines or test-and-trace.
+While the vaccine development is underway, the test-and-trace system serves as a band-aid solution to open up the economy while controlling the outbreak.</p>
+
+<h3 id="test-and-trace">Test and Trace</h3>
+
+<p>Broadly, Test-and-trace involves notifying the past encounters of an index case (defined as an individual detected positive for the contagious disease) to recommend self-isolation.
+Thus, instead of treating the entire population as risky (e.g., in lockdown), test-and-trace cherry-picks highly risky individuals in the hope of controlling the transmission without closing down the economy.</p>
+
+<p>Manual test-and-trace (MTT) involves public health employees (PHE) contacting the secondary cases (past encounters of an index case) via a direct call or an in-person search.
+PHEs can use their practiced judgment to diagnose a secondary case (e.g., based on their age, sex, or pre-existing conditions).
+However, the following factors add to its disadvantages, especially with regards to the Covid-19 pandemic</p>
+<ul>
+  <li>(A) <strong>Poor recollection by an index case</strong> - In a disease like Covid-19, symptoms typically appear after 5 days and recovery takes 21 days<d-cite key="lauer2020incubation"></d-cite>.
+  Thus, it is often challenging for the index cases to remember all of their past encounters. </li>
+  <li>(B) <strong>A large number of secondary cases and delayed communication</strong>-
+ The growth rate of Covid-19 infections is much larger than the available force of PHEs can handle with their labor intensive process of tracing secondary cases.
+ Asymptomatic (infected people who do not show any symptoms) cases demand a recursive tracing of these secondary cases.
+ Currently, studies estimate 20-40% of the population are asymptomatic for Covid-19 infection<d-cite key="he2020temporal"></d-cite><d-cite key="luo"></d-cite>. </li>
+  <li>(C) <strong>Personalization</strong>- Symptoms experienced by a Covid-19 case vary according to attributes like age or pre-existing conditions.
+  Moreover, these symptoms are similar to those that appear in seasonal diseases like cold and flu<d-cite key="gaythorpe2020report"></d-cite>.
+  Given the burden on PHEs, a trigger for tracing, i.e., identifying an infected individual, needs to be accurate, which requires a lot of domain expertise in considering several factors (e.g., the prevalence of cold in a region, age).</li>
+</ul>
+
+<p>Technology has potentially addressed some of the above shortcomings.
+As a result, <a href="https://en.wikipedia.org/wiki/Bluetooth_Low_Energy">Bluetooth Low Energy</a> devices like smartphones can be configured to record encounters with other smartphones in the vicinity.
+For example, if two smartphones share the same space for a particular duration, a hash key (e.g., 01ad93gd4er123) is generated in each device that serves as a future communication channel between them.
+The criterion to record an encounter for Covid-19 identifies the devices to be present within 2 meters of another for a minimum of 15 minutes<d-cite key="ferretti2020quantifying"></d-cite>.
+Due to privacy concerns, the channel can transmit only N-bits of information(e.g., N can be 1, 2, 3, or 4).
+The extent of these devices’ adoption determines how effective this technology will be to address the problems (A) and (B) above.</p>
+
+<p>However, given a fixed adoption rate,  we ask how to address the problem (C) of <strong>personalization</strong>.
+Such personalization at scale will require more attention because these devices may record more contacts than accessible via memory recall (e.g., two strangers sitting at adjacent tables in a cafe).</p>
+
+<p>In its most basic form (widely practiced), all traced devices are notified to recommend self-isolation.
+This system depends on the positive-or-negative test result and outputs quarantine-or-no-quarantine recommendations.
+It is, therefore,  referred to as binary test-and-trace (BTT) in this series of articles.</p>
+
+<p>Thus, at our disposal, we have two types of test-and-trace systems, each with its advantages and disadvantages.
+MTT uses expert judgment, which is not available to BTT, while it is slow and labor intensive, which is addressed by BTT.
+This necessitates a test-and-trace system that combines the expert judgment of MTT with scalable and instant communication channels of BTT.
+Doing this will require creating prediction models that cannot be relied upon for accurate results all the time.
+It is an indication to incorporate increasingly cautionary measures such as avoiding public transport or work-from-home depending on the uncertainty in predictions.</p>
+
+<div class="row mt-3">
+  <div class="col-sm mt-3 mt-md-0">
+    <img class="img-fluid rounded z-depth-1" src="/images/blog/ct/tt-compare.png" />
+  </div>
+</div>
+<div class="caption">
+  Figure 2: The third column combines MTT and BTT's strengths by using the (some) clues available to PHEs and the instant communication channel of BTT<d-footnote>Icons made by Freepik, fjstudio, Pixel Perfect , photo3idea_studio, Gregor Cresnar, Vitaly Gorbachev from <a href="www.flaticon.com">www.flaticon.com</a></d-footnote>.
+</div>
+
+<p>The problem of personalization from a limited amount of data available through user device has been attempted by various groups like NHSx<d-cite key="briers2020risk"></d-cite> or CovidWatch App<d-cite key="wilson2020quantifying"></d-cite>.
+However, a unified approach to this problem may help us devise better solutions.
+Therefore, we think of digital test-and-trace systems as a personalization framework.</p>
+
+          
+          <!-- Series Navigation -->
+            <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+              <span style="float:left"><i class="fas fa-2x fa-arrow-left"></i> &thinsp; <a style="text-decoration: none" href="/blog/2021/04/ct-0"><em>Contact tracing as a personalization framework</a></em></span>
+            
+
+            
+              <span style="float:right"><a style="text-decoration: none" href="/blog/2021/04/ct-2"><em>Search for a unified framework</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            
+          </div>
+          </d-article>
+          <d-appendix>
+            <d-footnote-list></d-footnote-list>
+            <d-citation-list></d-citation-list>
+          </d-appendix>
+          <d-bibliography src="/vendor/bibliography/ct.bib"></d-bibliography>
+          <script src="https://giscus.app/client.js"
+              data-repo="pg2455/pg2455.github.io"
+              data-repo-id="MDEwOlJlcG9zaXRvcnk3MTMxMzI3MQ=="
+              data-category="General"
+              data-category-id="DIC_kwDOBEAnd84CqnG0"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="light_high_contrast"
+              data-lang="en"
+              data-loading="lazy"
+              crossorigin="anonymous"
+              async>
+          </script>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/share-popover.js"></script>
+
+  <footer class="fixed-bottom-footer">
+    <div class="jumbotron mt-0" id="footer-container">
+      Powered by <a href="http://jekyllrb.com">Jekyll</a>, blog template adapted from <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+    </div>
+  </footer>
+
+  <script src="/js/distill.js"></script>
+</body>
+
+
+  <script src="/js/sp.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/vendor/js/jquery.min.js"></script>
+  <script src="/vendor/js/bootstrap.min.js"></script>
+  <script src="/vendor/js/anchor.min.js"></script>
+  <script src="/vendor/js/jquery.toc.js"></script>
+
+  <!-- Prism.js core and Python language support -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+
+  <script type="text/javascript">
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-187458159-1', 'auto');
+   ga('send', 'pageview');
+
+   $("#toc").toc({
+       'headings': 'h2,h3'
+   });
+   anchors.add('h2,h3');
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if there is a hash in the URL
+        const hash = window.location.hash;
+        if (hash) {
+            // Find the element that matches the hash
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                // Add the section-highlight class to the element
+                targetElement.classList.add('section-highlight');
+                
+                // If there are collapsible sections related to this hash, open them
+                const relatedSections = ['lessons', 'practical', 'objective'];
+                relatedSections.forEach(section => {
+                    const elem = document.getElementById(section + '_' + hash.slice(1));
+                    if (elem) {
+                        elem.style.display = 'block'; // Change display style to 'block' to show the section
+                    }
+                });
+
+                // Set a timeout to remove the highlight after 5 seconds
+                setTimeout(() => {
+                    targetElement.classList.remove('section-highlight');
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        }
+    });
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+    // Only add button if code block has a class starting with 'language-'
+    var hasLanguageClass = Array.from(codeBlock.classList).some(function(cls) {
+      return cls.startsWith('language-');
+    });
+    if (!hasLanguageClass) {
+      return;
+    }
+    // Create the button
+    var button = document.createElement('button');
+    button.className = 'copy-code-btn';
+    button.type = 'button';
+    button.title = 'Copy to clipboard';
+    // Clipboard SVG icon
+    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+    // Create a wrapper for positioning
+    var pre = codeBlock.parentNode;
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    button.addEventListener('click', function() {
+      var text = codeBlock.innerText;
+      navigator.clipboard.writeText(text).then(function() {
+        button.innerHTML = '✓';
+        setTimeout(function() {
+          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        }, 1200);
+      });
+    });
+  });
+});
+</script>
+
+</body>
+
+</html>

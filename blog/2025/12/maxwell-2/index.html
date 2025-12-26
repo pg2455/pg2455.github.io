@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Guessing Game</title>
+
+  <meta name="author" content="Prateek Gupta" />
+  <meta name="description" content="Prateek Gupta | Personal Website" />
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="/vendor/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d7c6b63fdf.js" crossorigin="anonymous"></script>
+  <link href="/vendor/css/academicons.min.css" rel="stylesheet">
+  <link href="/vendor/pygments/monokai.css" rel="stylesheet">
+  <link href="/css/bamos.css" rel="stylesheet">
+  <link href="/css/updates.css" rel="stylesheet">
+  <link href="/css/sharingbuttons.css" rel="stylesheet">
+  <link href="/css/pgupta.css" rel="stylesheet">
+
+  <!-- Prism.js CSS (default theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+
+  <!-- MathJax -->
+  
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams',
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[','\\]']],
+        packages: {'[+]': ['ams']},
+        processEscapes: true
+      },
+      svg: {
+          fontCache: 'global'
+      }
+    };
+  </script>
+
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+
+  <script src="/vendor/js/distillpub/template.v2.js"></script>
+  <script src="/vendor/js/distillpub/transforms.v2.js"></script>
+  
+
+  
+  <style type="text/css">
+    h3, h2, h1 {
+  padding-top: 0!important;
+}
+
+  </style>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div class="navbar navbar-default">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="navbar-header">
+						  <a href="/" class="navbar-brand">
+                  <div>
+                      <img src="/images/me-face.png" class="img-circle"></img>
+                      Prateek Gupta
+                  </div>
+              </a>
+						<button class="navbar-toggle" type="button" data-toggle="collapse"
+                    data-target="#navbar-main">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="navbar-collapse collapse" id="navbar-main">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="/">About</a>
+							</li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      Teaching <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/teaching/tutorials">Tutorials</a></li>
+                      <li><a href="/teaching/courses">Courses</a></li>
+                      <li><a href="/teaching/hackathons">Hackathons</a></li>
+                  </ul>
+              </li>
+              
+  							<li>
+  								<a href="/blog/">Blog</a>
+  							</li>
+              
+						</ul>
+						<ul class="nav navbar-nav navbar-right" style="font-size: 1.5em">
+							<li>
+								<a href="http://github.com/pg2455" target="_blank" class="social-icon">
+									<i class="fab fa-github"></i></a>
+							</li>
+              <li>
+                <a href="https://scholar.google.com/citations?user=fvn0COgAAAAJ" target="_blank" class="social-icon">
+                  <i class="ai ai-google-scholar"></i></a>
+              </li>
+							<li>
+								<a href="http://twitter.com/pguptacs" target="_blank" class="social-icon">
+									<i class="fab fa-x-twitter"></i></a>
+							</li>
+              <li>
+                <a href="http://www.linkedin.com/in/link2prateek" target="_blank" class="social-icon">
+                  <i class="fab fa-linkedin"></i></a>
+              </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  <head>
+  <link rel="stylesheet" href="/css/distill.css">
+</head>
+
+<body>
+  <div class="distill-flex-container">
+    <aside class="distill-toc-sidebar">
+      <my-toc></my-toc>
+    </aside>
+    <main class="distill-main-content">
+      <div class="row">
+        <div class="col-md">
+          <d-title>
+            <h1>The Guessing Game</h1>
+            <p></p>
+            <p>
+              <span class="meta-date" style="color: #888; font-size: 0.9em;">
+                <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 0.3em;"></i>December 10, 2025
+              </span>
+              
+            </p>
+          </d-title>
+          <!-- Mobile TOC Accordion (no duplicate heading) -->
+          <div class="mobile-toc-container" id="mobile-toc-container" style="margin-bottom: 18px; margin-top: 18px;">
+            <button class="mobile-toc-toggle-btn" id="mobile-toc-toggle-btn" aria-controls="mobile-toc-content" aria-expanded="false" style="margin-bottom: 0;">
+              Table of Contents <span style="float:right;">&#x25BC;</span>
+            </button>
+            <div class="mobile-toc-content" id="mobile-toc-content" style="background: #f8f9fb; border-top: 1px solid #eee; border-radius: 0 0 6px 6px; margin-top: 0;">
+              <my-toc></my-toc>
+            </div>
+          </div>
+          <d-article>
+            <!-- Summary Block -->
+          
+          <!-- Series Navigation -->
+          <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+              <span style="float:left"><i class="fas fa-2x fa-arrow-left"></i> &thinsp; <a style="text-decoration: none" href="/blog/2025/12/maxwell-1"><em>The Physics of Surprise</a></em></span>
+            
+
+            
+              <span style="float:right"><a style="text-decoration: none" href="/blog/2025/12/maxwell-3"><em>Different Games and Their Winners</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            
+          </div>
+          
+          <hr style="margin: 0 0 0 0; padding-top: 0; padding-bottom: 2px; border-top: 2px solid #e0e0e0;">
+          
+            <div style="background-color: rgba(245, 245, 204, 0.5); padding: 10px; border-radius: 8px; border: 1px solid #e0e0b0;">
+
+  <p>In the previous post, we explored the physical reality of information through Maxwell’s Demon. We established that information is not abstract; it is physical. Reducing uncertainty (sorting the gas) requires energy, and erasing information releases heat.</p>
+
+  <p>But how does the Demon, or any intelligent observer, decide how to sort the world? If we are observing a system with billions of microscopic configurations but can only measure a few macroscopic facts (like average energy or any other data), how do we construct an honest model of that system?</p>
+
+  <p>We need a strategy. We need to play a Guessing Game.</p>
+
+  <p>In this post, we move from the physics of the Demon to the mathematics of Maximum Entropy. We will define the rules of this game, exploring how we can build probability distributions that are “maximally honest” about what we don’t know, while strictly adhering to the constraints of what we do know.</p>
+
+</div>
+
+<p>Imagine a world that can be in many microscopic configurations, which we’ll call (x). You play a game: at each round, you must guess its configuration. Your score is your long-run accuracy.</p>
+
+<p>To do well, you need a probability distribution (p(x)): how likely each configuration is.</p>
+
+<p>Probabilities are meaningless in a vacuum. They only make sense <em>relative to</em> a set of possibilities: the space of configurations (x). Once we specify that space, a natural question is: <strong>if we watched this world forever, what fraction of time would it spend in each configuration?</strong> That long-run fraction is what we’d like (p(x)) to capture.</p>
+
+<p>If we knew absolutely nothing else, one honest option would be to treat every configuration as equally likely. This is the Principle of Indifference: If no configuration is privileged by your information, treat them equally. But in reality we almost always know <em>something</em>, e.g., some coarse summary of the world, like its average energy. These are a coarse fact about the world that doesn’t tell you exactly which (x) occurred, but does rule out many distributions. In other words, we know some <strong>macroscopic constraints</strong> on functions of (x), such as:
+\[\mathbb E_{x \sim p}[f_k(x)] = c_k.\]</p>
+
+<p>A common textbook approach is to impose an energy constraint on the distribution. For now, we’ll keep things simple and work with a single constraint (we’ll generalise this framework later):
+\[\mathbb E_{x \sim p}[E(x)] = \bar E.\]</p>
+
+<p>Now the problem becomes:</p>
+<blockquote>
+  <p><strong>Choose a distribution (p(x)) that (1) satisfies the constraints we know, and (2) builds in as few extra assumptions as possible.</strong></p>
+</blockquote>
+
+<p>“As few extra assumptions as possible” is what the <strong>Maximum Entropy principle</strong> formalizes. The entropy is defined as the average surprise or uncertainty of a system. \[S[p] = E_{x \sim p}[Surprise(p(x))]\] is the average surprise under probability distribution (p). We’ll treat entropy more rigorously in the sections to follow. Broadly, entropy measures how “uninformative” or “unassuming” your distribution is:</p>
+<ul>
+  <li>High entropy means many possibilities remain open; you’re not pretending to know too much.</li>
+  <li>Low entropy means you’re committing strongly to particular configurations.</li>
+</ul>
+
+<p>Maximizing entropy subject to constraints means: among all distributions that fit what we know, pick the one that leaves us maximally uncertain or maximally honest about our ignorance: (1) You encode exactly the information you have (the constraints), and (2) You do not fabricate any structure you don’t know. These represent two different philosophies about reality: Ontology (what the world is) vs. Epistemology (what we know about the world).</p>
+
+<h2 id="winning-the-game">Winning the Game</h2>
+
+<p>Mathematically, MaxEnt is a constrained optimization problem: \[\max_{p} S[p]\quad\text{s.t.}\quad\mathbb E_p[f_k(x)] = c_k,\ \sum_x p(x)=1.\]</p>
+
+<p>Using Lagrange multipliers, we convert this to an unconstrained problem (also called as Lagrangian): \[\max_{p} S[p] - \sum_k \lambda_k \mathbb E_p[f_k(x)] - \lambda_0\left(\sum_x p(x)-1\right).\]</p>
+
+<p>For the special case where the only constraint is average energy, \[\mathbb E_p[E(x)] = \bar E,\] we get:\[\max_{p} \Big(S[p] - \beta \mathbb E_p[E(x)]\Big),\] where \(\beta\) is the Lagrange multiplier enforcing the energy constraint and we ignore \(\lambda_0\) as we can handle normalization explictly.</p>
+
+<h2 id="the-real-game">The Real Game</h2>
+
+<p>The same principle can be written as minimization of Free Energy, \(F[p] = E_p[E(x)] - T S[p]\) \(\min_p F[p].\) This quantity, \(F = E - T S\) (<strong>Energy</strong> minus <strong>Temperature</strong> \(\times\) <strong>Entropy</strong>), sits at the heart of many pillars of science. It governs equilibrium in physics, inference in information theory, learning in biology, and even value in economics.</p>
+
+<p>Let’s consider <strong>Maxwell’s Demon</strong> again.</p>
+
+<p><strong>Statistical Mechanics:</strong> Maxwell proposed a famous thought experiment:</p>
+<ul>
+  <li>An enclosed container of gas, with atoms moving randomly.</li>
+  <li>A partition separates chamber A and chamber B, connected by a tiny, frictionless door operated by a “Demon.”</li>
+  <li>The Demon watches the molecules and records their speeds in its memory. It opens the door to let fast molecules into one chamber and slow molecules into the other.</li>
+</ul>
+
+<p>This sorting creates a temperature gradient (Order). By segregating the gas, the Demon has lowered the entropy of the gas without changing its total energy. Symbolically: \[\Delta S_{\text{gas}} &lt; 0.\] Because Entropy drops, the Free Energy (the capacity to do work) rises: \[\Delta F_{\text{gas}} = - T (\Delta S_{\text{gas}}) &gt; 0.\]</p>
+
+<p>This gas is now a battery. We could run an engine on this gradient. Once the gas returns to equilibrium, the demon simply repeats the cycle: watch, sort, extract work. At first glance, this looks like a perpetual motion machine, which violates the Second Law of Thermodynamics.</p>
+
+<p><strong>Information:</strong> The catch lies in the Demon’s “scratchpad.” To sort molecules, the demon must record information. If the demon had an infinite memory, it could indeed act as a perpetual motion machine. But in reality, memory is finite. To keep sorting indefinitely, the demon must eventually erase old information to make room for new measurements: \[\text{(fast/slow) molecules} \longrightarrow 0.\] This erasure is a logically irreversible operation (two possible states collapse into one).</p>
+
+<p>According to Landauer’s Principle, this operation has a physical cost. Erasure is not free. To reset the memory bits to 0:</p>
+<ol>
+  <li><strong>Work is Required:</strong> The demon (or the battery powering it) must perform work (import energy) on its physical memory system.</li>
+  <li><strong>Heat is Released:</strong> This work is dissipated as heat into the environment. You cannot erase information without generating heat.</li>
+</ol>
+
+<p>Thus, at the moment of erasure, due to the dumped heat, the entropy (disorder) of the environment increases: \(\Delta S_{\text{env}} &gt; 0\). This increase is strictly greater than (or at best equal to) the entropy reduction the demon achieved in the gas.<d-footnote>This constraint comes from Landauer's Principle, which relies on Liouville's Theorem in mechanics. Liouville's Theorem states that microscopic dynamical states cannot be destroyed, only moved. Therefore, if you compress the "logical volume" of the memory (by erasing bits), physics demands that you expand the "physical volume" of the environment (by dissipating heat) to compensate.</d-footnote> As a result, the Total Free Energy decreases: \[\Delta F_{\text{total}} &lt; 0.\]
+The free energy gained during the sorting (by the gas) is paid back with interest during the erasure (by the demon). Thermodynamics is preserved.</p>
+
+<p>Thus, the entropy of the universe increases, which is how physicists explain the arrow of time, i.e., the direction of time is towards increasing entropy.</p>
+
+<p><strong>Information is Physical:</strong> Look at how the entropy of a physical system (the gas) is transformed into the entropy of information (the memory) and finally into heat (the environment).</p>
+
+<blockquote>
+  <p>Maxwell’s demon uses information about microscopic configurations to reduce the gas’s entropy and extract work. But the demon’s memory itself is a physical system. Each bit of ‘freedom’ removed from the gas costs work to erase later. Information and Energy meet in the same free-energy bookkeeping.</p>
+</blockquote>
+
+<p><strong>Machine Learning:</strong> In Artificial Intelligence, we use the same trade-off to learn from data without memorizing it. We want a model that represents the “Truth” (fits the data) but remains “Simple” (generalizes to new data).</p>
+<ul>
+  <li>Energy (\(E\)): This is the <strong>Prediction Error</strong>. How badly does the model mismatch the data? We want to minimize this to be accurate.</li>
+  <li>Entropy (\(S\)): This is the <strong>Regularization</strong>. We want to maximize this to prevent overfitting.</li>
+</ul>
+
+<p>The “Perfect” model is the one that minimizes the Free Energy of the loss landscape, finding the sweet spot between accuracy (Cost) and generalization (Freedom).</p>
+
+<p><strong>Behavioral Economics:</strong> Finally, humans play this game when making decisions. We balance “Utility” (Energy) with “Exploration” (Entropy).</p>
+
+<ul>
+  <li>Standard Economics (Zero Temperature): Assumes humans minimize Cost perfectly. We are rational robots who always pick the optimal option (\(\beta \to \infty\)).</li>
+  <li>Bounded Rationality (Finite Temperature): In reality, humans operate at a finite temperature. We make mistakes, we explore, and we are noisy. This leads to the <strong>Softmax</strong> choice rule, which is exactly the Boltzmann distribution:
+  \[P(\text{Choice}_i) \propto e^{\beta \cdot \text{Utility}_i}\]</li>
+</ul>
+
+<p>However, sometimes humans violate standard entropy altogether. This is the domain of <strong>Prospect Theory</strong>. When we are afraid (Risk Averse) or gambling (Risk Seeking), we <strong>distort</strong> probabilities. We overweight rare events (like lottery wins) or ignore common risks.</p>
+
+          
+          <!-- Series Navigation -->
+            <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+              <span style="float:left"><i class="fas fa-2x fa-arrow-left"></i> &thinsp; <a style="text-decoration: none" href="/blog/2025/12/maxwell-1"><em>The Physics of Surprise</a></em></span>
+            
+
+            
+              <span style="float:right"><a style="text-decoration: none" href="/blog/2025/12/maxwell-3"><em>Different Games and Their Winners</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            
+          </div>
+          </d-article>
+          <d-appendix>
+            <d-footnote-list></d-footnote-list>
+            <d-citation-list></d-citation-list>
+          </d-appendix>
+          <d-bibliography src="/vendor/bibliography/llm.bib"></d-bibliography>
+          <script src="https://giscus.app/client.js"
+              data-repo="pg2455/pg2455.github.io"
+              data-repo-id="MDEwOlJlcG9zaXRvcnk3MTMxMzI3MQ=="
+              data-category="General"
+              data-category-id="DIC_kwDOBEAnd84CqnG0"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="light_high_contrast"
+              data-lang="en"
+              data-loading="lazy"
+              crossorigin="anonymous"
+              async>
+          </script>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/share-popover.js"></script>
+
+  <footer class="fixed-bottom-footer">
+    <div class="jumbotron mt-0" id="footer-container">
+      Powered by <a href="http://jekyllrb.com">Jekyll</a>, blog template adapted from <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+    </div>
+  </footer>
+
+  <script src="/js/distill.js"></script>
+</body>
+
+
+  <script src="/js/sp.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/vendor/js/jquery.min.js"></script>
+  <script src="/vendor/js/bootstrap.min.js"></script>
+  <script src="/vendor/js/anchor.min.js"></script>
+  <script src="/vendor/js/jquery.toc.js"></script>
+
+  <!-- Prism.js core and Python language support -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+
+  <script type="text/javascript">
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-187458159-1', 'auto');
+   ga('send', 'pageview');
+
+   $("#toc").toc({
+       'headings': 'h2,h3'
+   });
+   anchors.add('h2,h3');
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if there is a hash in the URL
+        const hash = window.location.hash;
+        if (hash) {
+            // Find the element that matches the hash
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                // Add the section-highlight class to the element
+                targetElement.classList.add('section-highlight');
+                
+                // If there are collapsible sections related to this hash, open them
+                const relatedSections = ['lessons', 'practical', 'objective'];
+                relatedSections.forEach(section => {
+                    const elem = document.getElementById(section + '_' + hash.slice(1));
+                    if (elem) {
+                        elem.style.display = 'block'; // Change display style to 'block' to show the section
+                    }
+                });
+
+                // Set a timeout to remove the highlight after 5 seconds
+                setTimeout(() => {
+                    targetElement.classList.remove('section-highlight');
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        }
+    });
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+    // Only add button if code block has a class starting with 'language-'
+    var hasLanguageClass = Array.from(codeBlock.classList).some(function(cls) {
+      return cls.startsWith('language-');
+    });
+    if (!hasLanguageClass) {
+      return;
+    }
+    // Create the button
+    var button = document.createElement('button');
+    button.className = 'copy-code-btn';
+    button.type = 'button';
+    button.title = 'Copy to clipboard';
+    // Clipboard SVG icon
+    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+    // Create a wrapper for positioning
+    var pre = codeBlock.parentNode;
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    button.addEventListener('click', function() {
+      var text = codeBlock.innerText;
+      navigator.clipboard.writeText(text).then(function() {
+        button.innerHTML = '✓';
+        setTimeout(function() {
+          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        }, 1200);
+      });
+    });
+  });
+});
+</script>
+
+</body>
+
+</html>

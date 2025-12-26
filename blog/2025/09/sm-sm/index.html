@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Forwards and Backprop through Online Attention</title>
+
+  <meta name="author" content="Prateek Gupta" />
+  <meta name="description" content="Prateek Gupta | Personal Website" />
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="/vendor/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d7c6b63fdf.js" crossorigin="anonymous"></script>
+  <link href="/vendor/css/academicons.min.css" rel="stylesheet">
+  <link href="/vendor/pygments/monokai.css" rel="stylesheet">
+  <link href="/css/bamos.css" rel="stylesheet">
+  <link href="/css/updates.css" rel="stylesheet">
+  <link href="/css/sharingbuttons.css" rel="stylesheet">
+  <link href="/css/pgupta.css" rel="stylesheet">
+
+  <!-- Prism.js CSS (default theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+
+  <!-- MathJax -->
+  
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams',
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[','\\]']],
+        packages: {'[+]': ['ams']},
+        processEscapes: true
+      },
+      svg: {
+          fontCache: 'global'
+      }
+    };
+  </script>
+
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+
+  <script src="/vendor/js/distillpub/template.v2.js"></script>
+  <script src="/vendor/js/distillpub/transforms.v2.js"></script>
+  
+
+  
+  <style type="text/css">
+    h3, h2, h1 {
+  padding-top: 0!important;
+}
+
+  </style>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div class="navbar navbar-default">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="navbar-header">
+						  <a href="/" class="navbar-brand">
+                  <div>
+                      <img src="/images/me-face.png" class="img-circle"></img>
+                      Prateek Gupta
+                  </div>
+              </a>
+						<button class="navbar-toggle" type="button" data-toggle="collapse"
+                    data-target="#navbar-main">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="navbar-collapse collapse" id="navbar-main">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="/">About</a>
+							</li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      Teaching <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/teaching/tutorials">Tutorials</a></li>
+                      <li><a href="/teaching/courses">Courses</a></li>
+                      <li><a href="/teaching/hackathons">Hackathons</a></li>
+                  </ul>
+              </li>
+              
+  							<li>
+  								<a href="/blog/">Blog</a>
+  							</li>
+              
+						</ul>
+						<ul class="nav navbar-nav navbar-right" style="font-size: 1.5em">
+							<li>
+								<a href="http://github.com/pg2455" target="_blank" class="social-icon">
+									<i class="fab fa-github"></i></a>
+							</li>
+              <li>
+                <a href="https://scholar.google.com/citations?user=fvn0COgAAAAJ" target="_blank" class="social-icon">
+                  <i class="ai ai-google-scholar"></i></a>
+              </li>
+							<li>
+								<a href="http://twitter.com/pguptacs" target="_blank" class="social-icon">
+									<i class="fab fa-x-twitter"></i></a>
+							</li>
+              <li>
+                <a href="http://www.linkedin.com/in/link2prateek" target="_blank" class="social-icon">
+                  <i class="fab fa-linkedin"></i></a>
+              </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  <head>
+  <link rel="stylesheet" href="/css/distill.css">
+</head>
+
+<body>
+  <div class="distill-flex-container">
+    <aside class="distill-toc-sidebar">
+      <my-toc></my-toc>
+    </aside>
+    <main class="distill-main-content">
+      <div class="row">
+        <div class="col-md">
+          <d-title>
+            <h1>Forwards and Backprop through Online Attention</h1>
+            <p></p>
+            <p>
+              <span class="meta-date" style="color: #888; font-size: 0.9em;">
+                <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 0.3em;"></i>September  9, 2025
+              </span>
+              
+            </p>
+          </d-title>
+          <!-- Mobile TOC Accordion (no duplicate heading) -->
+          <div class="mobile-toc-container" id="mobile-toc-container" style="margin-bottom: 18px; margin-top: 18px;">
+            <button class="mobile-toc-toggle-btn" id="mobile-toc-toggle-btn" aria-controls="mobile-toc-content" aria-expanded="false" style="margin-bottom: 0;">
+              Table of Contents <span style="float:right;">&#x25BC;</span>
+            </button>
+            <div class="mobile-toc-content" id="mobile-toc-content" style="background: #f8f9fb; border-top: 1px solid #eee; border-radius: 0 0 6px 6px; margin-top: 0;">
+              <my-toc></my-toc>
+            </div>
+          </div>
+          <d-article>
+            <!-- Summary Block -->
+          
+          <!-- Series Navigation -->
+          <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+          </div>
+          
+            <div style="background-color: #f0f8ff; padding: 10px; border-radius: 8px; border: 1px solid #b0c4de;">
+  <p>This tutorial is also accessible as a notebook here: <a href="https://github.com/pg2455/toy_flashattention/tree/main">Toy FlashAttention Notebook</a></p>
+</div>
+<p><br /></p>
+
+<p><strong>What is Attention?</strong>
+At a high level, attention (<a href="https://arxiv.org/abs/1706.03762">Vaswani et al.</a><d-cite key="vaswani2017attention"></d-cite>) is a mechanism that allows a neural network to focus on the most relevant pieces of information when making a decision. Instead of treating all input tokens (words, pixels, etc.) equally, it learns to weigh them differently depending on the current context.</p>
+
+<p>A useful way to think of it:</p>
+
+<ul>
+  <li>The network first maps the input into a high-dimensional space — a kind of <em>library of representations</em>.</li>
+  <li>Then, when the model needs to produce an output (like predicting the next word), attention acts like a search engine inside the model. It asks: <em>“Given the current context, which entries in this library are most useful right now?”</em></li>
+  <li>The result is a weighted combination of those entries, so the model doesn’t just recall one thing, but blends together the most relevant information for the task at hand.</li>
+</ul>
+
+<div style="background-color: rgba(245, 245, 204, 0.5); padding: 10px; border-radius: 8px; border: 1px solid #e0e0b0;">
+  <p>Attention has been the engine behind much of the progress in LLMs. But the mechanism comes with a cost: <strong>computing attention in the straightforward way requires quadratic time and memory in the sequence length</strong>. As models stretch into contexts of tens or even hundreds of thousands of tokens, this quadratic blow-up quickly becomes the bottleneck.</p>
+
+  <p>Early research explored many clever approximations, such as low-rank projections, kernel tricks, sparsity patterns, but most came with a trade-off: efficiency at the cost of exactness.</p>
+
+  <p><strong>What’s remarkable is that the most effective solution turned out to be almost trivial: compute attention online, piece by piece, without ever materializing the full attention matrix.</strong></p>
+
+  <p>In this post, we’ll unpack what that means, why it works, and how both the forward and backward passes of attention can be carried out in a streaming fashion. 
+To avoid the memory overhead of storing large intermediate structures (like the full score matrix), we’ll also show how to derive gradients through attention online: processing only small chunks of keys, values, and queries at a time.</p>
+
+</div>
+<p><br /></p>
+
+<p>I’ll use code examples throughout to make these ideas concrete.</p>
+
+<p>Much of this discussion is inspired by the appendices of <a href="https://github.com/Dao-AILab/flash-attention">FlashAttention</a><d-cite key="dao2022flashattention"></d-cite>, which achieves single-GPU efficiency by fusing operations and carefully managing memory, and by <a href="https://arxiv.org/abs/2310.01889">RingAttention</a><d-cite key="liu2023ring"></d-cite>, which extends the same principle across GPUs by overlapping partial computations with communication of keys and values.</p>
+
+<h2 id="forward-pass-full-attention">Forward Pass (Full Attention)</h2>
+
+<p>We start with three matrices:</p>
+
+<ul>
+  <li><strong>Queries</strong> \( Q \in \mathbb{R}^{N \times d} \)</li>
+  <li><strong>Keys</strong> \( K \in \mathbb{R}^{M \times d} \)</li>
+  <li><strong>Values</strong> \( V \in \mathbb{R}^{M \times d} \)</li>
+</ul>
+
+<p>Here, \( d \) is the hidden dimension, \( N \) is the number of query tokens, and \( M \) is the number of key/value tokens.</p>
+
+<p>The attention output is defined as:</p>
+
+<p>\[
+\text{Attn}(Q, K, V) = \text{Softmax}(\tau QK^\top) V
+\]</p>
+
+<p>where \( \tau = \frac{1}{\sqrt{d}} \) is a scaling factor to keep dot products numerically stable.</p>
+
+<p>Breaking it down step by step:</p>
+
+<p><strong>Similarity scores:</strong></p>
+
+<p>\[
+   S = QK^\top
+   \]</p>
+
+<p>Each entry \( S_{ij} \) measures how much query \( i \) attends to key \( j \).</p>
+
+<p><strong>Attention weights:</strong></p>
+
+<p>\[
+   P = \text{Softmax}(\tau S)
+   \]</p>
+
+<p>The softmax turns raw scores into probabilities, so each query distributes its attention across all keys.</p>
+
+<p><strong>Weighted aggregation:</strong></p>
+
+<p>\[
+   O = PV
+   \]</p>
+
+<p>Finally, each query’s output is a weighted sum of the values, with weights given by \( P \).</p>
+
+<p>In the code block below, we’ll manually implement the attention output as <code class="highlighter-rouge">O_manual</code> and verify that it matches PyTorch’s built-in result <code class="highlighter-rouge">O</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">B</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">D</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">tau</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+
+<span class="c"># Using PyTorch Module</span>
+<span class="c"># API expects [B, heads, L, D]; here head dim = 1</span>
+<span class="n">O</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">scaled_dot_product_attention</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">K</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">V</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">O</span> <span class="o">=</span> <span class="n">O</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c"># Handcoded batch attention</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">sm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">O_manual</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">sm</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"O == O_manual: "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">O_manual</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>O == O_manual:  True
+</code></pre></div></div>
+
+<h2 id="numerically-stable-forward-pass-full-attention">Numerically Stable Forward Pass (Full Attention)</h2>
+
+<p>So far, we assumed the entire \( Q, K, V \) matrices fit in memory at once. But in practice, this isn’t always possible:</p>
+
+<ul>
+  <li>On a single GPU, <strong>memory constraints</strong> motivate algorithms like <em>FlashAttention</em>, which compute attention block by block.</li>
+  <li>In distributed settings, <strong>hardware memory limits</strong> across devices motivate approaches like <em>RingAttention</em>, which stream keys and values across GPUs while overlapping computation with communication.</li>
+</ul>
+
+<p>The attention computation can be written elementwise as:</p>
+
+<p>\[
+S_{ij} = Q_i^\top K_j
+\]</p>
+
+<p>\[
+P_{ij} = \frac{\exp(\tau S_{ij})}{\sum_{j}\exp(\tau S_{ij})}
+\]</p>
+
+<p>\[
+O_{i,:} = \sum_{j} P_{ij} \, V_{j,:}
+\]</p>
+
+<p>Combining the steps, each output row can be expressed directly as:</p>
+
+<p>\[
+O_{i,:} = \frac{\sum_{j}\exp\big(\tau Q_i^\top K_j\big)\, V_{j,:}}{\sum_{j}\exp!\big(\tau Q_i^\top K_j\big)}
+\]</p>
+
+<p>Directly exponentiating large dot products can cause overflow. To prevent this, we apply the classic log-sum-exp trick, subtracting the maximum score before exponentiation:</p>
+
+<p>\[
+m_i = \max_j \, Q_i^\top K_j
+\]</p>
+
+<p>\[
+O_{i,:} = \frac{\sum_{j}\exp\big(\tau Q_i^\top K_j - m_i\big)\, V_{j,:}}{\sum_{j}\exp\big(\tau Q_i^\top K_j - m_i\big)}
+\]</p>
+
+<blockquote>
+  <p>This normalization step keeps the computation stable and memory-efficient.</p>
+</blockquote>
+
+<p>In the code block below, we’ll manually implement the normalized attention output as <code class="highlighter-rouge">O_m_with_max</code> and verify that it matches PyTorch’s built-in result <code class="highlighter-rouge">O</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tau</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">max_per_query</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">tau</span> <span class="o">*</span> <span class="p">(</span><span class="n">scores</span> <span class="o">-</span> <span class="n">max_per_query</span><span class="p">))</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">A</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">O_m_with_max</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"O == O_m_with_max: "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">O_m_with_max</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>O == O_m_with_max:  True
+</code></pre></div></div>
+
+<h2 id="forward-pass-online-attention">Forward Pass (Online Attention)</h2>
+
+<p>Instead of holding all of \( Q, K, V \) in memory, we want to compute attention block by block.</p>
+
+<p>Let’s denote:</p>
+
+<ul>
+  <li>\( Q_{B_q} \in \mathbb{R}^{B_q \times d} \): a block of queries</li>
+  <li>\( K_{B_k}, V_{B_k} \in \mathbb{R}^{B_k \times d} \): a block of keys and values</li>
+</ul>
+
+<p>where \( B_q &lt; N \) and \( B_k &lt; M \).</p>
+
+<p>To see the idea more clearly, imagine the simplest case where \( B_q = B_k = 1 \):</p>
+
+<ul>
+  <li>We process one query against one key–value pair at a time.</li>
+  <li>
+    <p>As we stream through the keys/values, we maintain three running quantities:</p>
+
+    <ul>
+      <li>\( m_i^t \): running maximum of scores (for stability)</li>
+      <li>\( n_i^t \): running numerator (vector)</li>
+      <li>\( d_i^t \): running denominator (scalar)</li>
+    </ul>
+  </li>
+</ul>
+
+<p>At step \( t \), when query \( Q_i \) sees the key–value pair \( (K_t, V_t) \), we update as follows:</p>
+
+<p>\[
+m_i^t = \max \big(m_i^{t-1}, \, Q_i^\top K_t\big) \in \mathbb{R}
+\]</p>
+
+<p>\[
+n_i^t = n_i^{t-1} \cdot \exp(m_i^{t-1} - m_i^t) \;+\; \exp(\tau Q_i^\top K_t - m_i^t) \, V_t \quad \in \mathbb{R}^d
+\]</p>
+
+<p>\[
+d_i^t = d_i^{t-1} \cdot \exp(m_i^{t-1} - m_i^t) \;+\; \exp(\tau Q_i^\top K_t - m_i^t) \quad \in \mathbb{R}
+\]</p>
+
+<p>The correction factor \( \exp(m_i^{t-1} - m_i^t) \) ensures consistency when the running maximum changes.</p>
+
+<p>After processing all \( M \) keys, the final attention output for query \( i \) is simply:</p>
+
+<p>\[
+O_{i,:} = \frac{n_i^M}{d_i^M}
+\]</p>
+
+<blockquote>
+  <p>With this formulation, we only need to keep a block of queries, keys, and values in memory at a time, plus the running triplet \( (m_i, n_i, d_i) \). This makes it possible to compute attention streaming-style while staying numerically stable.</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">block_size</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">tau</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">max_per_query</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="s">'-inf'</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="c"># one max per query</span>
+<span class="n">num</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+<span class="n">den</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">start_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">block_size</span><span class="p">):</span>
+    <span class="n">outer_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_idx</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">start_idx</span> <span class="o">+</span> <span class="n">block_size</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>
+    <span class="n">K_b</span><span class="p">,</span> <span class="n">V_b</span> <span class="o">=</span> <span class="n">K</span><span class="p">[:,</span> <span class="n">outer_range</span><span class="p">],</span> <span class="n">V</span><span class="p">[:,</span> <span class="n">outer_range</span><span class="p">]</span> <span class="c"># [B, BLOCK, D]</span>
+
+    <span class="k">for</span> <span class="n">start_jdx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">block_size</span><span class="p">):</span>
+        <span class="n">inner_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_jdx</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">start_jdx</span> <span class="o">+</span> <span class="n">block_size</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>
+        <span class="n">Q_b</span> <span class="o">=</span> <span class="n">Q</span><span class="p">[:,</span> <span class="n">inner_range</span><span class="p">]</span>
+
+        <span class="n">scores_b</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Q_b</span><span class="p">,</span> <span class="n">K_b</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="c">## Bookkeeping</span>
+        <span class="n">m_old</span> <span class="o">=</span> <span class="n">max_per_query</span><span class="p">[:,</span> <span class="n">inner_range</span><span class="p">]</span>
+
+        <span class="c"># compute new maximums</span>
+        <span class="n">m_new</span> <span class="o">=</span> <span class="n">max_per_query</span><span class="p">[:,</span> <span class="n">inner_range</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">m_old</span><span class="p">,</span> <span class="n">scores_b</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        
+        <span class="c"># rescaling factors</span>
+        <span class="n">exp_delta_m</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">m_old</span> <span class="o">-</span> <span class="n">m_new</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">new_score_exp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">scores_b</span>  <span class="o">-</span> <span class="n">m_new</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="c"># Broadcast max to the last dimension</span>
+
+        <span class="c"># numerator</span>
+        <span class="n">num</span><span class="p">[:,</span> <span class="n">inner_range</span><span class="p">]</span> <span class="o">=</span> <span class="n">num</span><span class="p">[:,</span> <span class="n">inner_range</span><span class="p">]</span> <span class="o">*</span> <span class="n">exp_delta_m</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">new_score_exp</span><span class="p">,</span> <span class="n">V_b</span><span class="p">)</span>
+
+        <span class="c"># denominator </span>
+        <span class="n">den</span><span class="p">[:,</span> <span class="n">inner_range</span><span class="p">]</span> <span class="o">=</span> <span class="n">den</span><span class="p">[:,</span> <span class="n">inner_range</span><span class="p">]</span> <span class="o">*</span> <span class="n">exp_delta_m</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">new_score_exp</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        
+<span class="n">O_online</span> <span class="o">=</span> <span class="n">num</span><span class="o">/</span><span class="n">den</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"O == O_online: "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">O_online</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>O == O_online:  True
+</code></pre></div></div>
+
+<h2 id="backward-pass-batch-attention">Backward Pass (Batch Attention)</h2>
+
+<p>At the end of the forward computation, we have access to:</p>
+
+<ul>
+  <li>the denominator \( d_i = d_i^M \),</li>
+  <li>the stability term \( m_i = \max_j Q_i^\top K_j \).</li>
+</ul>
+
+<p>During the backward pass, our goal is to compute the gradients</p>
+
+<p>\[
+\partial Q = \frac{\partial L}{\partial Q}, \quad 
+\partial K = \frac{\partial L}{\partial K}, \quad 
+\partial V = \frac{\partial L}{\partial V},
+\]</p>
+
+<p>given \( \partial O = \frac{\partial L}{\partial O} \), where \( L \in \mathbb{R} \) is the loss.</p>
+
+<p>For clarity, let’s drop the \( \partial L/\partial \) notation and just write \( \partial O, \partial Q, \partial K, \partial V \).</p>
+
+<p>The shapes are as follows:</p>
+
+<p>\[
+\partial O \in \mathbb{R}^{N \times d}, \quad
+\partial Q \in \mathbb{R}^{N \times d}, \quad
+\partial K \in \mathbb{R}^{M \times d}, \quad
+\partial V \in \mathbb{R}^{M \times d}
+\]</p>
+
+<p>Recall the forward equations:</p>
+
+<p>\[
+O = P V
+\]</p>
+
+<p>Taking derivatives gives (Refer to Appendix A if matrix differentiation is unfamiliar to you):</p>
+
+<p>\[
+\partial V = P^\top \partial O \in \mathbb{R}^{M \times d}, \quad 
+\partial P = \partial O V^\top \in \mathbb{R}^{N \times M}
+\]</p>
+
+<p>Each row of \( P \) comes from a softmax over the corresponding row of the score matrix \( S = QK^\top \). Since all entries in a row are coupled, we must handle them together.</p>
+
+<p>For a vector softmax \( \mathbf{y} = \text{Softmax}(\mathbf{x}) \):</p>
+
+<p>\[
+\partial \mathbf{x} = \big(\text{diag}(\mathbf{y}) - \mathbf{y}\mathbf{y}^\top\big)\, \partial \mathbf{y}
+\]</p>
+
+<p>Equivalently, using elementwise notation:</p>
+
+<p>\[
+\frac{\partial y_i}{\partial x_j} = y_i (\delta_{ij} - y_j)
+\]</p>
+
+<p>where \( \delta_{ij} \) is the Kronecker delta.</p>
+
+<p>For the \( i \)-th row of \( P \):</p>
+
+<p>\[
+\partial S_{i,:} = \big(\text{diag}(P_{i,:}) - P_{i,:} P_{i,:}^\top\big) \, \partial P_{i,:}
+\]</p>
+
+<p>This can also be written compactly as:</p>
+
+<p>\[
+\partial S_{i,:} = P_{i,:} \odot \big(\partial P_{i,:} - (\partial P_{i,:}^\top P_{i,:}) \mathbf{1}\big)
+\]</p>
+
+<p>where \( P_{i,:} \in \mathbb{R}^M \) is treated as a column vector.</p>
+
+<p>Finally, since \( S = QK^\top \):</p>
+
+<p>\[
+\partial Q = \partial S K \in \mathbb{R}^{N \times d}, \quad 
+\partial K^\top = Q^\top \partial S \in \mathbb{R}^{d \times M}
+\]</p>
+
+<p><strong>Note:</strong> If you’re fluent with matrix calculus, these steps are straightforward. If not, I’ll include an appendix at the end of the post showing the derivations in more detail.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># simulating gradient wrt the loss</span>
+<span class="n">dO</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+<span class="n">O</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">dO</span><span class="p">)</span> <span class="c"># perform backprop</span>
+
+<span class="c"># read off the gradients </span>
+<span class="n">dQ</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">grad</span> 
+<span class="n">dK</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">grad</span>
+<span class="n">dV</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">grad</span> 
+
+<span class="c"># # Handcoded batch attention</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">O_manual</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"O == O_manual: "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">O_manual</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+
+<span class="c"># backward pass in batch updates</span>
+<span class="n">dV_manual</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">dO</span><span class="p">)</span>
+
+<span class="n">dP</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dO</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">dScores</span> <span class="o">=</span> <span class="n">P</span> <span class="o">*</span> <span class="p">(</span><span class="n">dP</span> <span class="o">-</span>  <span class="p">(</span><span class="n">dP</span> <span class="o">*</span> <span class="n">P</span><span class="p">)</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="n">dQ_manual</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dScores</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span> <span class="c"># multiply the scaling factor </span>
+<span class="n">dK_manual</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dScores</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">Q</span><span class="p">)</span> <span class="c"># multiply the scaling factor </span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"dV == dV_manual: "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">dV</span><span class="p">,</span> <span class="n">dV_manual</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"dQ == dQ_manual: "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">dQ</span><span class="p">,</span> <span class="n">dQ_manual</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"dK == dK_manual: "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">dK</span><span class="p">,</span> <span class="n">dK_manual</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>O == O_manual:  True
+dV == dV_manual:  True
+dQ == dQ_manual:  True
+dK == dK_manual:  True
+</code></pre></div></div>
+
+<h2 id="backward-pass-online-attention">Backward Pass (Online Attention)</h2>
+
+<p>Computing gradients in the naïve way would require storing the <strong>entire softmax matrix</strong>. For long sequences, this is completely impractical.</p>
+
+<p>For example, with a sequence length of 128K, the attention matrix has size \( 128K \times 128K \). At 32-bit precision, that’s <strong>~65 GB just for one example</strong>. Clearly infeasible.</p>
+
+<p>Instead, we follow the approach used in <em>FlashAttention</em>.</p>
+
+<p>As in the forward pass, we stream over blocks of queries, keys, and values. The scores and softmax probabilities are recomputed on the fly. The key difference from the forward pass is that:</p>
+
+<ul>
+  <li>We already have the stored row-wise maxima (\( m_i \)), so no need to maintain running maxima.</li>
+  <li>We also have the stored denominators (\( d_i \)), so we can reuse them directly.</li>
+</ul>
+
+<p>In the gradient formulas, a problematic term appears:</p>
+
+<p>\[
+\partial P_{i,:}^\top P_{i,:}
+\]</p>
+
+<p>This is a scalar dot product that gets broadcast across all components of \( P_{i,:} \). If computed naively, it prevents simple parallelization row-by-row.</p>
+
+<p>The FlashAttention paper resolves this by rewriting the scalar as:</p>
+
+<p>\[
+D_i = \partial P_{i,:}^\top P_{i,:} 
+= \sum_{j} P_{ij}\,\partial P_{ij} 
+= \sum_{j} P_{ij} \, (\partial O_i V_j)
+\]</p>
+
+<p>Notice the last step:</p>
+
+<p>\[
+D_i = \partial O_i \Big(\sum_j P_{ij} V_j\Big) = \partial O_i^\top O_i
+\]</p>
+
+<p>This turns the awkward scalar-product term into something much cleaner: the dot product between \( \partial O_i \) and the forward output \( O_i \).</p>
+
+<p>This trick is critical because it allows the backward pass to be parallelized efficiently, in the same streaming/blockwise fashion as the forward pass.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">block_size</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">tau</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c"># given:</span>
+<span class="c"># max_per_query: max over the query-key inner product</span>
+<span class="c"># den: denominator sum exp (query, key inner product) per query</span>
+
+
+<span class="n">dQ_online</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span> <span class="p">,</span><span class="n">D</span><span class="p">)</span>
+<span class="n">dK_online</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span> <span class="p">,</span><span class="n">D</span><span class="p">)</span>
+<span class="n">dV_online</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span> <span class="p">,</span><span class="n">D</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">start_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">block_size</span><span class="p">):</span>
+    <span class="n">outer_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_idx</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">start_idx</span> <span class="o">+</span> <span class="n">block_size</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>
+    <span class="n">K_b</span><span class="p">,</span> <span class="n">V_b</span> <span class="o">=</span> <span class="n">K</span><span class="p">[:,</span> <span class="n">outer_range</span><span class="p">],</span> <span class="n">V</span><span class="p">[:,</span> <span class="n">outer_range</span><span class="p">]</span> <span class="c"># [B, BLOCK, D]</span>
+
+    <span class="k">for</span> <span class="n">start_jdx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">block_size</span><span class="p">):</span>
+        <span class="n">inner_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_jdx</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">start_jdx</span> <span class="o">+</span> <span class="n">block_size</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>
+        <span class="n">Q_b</span> <span class="o">=</span> <span class="n">Q</span><span class="p">[:,</span> <span class="n">inner_range</span><span class="p">]</span>
+        <span class="n">dO_b</span> <span class="o">=</span> <span class="n">dO</span><span class="p">[:,</span> <span class="n">inner_range</span><span class="p">]</span>
+        <span class="n">O_b</span> <span class="o">=</span> <span class="n">O</span><span class="p">[:,</span> <span class="n">inner_range</span><span class="p">]</span>
+
+        <span class="c"># recompute local probs P_b exactly using global m, d for the query rows</span>
+        <span class="n">scores_b</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Q_b</span><span class="p">,</span> <span class="n">K_b</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span> 
+        <span class="n">m_b</span> <span class="o">=</span> <span class="n">max_per_query</span><span class="p">[:,</span> <span class="n">inner_range</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
+        <span class="n">d_b</span> <span class="o">=</span> <span class="n">den</span><span class="p">[:,</span> <span class="n">inner_range</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span> 
+        <span class="n">P_b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">scores_b</span> <span class="o">-</span> <span class="n">m_b</span><span class="p">)</span> <span class="o">/</span> <span class="n">d_b</span> <span class="c"># these are exact attn weights </span>
+        
+        <span class="c"># computing the derivatives wrt V and P</span>
+        <span class="n">dV_b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">P_b</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">dO_b</span><span class="p">)</span>
+        <span class="n">dP_b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dO_b</span><span class="p">,</span> <span class="n">V_b</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="c"># computing the derivatives wrt scores</span>
+        <span class="n">D_i</span> <span class="o">=</span> <span class="p">(</span><span class="n">dO_b</span> <span class="o">*</span> <span class="n">O_b</span><span class="p">)</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">dScores_b</span> <span class="o">=</span> <span class="n">P_b</span> <span class="o">*</span> <span class="p">(</span><span class="n">dP_b</span> <span class="o">-</span>  <span class="n">D_i</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="c"># computing the derivatives wrt Q and K</span>
+        <span class="n">dQ_b</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dScores_b</span><span class="p">,</span> <span class="n">K_b</span><span class="p">)</span> <span class="c"># multiply the scaling factor </span>
+        <span class="n">dK_b</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dScores_b</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">Q_b</span><span class="p">)</span> <span class="c"># multiply the scaling factor </span>
+
+        <span class="c"># accumulating these gradients</span>
+        <span class="n">dQ_online</span><span class="p">[:,</span> <span class="n">inner_range</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dQ_b</span>
+        <span class="n">dK_online</span><span class="p">[:,</span> <span class="n">outer_range</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dK_b</span>
+        <span class="n">dV_online</span><span class="p">[:,</span> <span class="n">outer_range</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dV_b</span>
+        
+<span class="k">print</span><span class="p">(</span><span class="s">"dV == dV_online: "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">dV</span><span class="p">,</span> <span class="n">dV_online</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"dQ == dQ_online: "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">dQ</span><span class="p">,</span> <span class="n">dQ_online</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"dK == dK_online: "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">dK</span><span class="p">,</span> <span class="n">dK_online</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dV == dV_online:  True
+dQ == dQ_online:  True
+dK == dK_online:  True
+</code></pre></div></div>
+
+<h2 id="appendix-a-computing-derivatives-of-p-and-v">Appendix A: Computing derivatives of P and V</h2>
+
+<p>Here we will build the intuition to symbolically compute the derivative of O with respect to P and V,</p>
+
+<p>\[
+O = PV  \in \mathcal{R}^{N \times d}
+\]</p>
+
+<p>\[
+\partial V = P^T \partial O \in \mathcal{R}^{M \times d}, \qquad \partial P = \partial O V^T \in \mathcal{R}^{N \times M} <br />
+\]</p>
+
+<p>Let’s start with some definitions. In calculus, the <strong>gradient</strong> is just the derivative, and <strong>differentials</strong> are small changes in variables, also called <strong>variations</strong>.</p>
+
+<p>Our goal is to understand how to get the gradients of the loss with respect to \( P \) and \( V \), i.e. \( \nabla_P L \) and \( \nabla_V L \), when we already know the gradient with respect to \( O \), denoted \( \nabla_O L \). Here the relation is</p>
+
+<p>\[
+O = P V, \quad O, P, V \in \mathbb{R}^{N \times D}.
+\]</p>
+
+<p><strong>Step 1. Variations of \( O \)</strong></p>
+
+<p>The first step is to ask: if \( P \) and \( V \) change a little bit, how does \( O \) change? Denote these small changes by \( \delta P \), \( \delta V \), and \( \delta O \).</p>
+
+<p>For the function \( f(P,V) = P V \), the change in output is</p>
+
+<p>\[
+\delta O = P \,\delta V + \delta P \,V.
+\]</p>
+
+<p>This is just the usual product rule, written in matrix form: wiggle \( P \), you get \( \delta P V \); wiggle \( V \), you get \( P \delta V \).</p>
+
+<p><strong>Step 2. Variation of the loss</strong></p>
+
+<p>Now we want to see how the loss \( L \) changes when \( O \) changes. By definition, the variation in \( L \) is given by the inner product between the gradient and the perturbation:</p>
+
+<p>\[
+\delta L = \mathrm{tr} \left( (\nabla_O L)^\top \delta O \right).
+\]</p>
+
+<p>Substitute \( \delta O = P \delta V + \delta P V \):</p>
+
+<p>\[
+\delta L = \mathrm{tr}\big((\nabla_O L)^\top P \,\delta V\big) + \mathrm{tr}\big((\nabla_O L)^\top \delta P V\big).
+\]</p>
+
+<p><strong>Step 3: Rearranging with the trace identity</strong></p>
+
+<p>Using the identity \( \mathrm{tr}(ABC) = \mathrm{tr}(CBA) \), we can move terms around so that \( \delta V \) and \( \delta P \) appear at the end:</p>
+
+<p>\[
+\delta L = \mathrm{tr}\big((P^\top \nabla_O L)^\top \delta V\big) + \mathrm{tr}\big((\nabla_O L V^\top)^\top \delta P\big).
+\]</p>
+
+<p>Now it’s clear which matrices multiply with \( \delta V \) and \( \delta P \).</p>
+
+<p><strong>Step 4. Read off the gradients</strong></p>
+
+<p>By definition of the trace/Frobenius inner product, the coefficients of \( \delta V \) and \( \delta P \) are the gradients we seek:</p>
+
+<p>\[
+\nabla_V L = P^\top \nabla_O L,
+\qquad
+\nabla_P L = \nabla_O L V^\top.
+\]</p>
+
+<h2 id="appendix-b-full-attention-with-dropout-and-mask">Appendix B: Full Attention with Dropout and Mask</h2>
+
+<p>Now that we’ve seen how to compute attention in an online fashion for both the forward and backward passes, let’s extend the formulation to include <strong>dropout</strong> and <strong>masking</strong>, which are standard in practice.</p>
+
+<p>The overall structure remains the same, with just a few modifications:</p>
+
+<ul>
+  <li><strong>Masking:</strong> applied directly to the scores before softmax (e.g., causal mask or padding mask).</li>
+  <li><strong>Dropout:</strong> applied to the softmax probabilities \( P \) before they are multiplied by the values.</li>
+</ul>
+
+<h3 id="forward-pass">Forward pass</h3>
+
+<ul>
+  <li>Compute scores block by block.</li>
+  <li>Apply mask (setting masked positions to \( -\infty \) or a large negative number).</li>
+  <li>Apply softmax with stability trick.</li>
+  <li>Optionally apply dropout to the probabilities \( P \).</li>
+  <li>Multiply by values \( V \) to get outputs.</li>
+</ul>
+
+<h3 id="backward-pass">Backward pass</h3>
+
+<p>The backward pass follows the same blockwise structure as before, but with two additional considerations:</p>
+
+<ol>
+  <li><strong>Masking:</strong> The same mask used in the forward pass must be reapplied to the scores in the backward pass to zero out contributions from masked positions.</li>
+  <li><strong>Dropout:</strong> To remain consistent, the <em>exact same dropout pattern</em> used in the forward pass must be applied again during backpropagation. This requires careful handling of the random number generator (RNG) to ensure reproducibility.</li>
+</ol>
+
+<p>⚠️ <strong>Note:</strong> Correct RNG management is subtle. In practice, frameworks like PyTorch handle dropout reproducibility automatically by saving RNG state between forward and backward. Implementing this manually in a custom kernel (e.g., for FlashAttention) requires special care, and we won’t go into the details here.</p>
+
+<p>This way, the online attention mechanism is extended to the “real” transformer case: with masks for structure and dropout for regularization.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">B</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">D</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">dropout_p</span> <span class="o">=</span> <span class="mf">0.</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">MASK</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span><span class="n">diagonal</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c"># 0 offset from the diagonal</span>
+
+<span class="n">tau</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+
+<span class="c"># Using PyTorch Module</span>
+<span class="c"># API expects [B, heads, L, D]; here head dim = 1</span>
+<span class="n">O</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">scaled_dot_product_attention</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">K</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">V</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">attn_mask</span><span class="o">=</span><span class="n">MASK</span><span class="p">,</span> <span class="n">dropout_p</span><span class="o">=</span><span class="n">dropout_p</span><span class="p">)</span>
+<span class="n">O</span> <span class="o">=</span> <span class="n">O</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c"># Handcoded batch attention</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">scores</span><span class="o">.</span><span class="n">masked_fill_</span><span class="p">(</span><span class="o">~</span><span class="n">MASK</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s">'-inf'</span><span class="p">))</span> <span class="c"># apply mask</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c"># dropout on some attention weights </span>
+<span class="n">keep_prob</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">dropout_p</span>
+<span class="n">dropout_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">rand_like</span><span class="p">(</span><span class="n">P</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">keep_prob</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">P</span> <span class="o">*</span> <span class="n">dropout_mask</span> <span class="o">/</span> <span class="n">keep_prob</span> <span class="c"># We divide by keep_prob so that we don't have to multiply this factor at the test time</span>
+
+<span class="n">O_manual</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"O == O_manual (True if dropout_p = 0.0, current dropout: {dropout_p}): "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">O_manual</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+
+
+<span class="c">## Computing backwards</span>
+
+<span class="c"># simulate gradients of loss wrt O</span>
+<span class="n">dO</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand_like</span><span class="p">(</span><span class="n">O</span><span class="p">)</span>
+<span class="n">O</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">dO</span><span class="p">)</span>
+<span class="n">dQ</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">grad</span> 
+<span class="n">dK</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">grad</span> 
+<span class="n">dV</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">grad</span>
+
+<span class="n">dV_manual</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">dO</span><span class="p">)</span>
+<span class="n">dP</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dO</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">dP</span> <span class="o">=</span> <span class="n">dP</span> <span class="o">*</span> <span class="n">dropout_mask</span> <span class="o">/</span> <span class="n">keep_prob</span>
+<span class="n">dScores</span> <span class="o">=</span> <span class="n">P</span> <span class="o">*</span> <span class="p">(</span><span class="n">dP</span> <span class="o">-</span> <span class="p">(</span><span class="n">dP</span> <span class="o">*</span> <span class="n">P</span><span class="p">)</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">dQ_manual</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dScores</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span> <span class="c"># multiply the scaling factor </span>
+<span class="n">dK_manual</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dScores</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">Q</span><span class="p">)</span> <span class="c"># multiply the scaling factor </span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"dV == dV_manual: "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">dV</span><span class="p">,</span> <span class="n">dV_manual</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"dQ == dQ_manual: "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">dQ</span><span class="p">,</span> <span class="n">dQ_manual</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"dK == dK_manual: "</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">dK</span><span class="p">,</span> <span class="n">dK_manual</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))</span>
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>O == O_manual (True if dropout_p = 0.0, current dropout: 0.0):  True
+dV == dV_manual:  True
+dQ == dQ_manual:  True
+dK == dK_manual:  True
+</code></pre></div></div>
+
+
+          
+          <!-- Series Navigation -->
+            <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+          </div>
+          </d-article>
+          <d-appendix>
+            <d-footnote-list></d-footnote-list>
+            <d-citation-list></d-citation-list>
+          </d-appendix>
+          <d-bibliography src="/vendor/bibliography/llm.bib"></d-bibliography>
+          <script src="https://giscus.app/client.js"
+              data-repo="pg2455/pg2455.github.io"
+              data-repo-id="MDEwOlJlcG9zaXRvcnk3MTMxMzI3MQ=="
+              data-category="General"
+              data-category-id="DIC_kwDOBEAnd84CqnG0"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="light_high_contrast"
+              data-lang="en"
+              data-loading="lazy"
+              crossorigin="anonymous"
+              async>
+          </script>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/share-popover.js"></script>
+
+  <footer class="fixed-bottom-footer">
+    <div class="jumbotron mt-0" id="footer-container">
+      Powered by <a href="http://jekyllrb.com">Jekyll</a>, blog template adapted from <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+    </div>
+  </footer>
+
+  <script src="/js/distill.js"></script>
+</body>
+
+
+  <script src="/js/sp.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/vendor/js/jquery.min.js"></script>
+  <script src="/vendor/js/bootstrap.min.js"></script>
+  <script src="/vendor/js/anchor.min.js"></script>
+  <script src="/vendor/js/jquery.toc.js"></script>
+
+  <!-- Prism.js core and Python language support -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+
+  <script type="text/javascript">
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-187458159-1', 'auto');
+   ga('send', 'pageview');
+
+   $("#toc").toc({
+       'headings': 'h2,h3'
+   });
+   anchors.add('h2,h3');
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if there is a hash in the URL
+        const hash = window.location.hash;
+        if (hash) {
+            // Find the element that matches the hash
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                // Add the section-highlight class to the element
+                targetElement.classList.add('section-highlight');
+                
+                // If there are collapsible sections related to this hash, open them
+                const relatedSections = ['lessons', 'practical', 'objective'];
+                relatedSections.forEach(section => {
+                    const elem = document.getElementById(section + '_' + hash.slice(1));
+                    if (elem) {
+                        elem.style.display = 'block'; // Change display style to 'block' to show the section
+                    }
+                });
+
+                // Set a timeout to remove the highlight after 5 seconds
+                setTimeout(() => {
+                    targetElement.classList.remove('section-highlight');
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        }
+    });
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+    // Only add button if code block has a class starting with 'language-'
+    var hasLanguageClass = Array.from(codeBlock.classList).some(function(cls) {
+      return cls.startsWith('language-');
+    });
+    if (!hasLanguageClass) {
+      return;
+    }
+    // Create the button
+    var button = document.createElement('button');
+    button.className = 'copy-code-btn';
+    button.type = 'button';
+    button.title = 'Copy to clipboard';
+    // Clipboard SVG icon
+    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+    // Create a wrapper for positioning
+    var pre = codeBlock.parentNode;
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    button.addEventListener('click', function() {
+      var text = codeBlock.innerText;
+      navigator.clipboard.writeText(text).then(function() {
+        button.innerHTML = '✓';
+        setTimeout(function() {
+          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        }, 1200);
+      });
+    });
+  });
+});
+</script>
+
+</body>
+
+</html>

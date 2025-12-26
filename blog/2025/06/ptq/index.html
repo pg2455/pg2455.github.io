@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Notes on Post-Training Quantization</title>
+
+  <meta name="author" content="Prateek Gupta" />
+  <meta name="description" content="Prateek Gupta | Personal Website" />
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="/vendor/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d7c6b63fdf.js" crossorigin="anonymous"></script>
+  <link href="/vendor/css/academicons.min.css" rel="stylesheet">
+  <link href="/vendor/pygments/monokai.css" rel="stylesheet">
+  <link href="/css/bamos.css" rel="stylesheet">
+  <link href="/css/updates.css" rel="stylesheet">
+  <link href="/css/sharingbuttons.css" rel="stylesheet">
+  <link href="/css/pgupta.css" rel="stylesheet">
+
+  <!-- Prism.js CSS (default theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+
+  <!-- MathJax -->
+  
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams',
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[','\\]']],
+        packages: {'[+]': ['ams']},
+        processEscapes: true
+      },
+      svg: {
+          fontCache: 'global'
+      }
+    };
+  </script>
+
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+
+  <script src="/vendor/js/distillpub/template.v2.js"></script>
+  <script src="/vendor/js/distillpub/transforms.v2.js"></script>
+  
+
+  
+  <style type="text/css">
+    h3, h2, h1 {
+  padding-top: 0!important;
+}
+
+  </style>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div class="navbar navbar-default">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="navbar-header">
+						  <a href="/" class="navbar-brand">
+                  <div>
+                      <img src="/images/me-face.png" class="img-circle"></img>
+                      Prateek Gupta
+                  </div>
+              </a>
+						<button class="navbar-toggle" type="button" data-toggle="collapse"
+                    data-target="#navbar-main">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="navbar-collapse collapse" id="navbar-main">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="/">About</a>
+							</li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      Teaching <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/teaching/tutorials">Tutorials</a></li>
+                      <li><a href="/teaching/courses">Courses</a></li>
+                      <li><a href="/teaching/hackathons">Hackathons</a></li>
+                  </ul>
+              </li>
+              
+  							<li>
+  								<a href="/blog/">Blog</a>
+  							</li>
+              
+						</ul>
+						<ul class="nav navbar-nav navbar-right" style="font-size: 1.5em">
+							<li>
+								<a href="http://github.com/pg2455" target="_blank" class="social-icon">
+									<i class="fab fa-github"></i></a>
+							</li>
+              <li>
+                <a href="https://scholar.google.com/citations?user=fvn0COgAAAAJ" target="_blank" class="social-icon">
+                  <i class="ai ai-google-scholar"></i></a>
+              </li>
+							<li>
+								<a href="http://twitter.com/pguptacs" target="_blank" class="social-icon">
+									<i class="fab fa-x-twitter"></i></a>
+							</li>
+              <li>
+                <a href="http://www.linkedin.com/in/link2prateek" target="_blank" class="social-icon">
+                  <i class="fab fa-linkedin"></i></a>
+              </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  <head>
+  <link rel="stylesheet" href="/css/distill.css">
+</head>
+
+<body>
+  <div class="distill-flex-container">
+    <aside class="distill-toc-sidebar">
+      <my-toc></my-toc>
+    </aside>
+    <main class="distill-main-content">
+      <div class="row">
+        <div class="col-md">
+          <d-title>
+            <h1>Notes on Post-Training Quantization</h1>
+            <p>I really wanted to understand the methods in PTQ so I spent a few days. It was not as easy to understand this landscape. Here is what I learned.</p>
+            <p>
+              <span class="meta-date" style="color: #888; font-size: 0.9em;">
+                <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 0.3em;"></i>June 21, 2025
+              </span>
+              
+            </p>
+          </d-title>
+          <!-- Mobile TOC Accordion (no duplicate heading) -->
+          <div class="mobile-toc-container" id="mobile-toc-container" style="margin-bottom: 18px; margin-top: 18px;">
+            <button class="mobile-toc-toggle-btn" id="mobile-toc-toggle-btn" aria-controls="mobile-toc-content" aria-expanded="false" style="margin-bottom: 0;">
+              Table of Contents <span style="float:right;">&#x25BC;</span>
+            </button>
+            <div class="mobile-toc-content" id="mobile-toc-content" style="background: #f8f9fb; border-top: 1px solid #eee; border-radius: 0 0 6px 6px; margin-top: 0;">
+              <my-toc></my-toc>
+            </div>
+          </div>
+          <d-article>
+            <!-- Summary Block -->
+          
+          <!-- Series Navigation -->
+          <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+          </div>
+          
+            <p>Post-training quantization (PTQ) <strong>reduces model size and speeds up inference</strong> by converting <strong>high-precision weights and/or activations to low-bit integers</strong> — with <strong>minimal or no retraining</strong>.</p>
+
+<h2 id="1-what-is-quantization">1. What is Quantization?</h2>
+
+<p>Quantization maps high-precision floating-point values to <strong>integer representations in N bits</strong> using:</p>
+
+<ul>
+  <li><strong>Scale:</strong> \(s\)</li>
+  <li><strong>Zero-point</strong> \(z\): Used in asymmetric quantization to adjust the range, set to 0 for symmetric quantization</li>
+</ul>
+
+<p>The standard formula:</p>
+
+<p>\[
+x_q = \text{Quantized value} = \left\lfloor \frac{x}{s} \right\rceil + z
+\]</p>
+
+<p>To recover:</p>
+
+<p>\[
+\text{Dequantized value} = s \cdot (x_q - z)
+\]</p>
+
+<blockquote>
+  <p><strong>Dequantization</strong> is required before operations like softmax, LayerNorm, or nonlinear activations.</p>
+</blockquote>
+
+<p><strong>Note:</strong> Typically, quantization involves creating uniform bins, but <strong>NF-4 (Normalfloat-4)</strong>, introduced by \(\text{QLoRA}\) <d-cite key="dettmers2023qlora"></d-cite>, employs non-uniform bins. In NF-4, each 4-bit integer is mapped to a specific floating-point value. You can explore the <a href="https://github.com/bitsandbytes-foundation/bitsandbytes/blob/25abf8d95f8a33f38e2ce6f637768b442379ccd9/csrc/kernels.cu#L223-L329">implementation details here</a> and review the <a href="https://ar5iv.labs.arxiv.org/html/2306.06965">derivation in this note</a> <d-cite key="yoshida2023nf4"></d-cite>.</p>
+
+<h2 id="2-what-can-be-quantized">2. What Can Be Quantized?</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Weights</strong></td>
+      <td>Common in all PTQ setups</td>
+    </tr>
+    <tr>
+      <td><strong>Weights + Activations</strong></td>
+      <td>Supports full INT inference but requires offline calibration</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Granularity:</strong></p>
+
+<p>Due to the presence of outliers, fine-grained quantization is particularly advantageous for efficiently utilizing available bits in INT.</p>
+
+<ul>
+  <li><strong>Tensor-wise</strong>: one scale/zeropoint per tensor</li>
+  <li><strong>Row-wise / Channel-wise</strong>: parameters for each row, column; provides better precision</li>
+  <li><strong>Block-wise</strong>: \(N \times N\) blocks; common in GGUF, GPTQ (e.g., 32 weights per block)</li>
+</ul>
+
+<h2 id="3-methods">3. Methods</h2>
+
+<h3 id="a-weights-only-quantization">A. <strong>Weights-Only Quantization</strong></h3>
+
+<p>Used when:</p>
+
+<ul>
+  <li>Storage/memory reduction is primary</li>
+  <li>Full-INT computation is unnecessary; kernels fuse the dequantization of weights with the multiplication process.</li>
+</ul>
+
+<h4 id="examples">Examples:</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Key Idea</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>GPTQ</strong> <d-cite key="frantar2022gptq"></d-cite></td>
+      <td>Second-order optimization for quant error</td>
+      <td>Uses block-wise quantization; highly accurate</td>
+    </tr>
+    <tr>
+      <td><strong>GGML/GGUF</strong></td>
+      <td>Block quantization with int Look up tabless</td>
+      <td>In <code class="highlighter-rouge">Q4_0</code>, <code class="highlighter-rouge">Q5_1</code>, etc.</td>
+    </tr>
+    <tr>
+      <td><strong>NF4 + double quant</strong></td>
+      <td>Non-uniform binning, 2-layer quant</td>
+      <td>Matches weight distribution better</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="gguf-formats">GGUF formats</h4>
+
+<p>If the target bits are N:</p>
+
+<ul>
+  <li><strong>Q_N_0</strong>: Uses the absmax method</li>
+  <li><strong>Q_N_1</strong>: Utilizes the zero point method</li>
+  <li><strong>Q_N_K</strong>: Employs double quant, i.e., quantize the scales; if N=4, uses NF-4</li>
+  <li><strong>Q_N_M</strong>: critical layers are given higher precision, leading to mixed precision inference.</li>
+</ul>
+
+<h3 id="b-quantizing-activations">B. <strong>Quantizing Activations</strong></h3>
+
+<p>Needed for full INT arithmetic (e.g., INT8 matmuls). Requires:</p>
+
+<ul>
+  <li>Calibration on representative data (offline)</li>
+  <li>Handling dynamic ranges</li>
+</ul>
+
+<h4 id="examples-1">Examples:</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Key Idea</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>SmoothQuant</strong> <d-cite key="xiao2023smoothquant"></d-cite></td>
+      <td>Learn input-output scale alignment</td>
+    </tr>
+    <tr>
+      <td><strong>ZeroQuant</strong> <d-cite key="yao2022zeroquant"></d-cite></td>
+      <td>Layer-wise group quant + distill</td>
+    </tr>
+    <tr>
+      <td><strong>LLM.int8()</strong> <d-cite key="dettmers2022llm"></d-cite></td>
+      <td>Outlier-aware activation quant</td>
+    </tr>
+  </tbody>
+</table>
+
+
+          
+          <!-- Series Navigation -->
+            <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+          </div>
+          </d-article>
+          <d-appendix>
+            <d-footnote-list></d-footnote-list>
+            <d-citation-list></d-citation-list>
+          </d-appendix>
+          <d-bibliography src="/vendor/bibliography/llm.bib"></d-bibliography>
+          <script src="https://giscus.app/client.js"
+              data-repo="pg2455/pg2455.github.io"
+              data-repo-id="MDEwOlJlcG9zaXRvcnk3MTMxMzI3MQ=="
+              data-category="General"
+              data-category-id="DIC_kwDOBEAnd84CqnG0"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="light_high_contrast"
+              data-lang="en"
+              data-loading="lazy"
+              crossorigin="anonymous"
+              async>
+          </script>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/share-popover.js"></script>
+
+  <footer class="fixed-bottom-footer">
+    <div class="jumbotron mt-0" id="footer-container">
+      Powered by <a href="http://jekyllrb.com">Jekyll</a>, blog template adapted from <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+    </div>
+  </footer>
+
+  <script src="/js/distill.js"></script>
+</body>
+
+
+  <script src="/js/sp.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/vendor/js/jquery.min.js"></script>
+  <script src="/vendor/js/bootstrap.min.js"></script>
+  <script src="/vendor/js/anchor.min.js"></script>
+  <script src="/vendor/js/jquery.toc.js"></script>
+
+  <!-- Prism.js core and Python language support -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+
+  <script type="text/javascript">
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-187458159-1', 'auto');
+   ga('send', 'pageview');
+
+   $("#toc").toc({
+       'headings': 'h2,h3'
+   });
+   anchors.add('h2,h3');
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if there is a hash in the URL
+        const hash = window.location.hash;
+        if (hash) {
+            // Find the element that matches the hash
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                // Add the section-highlight class to the element
+                targetElement.classList.add('section-highlight');
+                
+                // If there are collapsible sections related to this hash, open them
+                const relatedSections = ['lessons', 'practical', 'objective'];
+                relatedSections.forEach(section => {
+                    const elem = document.getElementById(section + '_' + hash.slice(1));
+                    if (elem) {
+                        elem.style.display = 'block'; // Change display style to 'block' to show the section
+                    }
+                });
+
+                // Set a timeout to remove the highlight after 5 seconds
+                setTimeout(() => {
+                    targetElement.classList.remove('section-highlight');
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        }
+    });
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+    // Only add button if code block has a class starting with 'language-'
+    var hasLanguageClass = Array.from(codeBlock.classList).some(function(cls) {
+      return cls.startsWith('language-');
+    });
+    if (!hasLanguageClass) {
+      return;
+    }
+    // Create the button
+    var button = document.createElement('button');
+    button.className = 'copy-code-btn';
+    button.type = 'button';
+    button.title = 'Copy to clipboard';
+    // Clipboard SVG icon
+    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+    // Create a wrapper for positioning
+    var pre = codeBlock.parentNode;
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    button.addEventListener('click', function() {
+      var text = codeBlock.innerText;
+      navigator.clipboard.writeText(text).then(function() {
+        button.innerHTML = '✓';
+        setTimeout(function() {
+          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        }, 1200);
+      });
+    });
+  });
+});
+</script>
+
+</body>
+
+</html>

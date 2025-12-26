@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Contact tracing as a personalization framework</title>
+
+  <meta name="author" content="Prateek Gupta" />
+  <meta name="description" content="Prateek Gupta | Personal Website" />
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="/vendor/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d7c6b63fdf.js" crossorigin="anonymous"></script>
+  <link href="/vendor/css/academicons.min.css" rel="stylesheet">
+  <link href="/vendor/pygments/monokai.css" rel="stylesheet">
+  <link href="/css/bamos.css" rel="stylesheet">
+  <link href="/css/updates.css" rel="stylesheet">
+  <link href="/css/sharingbuttons.css" rel="stylesheet">
+  <link href="/css/pgupta.css" rel="stylesheet">
+
+  <!-- Prism.js CSS (default theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+
+  <!-- MathJax -->
+  
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams',
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[','\\]']],
+        packages: {'[+]': ['ams']},
+        processEscapes: true
+      },
+      svg: {
+          fontCache: 'global'
+      }
+    };
+  </script>
+
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+
+  <script src="/vendor/js/distillpub/template.v2.js"></script>
+  <script src="/vendor/js/distillpub/transforms.v2.js"></script>
+  
+
+  
+  <style type="text/css">
+    h3, h2, h1 {
+  padding-top: 0!important;
+}
+
+  </style>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div class="navbar navbar-default">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="navbar-header">
+						  <a href="/" class="navbar-brand">
+                  <div>
+                      <img src="/images/me-face.png" class="img-circle"></img>
+                      Prateek Gupta
+                  </div>
+              </a>
+						<button class="navbar-toggle" type="button" data-toggle="collapse"
+                    data-target="#navbar-main">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="navbar-collapse collapse" id="navbar-main">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="/">About</a>
+							</li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      Teaching <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/teaching/tutorials">Tutorials</a></li>
+                      <li><a href="/teaching/courses">Courses</a></li>
+                      <li><a href="/teaching/hackathons">Hackathons</a></li>
+                  </ul>
+              </li>
+              
+  							<li>
+  								<a href="/blog/">Blog</a>
+  							</li>
+              
+						</ul>
+						<ul class="nav navbar-nav navbar-right" style="font-size: 1.5em">
+							<li>
+								<a href="http://github.com/pg2455" target="_blank" class="social-icon">
+									<i class="fab fa-github"></i></a>
+							</li>
+              <li>
+                <a href="https://scholar.google.com/citations?user=fvn0COgAAAAJ" target="_blank" class="social-icon">
+                  <i class="ai ai-google-scholar"></i></a>
+              </li>
+							<li>
+								<a href="http://twitter.com/pguptacs" target="_blank" class="social-icon">
+									<i class="fab fa-x-twitter"></i></a>
+							</li>
+              <li>
+                <a href="http://www.linkedin.com/in/link2prateek" target="_blank" class="social-icon">
+                  <i class="fab fa-linkedin"></i></a>
+              </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  <head>
+  <link rel="stylesheet" href="/css/distill.css">
+</head>
+
+<body>
+  <div class="distill-flex-container">
+    <aside class="distill-toc-sidebar">
+      <my-toc></my-toc>
+    </aside>
+    <main class="distill-main-content">
+      <div class="row">
+        <div class="col-md">
+          <d-title>
+            <h1>Contact tracing as a personalization framework</h1>
+            <p></p>
+            <p>
+              <span class="meta-date" style="color: #888; font-size: 0.9em;">
+                <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 0.3em;"></i>April  8, 2021
+              </span>
+              
+            </p>
+          </d-title>
+          <!-- Mobile TOC Accordion (no duplicate heading) -->
+          <div class="mobile-toc-container" id="mobile-toc-container" style="margin-bottom: 18px; margin-top: 18px;">
+            <button class="mobile-toc-toggle-btn" id="mobile-toc-toggle-btn" aria-controls="mobile-toc-content" aria-expanded="false" style="margin-bottom: 0;">
+              Table of Contents <span style="float:right;">&#x25BC;</span>
+            </button>
+            <div class="mobile-toc-content" id="mobile-toc-content" style="background: #f8f9fb; border-top: 1px solid #eee; border-radius: 0 0 6px 6px; margin-top: 0;">
+              <my-toc></my-toc>
+            </div>
+          </div>
+          <d-article>
+            <!-- Summary Block -->
+          
+          <!-- Series Navigation -->
+          <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+              <span style="float:right"><a style="text-decoration: none" href="/blog/2021/04/ct-1"><em>Why do we need contact tracing?</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            
+          </div>
+          
+          <hr style="margin: 0 0 0 0; padding-top: 0; padding-bottom: 2px; border-top: 2px solid #e0e0e0;">
+          
+            <p>The Covid-19 pandemic has forced policy experts to make challenging trade-offs between public health and economic activity.
+As a result, countries have gone through a series of lockdowns, experiencing the perils of a yo-yo economy.
+Digital Contact Tracing should have been an obvious technical solution to such a globally prevalent problem, i.e., to control the disease outbreak yet allowing regular daily activity.
+But it failed. Why?
+Perhaps, we lack a rigorous understanding of contact tracing.
+It involves people belonging to various professions spanning epidemiology to computer science and behavioural studies.
+Perhaps, there isn’t a rigorous framework that combines these disciplines and gives everyone an entry point to explore their ideas and improve contact tracing.
+We need a framework to help us better respond to a future pandemic (please, not again).</p>
+
+<p>As a team of researchers in computer science, machine learning, and epidemiology, we worked extensively to understand how contact tracing technology can be improved further.
+As a result, we proposed a framework called <em>Proactive Contact Tracing</em> that we developed and evaluated with a simulator.
+<a href="https://mila.quebec/en/project/covi/">While all of the work is in the public domain</a>, in this series of posts, I will attempt to explain the essence of contact tracing, argue that it is primarily a personalization problem, lay down the building blocks of such a framework, and illustrate how existing methods are just different manifestations of this framework.
+I will conclude with future directions and the necessity to improve the framework.</p>
+
+<p>Read along for more details</p>
+
+<ul>
+  <li><a href="/blog/2021/ct-1/">Why do we need contact tracing?</a></li>
+  <li><a href="/blog/2021/ct-2/">Search for a unified framework</a></li>
+  <li><a href="/blog/2021/ct-3/">Framework in practice</a></li>
+  <li><a href="/blog/2021/ct-4/">Deep learning for the framework</a></li>
+  <li><a href="/blog/2021/ct-5/">Limitations and Open Questions</a></li>
+  <li><a href="/blog/2021/ct-6/"> Why should we care now?</a></li>
+</ul>
+
+<h2 id="acknowledgements">Acknowledgements</h2>
+
+<p>I would like to thank <a href="https://yoshuabengio.org/profile/" target="_blank">Prof. Yoshua Bengio</a> for <a href="https://yoshuabengio.org/2020/06/11/science-and-innovation-in-times-of-a-pandemic/" target="_blank">initiating this massive effort to deliver an innovative contact tracing solution</a>.
+His involvement and dedication to solve the problem were crucial to navigate the gory complexities involved in this entire project.
+As a researcher, it allowed me to use my skills to contribute to social good and taught me to be a better cross-disciplinary collaborator.</p>
+
+<p>This series of articles wouldn’t have been possible without a massive collaboration.
+It was heartwarming to see how everyone involved in the project was ready to devote their time and skills to develop the <a href="https://mila.quebec/en/project/covi/">COVI</a> mobile app that implements the framework discussed in this blog series.
+Without their involvement, it would not have been possible to iterate and build this framework.</p>
+
+<p>The whole project evolved organically, with people taking responsibility for their share of work.
+It naturally involved massive cross-disciplinary brainstorming sessions.
+As a result, our first 2-3 months were spent understanding the objectives, constraints, and challenges of an appropriate Bluetooth communication protocol.
+Thus, I would like to thank <a href="#people-covi-paper">all the people involved in COVI White Paper<d-cite key="alsdurf2020covi"></d-cite><a></a> for their time to engage in fruitful discussions.
+It wouldn’t have been possible to sustain the momentum without their involvement.</a></p>
+
+<p>After the Québec government nixed the idea of using the contact tracing app altogether, subsequent months were involved in prototyping the framework using the simulator.
+We hoped to put our ideas in the public domain to be improved further.
+These efforts culminated in <a href="https://github.com/mila-iqia/COVI-AgentSim" target="_blank">COVI-AgentSim<d-cite key="gupta2020covi"></d-cite></a>, a simulator to prototype our proposed framework, and <a href="https://github.com/mila-iqia/COVI-AgentSim" target="_blank">COVI-ML</a><d-cite key="bengio2020predicting"></d-cite>, a potential deep learning solution to execute the framework.
+Thus, I would like to thank <a href="#people-covi-all">the people</a> involved in these efforts for their time, energy, perseverance, and creativity.
+A special thanks to <a href="http://www.teganmaharaj.com/">Tegan Maharaj</a>, <a href="https://ei.is.tuebingen.mpg.de/person/nrahaman">Nasim Rahaman</a>, <a href="http://www.martin-weiss.me/">Martin Weiss</a>, <a href="https://www.linkedin.com/in/hannahalsdurf/?originalSubdomain=ca">Hannah Alsdurf</a>, <a href="https://www.linkedin.com/in/nanorminoyan/?originalSubdomain=ca">Nanor Minoyan</a>, <a href="https://www.linkedin.com/in/soren-harnois-leblanc-rd-msc-phd-c-158050194/?originalSubdomain=ca">Soren Harnois Leblanc</a>, <a href="https://www.linkedin.com/in/joanna-merckx-md-msc-3b1a2a147/?originalSubdomain=ca">Joanna Merckx</a>, <a href="https://www.linkedin.com/in/andrew-robert-williams/?originalSubdomain=ca">Andrew Williams</a>, <a href="https://www.linkedin.com/in/plstcharles/?originalSubdomain=ca">Pierre-Luc St. Charles</a>, and <a href="https://vict0rs.ch/about/">Victor Schmidt</a> for slogging together and managing various aspects of this work.</p>
+
+<p>Lastly, all of the above works wouldn’t have been possible without the funding from NSERC, CIHR, CIFAR, FRQNT, Scale AI, and compute resources of MPI-IS cluster, Compute Canada &amp; Calcul Quebec, in particular, the Beluga cluster.</p>
+
+<p>Finally, I’d like to thank <a href="https://yoshuabengio.org/profile/" target="_blank">Prof. Yoshua Bengio</a>, <a href="https://www.rlf.org.uk/fellowships/tim-ecott/" target="_blank">Tim Ecott</a> (RLF Fellow, Exeter College), <a href="https://www.is.mpg.de/~bs" target="_blank">Prof. Bernhard Schölkopf</a>, and  <a href="https://www.linkedin.com/in/yang-zhang-616a44190/?originalSubdomain=ca" target="_blank">Yang Zhang</a> for their helpful feedback in writing this blog.</p>
+
+<h2 id="people">People</h2>
+
+<h5 id="people-covi-paper">COVI White paper</h5>
+
+<p>Hannah Alsdurf, Edmond Belliveau, Yoshua Bengio, Tristan Deleu, Daphne Ippolito, Richard Janda, Max Jarvie, Tyler Kolody, Sekoul Krastev, Tegan Maharaj, Robert Obryk, Dan Pilat, Valérie Pisano, Benjamin Prud’homme, Meng Qu, Nasim Rahaman, Irina Rish, Jean-François Rousseau, Victor Schmidt, Abhinav Sharma, Brooke Struck, Jian Tang, Martin Weiss, Yun William Yu, Sumukh Aithal, Behrouz Babaki, Henri Barbeau, Edmond Belliveau, Vincent Berenz, Olexa Bilaniuk, Amélie Bissonnette-Montminy, Pierre Boivin, Emélie Brunet, Joé Bussière, Gaétan Marceau Caron, René Cadieux, Pierre Luc Carrier, Hyunghoon Cho, Anthony Courchesne, Linda Dupuis, Justine Gauthier, Joumana Ghosn, Gauthier Gidel, Marc-Henri Gires, Simon Guist, Deborah Hinton, Bogdan Hlveca, Bernd Holznagel, Samuel Huberman, Shrey Jain, Jameson Jones-Doyle, Dilshan Kathriarachchi, Giancarlo Kerg, Soundarya Krishnan, David Lazar, Frédéric Laurin, Sacha Leprêtre, Stéphane Létourneau, Alexandre Limoges, Danielle Langlois, Vincent Martineau, Lucas Mathieu, Philippe Matte, Rim Mohsen, Eilif Muller, Ermanno Napolitano,  David Noreau, Ivan Oreshnikov, Satya Ortiz-Gagné, Jean-Claude Passy, Marie Pellat, Dan Popovici, Daniel Powell, Brad Rabin, Catherine Saine, Shanya Sharma, Kareem Shehata, Pierre-Luc St-Charles, Marie-Claude Surprenant, Mélisande Teng, Julien Tremblay-Gravel, David Wu, and Lenka Zdeborova</p>
+
+<h5 id="people-covi-all"> COVI-AgentSim &amp; COVI-ML</h5>
+
+<p>Tegan Maharaj, Martin Weiss, Nasim Rahaman, Hannah Alsdurf, Abhinav Sharma, Nanor Minoyan, Soren Harnois Leblanc, Victor Schmidt,  Pierre-Luc St. Charles, Tristan Deleu, Andrew Williams, Akshay Patel, Meng Qu, Olexa Bilaniuk, Gaétan Marceau Caron, Pierre Luc Carrier, Satya Ortiz-Gagné,  Marc-Andre Rousseau, David Buckeridge, Joumana Ghosn, Yang Zhang,  Bernhard Schölkopf, Jian Tang, Irina Rish, Christopher Pal, Joanna Merckx,  Eilif B. Muller, Yoshua Bengio</p>
+
+          
+          <!-- Series Navigation -->
+            <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+              <span style="float:right"><a style="text-decoration: none" href="/blog/2021/04/ct-1"><em>Why do we need contact tracing?</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            
+          </div>
+          </d-article>
+          <d-appendix>
+            <d-footnote-list></d-footnote-list>
+            <d-citation-list></d-citation-list>
+          </d-appendix>
+          <d-bibliography src="/vendor/bibliography/ct.bib"></d-bibliography>
+          <script src="https://giscus.app/client.js"
+              data-repo="pg2455/pg2455.github.io"
+              data-repo-id="MDEwOlJlcG9zaXRvcnk3MTMxMzI3MQ=="
+              data-category="General"
+              data-category-id="DIC_kwDOBEAnd84CqnG0"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="light_high_contrast"
+              data-lang="en"
+              data-loading="lazy"
+              crossorigin="anonymous"
+              async>
+          </script>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/share-popover.js"></script>
+
+  <footer class="fixed-bottom-footer">
+    <div class="jumbotron mt-0" id="footer-container">
+      Powered by <a href="http://jekyllrb.com">Jekyll</a>, blog template adapted from <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+    </div>
+  </footer>
+
+  <script src="/js/distill.js"></script>
+</body>
+
+
+  <script src="/js/sp.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/vendor/js/jquery.min.js"></script>
+  <script src="/vendor/js/bootstrap.min.js"></script>
+  <script src="/vendor/js/anchor.min.js"></script>
+  <script src="/vendor/js/jquery.toc.js"></script>
+
+  <!-- Prism.js core and Python language support -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+
+  <script type="text/javascript">
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-187458159-1', 'auto');
+   ga('send', 'pageview');
+
+   $("#toc").toc({
+       'headings': 'h2,h3'
+   });
+   anchors.add('h2,h3');
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if there is a hash in the URL
+        const hash = window.location.hash;
+        if (hash) {
+            // Find the element that matches the hash
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                // Add the section-highlight class to the element
+                targetElement.classList.add('section-highlight');
+                
+                // If there are collapsible sections related to this hash, open them
+                const relatedSections = ['lessons', 'practical', 'objective'];
+                relatedSections.forEach(section => {
+                    const elem = document.getElementById(section + '_' + hash.slice(1));
+                    if (elem) {
+                        elem.style.display = 'block'; // Change display style to 'block' to show the section
+                    }
+                });
+
+                // Set a timeout to remove the highlight after 5 seconds
+                setTimeout(() => {
+                    targetElement.classList.remove('section-highlight');
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        }
+    });
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+    // Only add button if code block has a class starting with 'language-'
+    var hasLanguageClass = Array.from(codeBlock.classList).some(function(cls) {
+      return cls.startsWith('language-');
+    });
+    if (!hasLanguageClass) {
+      return;
+    }
+    // Create the button
+    var button = document.createElement('button');
+    button.className = 'copy-code-btn';
+    button.type = 'button';
+    button.title = 'Copy to clipboard';
+    // Clipboard SVG icon
+    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+    // Create a wrapper for positioning
+    var pre = codeBlock.parentNode;
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    button.addEventListener('click', function() {
+      var text = codeBlock.innerText;
+      navigator.clipboard.writeText(text).then(function() {
+        button.innerHTML = '✓';
+        setTimeout(function() {
+          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        }, 1200);
+      });
+    });
+  });
+});
+</script>
+
+</body>
+
+</html>

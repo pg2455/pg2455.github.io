@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Understanding How Floating Point Representations Work</title>
+
+  <meta name="author" content="Prateek Gupta" />
+  <meta name="description" content="Prateek Gupta | Personal Website" />
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="/vendor/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d7c6b63fdf.js" crossorigin="anonymous"></script>
+  <link href="/vendor/css/academicons.min.css" rel="stylesheet">
+  <link href="/vendor/pygments/monokai.css" rel="stylesheet">
+  <link href="/css/bamos.css" rel="stylesheet">
+  <link href="/css/updates.css" rel="stylesheet">
+  <link href="/css/sharingbuttons.css" rel="stylesheet">
+  <link href="/css/pgupta.css" rel="stylesheet">
+
+  <!-- Prism.js CSS (default theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+
+  <!-- MathJax -->
+  
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams',
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[','\\]']],
+        packages: {'[+]': ['ams']},
+        processEscapes: true
+      },
+      svg: {
+          fontCache: 'global'
+      }
+    };
+  </script>
+
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+
+  <script src="/vendor/js/distillpub/template.v2.js"></script>
+  <script src="/vendor/js/distillpub/transforms.v2.js"></script>
+  
+
+  
+  <style type="text/css">
+    h3, h2, h1 {
+  padding-top: 0!important;
+}
+
+  </style>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div class="navbar navbar-default">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="navbar-header">
+						  <a href="/" class="navbar-brand">
+                  <div>
+                      <img src="/images/me-face.png" class="img-circle"></img>
+                      Prateek Gupta
+                  </div>
+              </a>
+						<button class="navbar-toggle" type="button" data-toggle="collapse"
+                    data-target="#navbar-main">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="navbar-collapse collapse" id="navbar-main">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="/">About</a>
+							</li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      Teaching <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/teaching/tutorials">Tutorials</a></li>
+                      <li><a href="/teaching/courses">Courses</a></li>
+                      <li><a href="/teaching/hackathons">Hackathons</a></li>
+                  </ul>
+              </li>
+              
+  							<li>
+  								<a href="/blog/">Blog</a>
+  							</li>
+              
+						</ul>
+						<ul class="nav navbar-nav navbar-right" style="font-size: 1.5em">
+							<li>
+								<a href="http://github.com/pg2455" target="_blank" class="social-icon">
+									<i class="fab fa-github"></i></a>
+							</li>
+              <li>
+                <a href="https://scholar.google.com/citations?user=fvn0COgAAAAJ" target="_blank" class="social-icon">
+                  <i class="ai ai-google-scholar"></i></a>
+              </li>
+							<li>
+								<a href="http://twitter.com/pguptacs" target="_blank" class="social-icon">
+									<i class="fab fa-x-twitter"></i></a>
+							</li>
+              <li>
+                <a href="http://www.linkedin.com/in/link2prateek" target="_blank" class="social-icon">
+                  <i class="fab fa-linkedin"></i></a>
+              </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  <head>
+  <link rel="stylesheet" href="/css/distill.css">
+</head>
+
+<body>
+  <div class="distill-flex-container">
+    <aside class="distill-toc-sidebar">
+      <my-toc></my-toc>
+    </aside>
+    <main class="distill-main-content">
+      <div class="row">
+        <div class="col-md">
+          <d-title>
+            <h1>Understanding How Floating Point Representations Work</h1>
+            <p></p>
+            <p>
+              <span class="meta-date" style="color: #888; font-size: 0.9em;">
+                <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 0.3em;"></i>July 24, 2025
+              </span>
+              
+            </p>
+          </d-title>
+          <!-- Mobile TOC Accordion (no duplicate heading) -->
+          <div class="mobile-toc-container" id="mobile-toc-container" style="margin-bottom: 18px; margin-top: 18px;">
+            <button class="mobile-toc-toggle-btn" id="mobile-toc-toggle-btn" aria-controls="mobile-toc-content" aria-expanded="false" style="margin-bottom: 0;">
+              Table of Contents <span style="float:right;">&#x25BC;</span>
+            </button>
+            <div class="mobile-toc-content" id="mobile-toc-content" style="background: #f8f9fb; border-top: 1px solid #eee; border-radius: 0 0 6px 6px; margin-top: 0;">
+              <my-toc></my-toc>
+            </div>
+          </div>
+          <d-article>
+            <!-- Summary Block -->
+          
+          <!-- Series Navigation -->
+          <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+          </div>
+          
+            <div style="background-color: rgba(245, 245, 204, 0.5); padding: 10px; border-radius: 8px; border: 1px solid #e0e0b0;">
+  <p>The impressive emergent capabilities of LLMs have largely been observed as a result of scaling them to massive sizes, sometimes with hundreds of billions of parameters (e.g., 470B or 600B). These models are enormous, with some requiring up to 500GB of disk space.</p>
+
+  <p>In response, the community has been working in two directions simultaneously:</p>
+
+  <ul>
+    <li>On one hand, there’s a push to compress the intelligence of large models into smaller, more efficient ones.</li>
+    <li>On the other hand, there’s continued momentum toward even larger models, with trillions of parameters on the horizon.</li>
+  </ul>
+
+  <p>One promising direction to enable this is to reduce the precision used in representing model parameters. Traditionally, neural networks have been trained using 32-bit floating point numbers (FP32). To scale models more efficiently, many are now trained using 16-bit precision (FP16 or BF16), and some even use mixed-precision formats, where certain parameters are stored in FP8 or lower.</p>
+
+  <p>This shift introduces the need for <strong>mixed-precision training</strong>, techniques that maintain reliable learning despite operating at reduced numerical precision. I explore that in detail in the <a href="/blog/2025/06/mixed-precision-mp">next post</a>.</p>
+
+  <p>But before going there, I want to revisit a more fundamental question:
+<strong>What is floating point representation, really?</strong></p>
+
+  <p>It’s easy to forget that machines don’t reason in a continuous domain. Their numbers are actually discrete.
+So in this post, I want to give a hands-on exploration of floating point formats, to better understand and appreciate how numbers are actually represented inside machines.</p>
+</div>
+
+<h2 id="how-computers-represent-numbers">How computers represent numbers?</h2>
+
+<p>In computers, all data is represented as a sequence of bits – each being either a 0 or a 1. 
+Specifically, numbers are represented by a standardized format of 0s and 1s. 
+For example, unsigned integers are represented by a sequence of 8 bits (also known as uint8). 
+The standard python representation for decimal numbers uses 64 bits or 8 bytes (float64).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Standard python float representation:"</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mf">1.232</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Type of a:"</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Size of a (in bytes):"</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Extra overhead (bytes):"</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="mi">8</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Standard python float representation:
+Type of a: &lt;class 'float'&gt;
+Size of a (in bytes): 24
+Extra overhead (bytes): 16
+</code></pre></div></div>
+
+<p><strong>Note:</strong> even though the representation of a float consumes 64 bits (8 bytes), it takes about 24 bytes in standard Python to store this number. 
+The extra memory is used for Python’s object system to store reference counts, type info, etc.</p>
+
+<p>Let’s look at <strong>how does Numpy or PyTorch represent</strong> other lower precision formats in 32 bits or 16 bits.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"NumPy float representation:"</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="mf">1.232</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"  Type of b:"</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"  Size of b (in bytes):"</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"  Number of bits:"</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"  Extra overhead (bytes):"</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">1.232</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"NumPy double representation:"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Type of c:"</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Size of c (in bytes):"</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Number of bits:"</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Extra overhead (bytes):"</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">8</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"PyTorch float32 representation:"</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.232</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Type of c:"</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Size of c (in bytes):"</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Number of bits:"</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">*</span> <span class="mi">32</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Extra overhead (bytes):"</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">4</span><span class="p">)</span>
+
+
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"PyTorch float16 representation:"</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.232</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Type of d:"</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Size of d (in bytes):"</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Number of bits:"</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">*</span> <span class="mi">16</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Extra overhead (bytes):"</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NumPy float representation:
+    Type of b: &lt;class 'numpy.float32'&gt;
+    Size of b (in bytes): 28
+    Number of bits: 32
+    Extra overhead (bytes): 24
+
+
+NumPy double representation:
+    Type of c: &lt;class 'numpy.float64'&gt;
+    Size of c (in bytes): 32
+    Number of bits: 64
+    Extra overhead (bytes): 24
+
+
+PyTorch float32 representation:
+    Type of c: &lt;class 'torch.Tensor'&gt;
+    Size of c (in bytes): 80
+    Number of bits: 32
+    Extra overhead (bytes): 76
+
+
+PyTorch float16 representation:
+    Type of d: &lt;class 'torch.Tensor'&gt;
+    Size of d (in bytes): 80
+    Number of bits: 16
+    Extra overhead (bytes): 78
+</code></pre></div></div>
+
+<p>The way we perform arithmetic, addition, subtraction, multiplication, and division, is conceptually different from how machines handle these operations.
+Machines operate at the level of bits, relying on bitwise manipulations to carry out even the simplest computations.</p>
+
+<p>Each numeric representation (e.g., <code class="highlighter-rouge">float32</code>, <code class="highlighter-rouge">float16</code>, <code class="highlighter-rouge">bfloat16</code>) requires dedicated kernels, low-level routines optimized for performing arithmetic on that specific format. Libraries like <code class="highlighter-rouge">NumPy</code> and <code class="highlighter-rouge">PyTorch</code> support floating point arithmetic using representations smaller than 64 bits (e.g., <code class="highlighter-rouge">float32</code>, <code class="highlighter-rouge">float16</code>, <code class="highlighter-rouge">bfloat16</code>). These libraries also include optimizations that enable efficient computation on lower-precision formats, often by using additional memory to support alignment, buffering, or fused operations. As a result, we notice higher memory overhead than expected.</p>
+
+<h2 id="illusion-vs-reality-of-representation">Illusion vs. Reality of Representation</h2>
+
+<p>Computers are <strong>discrete representation machines</strong>; they store and process information in finite, countable steps, typically as sequences of 1s and 0s.
+Any sense of continuity, such as representing real numbers, is ultimately an illusion in a digital computer. In reality, these values are always approximated using a finite number of bits.</p>
+
+<p>For example, when we store a floating-point number, we are not storing the real number itself, but rather a discrete approximation of it, limited by the number of bits allocated for the representation.</p>
+
+<blockquote>
+  <p>Between any two representable numbers, there are infinitely many real values the computer cannot distinguish.</p>
+</blockquote>
+
+<p>So while mathematical models may assume perfect continuity, <strong>all computations on a digital machine are fundamentally discrete</strong>.
+What appears continuous is simply a clever approximation that works well enough for most practical applications.</p>
+
+<p>Let’s see this illusion in practice:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"{a: 0.64f}"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.1000000000000000055511151231257827021181583404541015625000000000
+</code></pre></div></div>
+
+<p>This output reveals the true stored representation of <code class="highlighter-rouge">0.1</code>—which, as you can see, is not exactly 0.1.
+This discrepancy arises from the limitations of binary floating-point formats: many decimal fractions simply cannot be represented exactly in binary.</p>
+
+<p><strong>Note:</strong> This is usually not a problem, unless high precision is critical in your application.</p>
+
+<p><strong>But how can this limitation lead to surprising behavior?</strong></p>
+
+<p>Arithmetic operations are performed at the bitwise level. When performing calculations, computers rely on binary manipulations that may introduce small errors, especially after multiple operations.</p>
+
+<p>Here’s an example:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"Result of 0.3 - 0.2 == 0.1:"</span><span class="p">,</span> <span class="mf">0.3</span> <span class="o">-</span> <span class="mf">0.2</span> <span class="o">==</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Representation of 0.3 - 0.2:"</span><span class="p">,</span> <span class="mf">0.3</span> <span class="o">-</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Representation of 0.1: {0.1: 0.64f}"</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Result of 0.3 - 0.2 == 0.1: False
+Representation of 0.3 - 0.2: 0.09999999999999998
+Representation of 0.1: 0.1000000000000000055511151231257827021181583404541015625000000000 0.1
+</code></pre></div></div>
+
+<p>Although mathematically <code class="highlighter-rouge">0.3 - 0.2</code> <em>should</em> equal <code class="highlighter-rouge">0.1</code>, the result is just slightly off, causing the equality check to return <code class="highlighter-rouge">False</code>.</p>
+
+<blockquote>
+  <p><strong>Note:</strong> When comparing floating-point numbers, you should avoid exact equality checks.
+Instead, use an <strong>approximate comparison</strong>, checking whether the numbers are “close enough” within a small tolerance. <code class="highlighter-rouge">np.is_close</code> does exactly that.</p>
+</blockquote>
+
+<h2 id="how-are-numbers-represented-in-floating-point">How are numbers represented in floating point?</h2>
+
+<p>A floating-point number is represented using three distinct components:</p>
+
+<ol>
+  <li><strong>Sign (S)</strong>: A single bit indicating whether the number is positive or negative.</li>
+  <li><strong>Exponent (E)</strong>: A set of bits that determines the number’s scale or magnitude.</li>
+  <li><strong>Mantissa (M)</strong> or <strong>Significand</strong>: A set of bits that defines the number’s precision or fractional part.</li>
+</ol>
+
+<p>To make this concrete, let’s use a hypothetical 8-bit format for our examples: <code class="highlighter-rouge">S EEE MMMM</code>, which has 1 sign bit, 3 exponent bits, and 4 mantissa bits.</p>
+
+<h3 id="the-conversion-formula">The Conversion Formula</h3>
+
+<p>We’ll stick to the widely adopted <strong>IEEE 754 standard</strong>, which ensures that floating-point representation and arithmetic are consistent across different machines.
+The value of a normal floating-point number (we’ll cover subnormal numbers in the next section) is calculated using a formula that closely resembles scientific notation:</p>
+
+<p>\[
+\text{Value} = (-1)^S \times (1.M)_2 \times 2^{(E - \text{bias})}
+\]</p>
+
+<p>Let’s break this down:</p>
+<ul>
+  <li>\( (-1)^S \): The sign bit <code class="highlighter-rouge">S</code> determines the sign. <code class="highlighter-rouge">S=0</code> for positive, <code class="highlighter-rouge">S=1</code> for negative.</li>
+  <li>\( (1.M)_2 \): This is the significand. It encodes the <strong>precision</strong> (the significant digits of the number). For normal numbers, there is an <em>implicit</em> leading <code class="highlighter-rouge">1</code> followed by the mantissa bits <code class="highlighter-rouge">M</code>. For subnormals (see below), there is no leading <code class="highlighter-rouge">1</code>, i.e., it is represented as \( (0.M)_2 \). The subscript <code class="highlighter-rouge">2</code> indicates this is a binary representation.</li>
+  <li>\( 2^{(E - \text{bias})} \): This is the scale factor. <code class="highlighter-rouge">E</code> is the decimal value of the exponent bits, and <code class="highlighter-rouge">bias</code> is a predefined constant.</li>
+</ul>
+
+<p><strong>Note:</strong> The expression above mirrors scientific notation in base 10, for example:</p>
+
+<p>\[
+-1 \times 3.539820 \times 10^{-9}
+\]</p>
+
+<p>The floating-point version just uses base 2 instead of base 10.</p>
+
+<h3 id="the-sign-bit-s">The Sign Bit (S)</h3>
+<p>This is the most straightforward part. It’s the first bit: <code class="highlighter-rouge">0</code> for a positive number, <code class="highlighter-rouge">1</code> for a negative number.</p>
+
+<h3 id="the-scale-bits-exponent-e-and-bias">The Scale bits: Exponent (E) and Bias</h3>
+<p>The exponent bits allow us to represent numbers across a vast range, from very small to very large. To represent both positive and negative exponents (e.g., \( 2^{10} \) and \( 2^{-10} \)) without needing a separate sign bit <em>for the exponent</em>, the standard uses a <strong>biased representation</strong>.</p>
+
+<p>The actual exponent is calculated as <code class="highlighter-rouge">E_decimal - bias</code>, where <code class="highlighter-rouge">E_decimal</code> is the unsigned integer value of the exponent bits. The bias is a fixed constant calculated as:</p>
+
+<p>\[
+\text{bias} = 2^{\text{exponent_bits}-1} - 1
+\]</p>
+
+<p>For our 3-bit exponent example, the <code class="highlighter-rouge">bias = 2^(3-1) - 1 = 3</code>. This allows the exponent range to be centered around zero.</p>
+
+<blockquote>
+  <p>Thus, we represent non-negative numbers smaller than 1 whenever \( E &lt;  bias \).</p>
+</blockquote>
+
+<h3 id="the-precision-bits-mantissa-m">The Precision bits: Mantissa (M)</h3>
+<p>Once the scale is determined by the exponent bits, the mantissa (or significand) allows us to represent numbers that are \( \epsilon \)-close to that scale. The mantissa provides this fine-grained <strong>precision</strong> around the chosen magnitude.</p>
+
+<blockquote>
+  <p>Precision of a format can be understood as the <strong>smallest step size between two adjacent representable numbers at a given scale</strong>. Higher precision means that the distance between two neighboring representable numbers is smaller. In other words, the format can represent values that are more finely spaced, allowing for more accurate approximations of real numbers.</p>
+</blockquote>
+
+<p>A binary number like \( (1.m_1m_2m_3m_4)_2 \) is converted to a decimal fraction as:</p>
+
+<p>\[
+(1.m_1m_2m_3m_4)_2 = 1 \times 2^0 + m_1 \times 2^{-1} + m_2 \times 2^{-2} + m_3 \times 2^{-3} + m_4 \times 2^{-4}
+\]</p>
+
+<p><strong>Putting it all together</strong>, the full formula for a normal number expands to:</p>
+
+<p>\[
+\text{Value} = (-1)^S \times \left(1 + \sum_{i=1}^{\text{num_mantissa_bits}} m_i \cdot 2^{-i}\right) \times 2^{(E - \text{bias})}
+\]</p>
+
+<p>To find out how to view the binary representation behind floating point numbers, please see the Appendix.</p>
+
+<h2 id="normal-vs-subnormal-numbers">Normal vs Subnormal Numbers</h2>
+
+<p>IEEE 754 standard distinguishes between two types of floating-point numbers:</p>
+
+<h3 id="normal-numbers">Normal Numbers</h3>
+
+<ul>
+  <li>When exponent is not all <code class="highlighter-rouge">0</code>s or all <code class="highlighter-rouge">1</code>s.</li>
+  <li>These numbers are interpreted as: \( (-1)^S \times (1.M)_2 \times 2^{(E - \text{bias})} \)</li>
+  <li>The <strong>leading <code class="highlighter-rouge">1.</code> is implicit</strong>, allowing us to store one extra bit of precision without specifying it.</li>
+</ul>
+
+<h3 id="subnormal-numbers">Subnormal Numbers</h3>
+
+<ul>
+  <li>When exponent bits are all 0s.</li>
+  <li>It is interpreted as: \( (-1)^S \times (0.M)_2 \times 2^{(1 - \text{bias})} \)</li>
+  <li>The leading <strong>1. is not assumed</strong>. Instead, the standard uses a leading <code class="highlighter-rouge">0</code> instead.</li>
+</ul>
+
+<p>These numbers are smaller than the smallest normal, providing a gradual underflow instead of jumping straight to zero.</p>
+
+<h3 id="visualizing-how-floating-point-numbers-sit-on-the-real-number-line">Visualizing How Floating Point Numbers Sit on the Real Number Line</h3>
+
+<p>Let’s explore where key floating-point numbers lie on the number line, particularly around zero, where subnormals come into play.</p>
+
+<ul>
+  <li><strong>Smallest positive normal number</strong> is when  <code class="highlighter-rouge">E=1</code> and <code class="highlighter-rouge">M=0</code>: \( 2^{1-bias} \)</li>
+  <li>
+    <p><strong>Largest positive subnormal number</strong> is when <code class="highlighter-rouge">E=0</code> and <code class="highlighter-rouge">M=2^m -1</code>, i.e., all <code class="highlighter-rouge">1</code>s: \( 2^{1-bias} \times (0.M)_2 = 2^{1-bias} \times (1 - 2^{-m}) \).
+  For example, with <code class="highlighter-rouge">m=3</code>, 
+  \[
+  (0.111)_2 = \frac{1}{2} + \frac{1}{2^2} + \frac{1}{2^3} = 1 - 2^3
+  \]</p>
+  </li>
+  <li><strong>Smallest positive subnormal number</strong> (excluding +0) is when <code class="highlighter-rouge">E=0</code> and <code class="highlighter-rouge">M=1</code>: \( 2^{1-bias} \times 2^{-m} = 2^{1-bias-m}\).
+  For example, with <code class="highlighter-rouge">m=3</code>, 
+  \[
+  (0.001)_2 = 0 + 0 + \frac{1}{2^3}
+  \]</li>
+</ul>
+
+<h3 id="even-spacing-between-two-scales">Even Spacing Between Two Scales</h3>
+
+<p>We can factor a binary fraction like \( 0.m_1m_2m_3 \) as</p>
+
+<p>\[
+m_1 \times 2^{-1} + m_2 \times 2^{-2} + m_3 \times 2^{-3} = 2^{-3} \times (m_1 \times 2^2 + m_2 \times 2^1 + m_3 \times 2^0) = 2^{-3} \times (M)_{10}
+\]</p>
+
+<blockquote>
+  <p>Given a fixed exponent, the mantissa bits define <strong>how finely we can place values between two powers of two</strong>. That is, they determine the granular spacing of representable numbers.</p>
+</blockquote>
+
+<p>Thus, the <strong>spacing between consecutive floating-point numbers at a given exponent</strong> is:
+\[
+2^{exp-bias} \times 2^{-m},
+\]</p>
+
+<p>Computing the difference between the smallest normal number and the largest subnormal number, we obtain the step size of \( 2^{1-bias-m} \), where \( m \) is the number of mantissa bits. By design, the difference between the smallest positive subnormal number and \( 0 \) is also \( 2^{1-bias-m} \). This consistent spacing ensures that subnormals provide a smooth and uniform transition from the smallest normal number down to zero, preventing a sudden gap in the number line.</p>
+
+<blockquote>
+  <p>Without subnormals, there would be a sudden gap between the smallest normal number and zero, creating a significant gap in the number line.</p>
+</blockquote>
+
+<p>Subnormals elegantly solve this problem by filling the gap between the smallest normal number and zero. They maintain the same step size of \( 2^{1-bias-m} \).</p>
+
+<p>Let’s illustrate this <strong>scale dependent precision and uniform transition to <code class="highlighter-rouge">0</code></strong> this via code. Here, I have used FP8 E4M3 format, which uses <code class="highlighter-rouge">S EEEE MMM</code> format for representation, i.e., 1 sign-bit, 4 exponent bits, and 3 mantissa bits.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+
+<span class="c"># For FP8 E4M3 format:</span>
+<span class="c"># - 1 bit for sign</span>
+<span class="c"># - 4 bits for exponent (bias = 2^3 - 1 = 7)</span>
+<span class="c"># - 3 bits for mantissa</span>
+
+<span class="n">numbers</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c"># We'll focus on positive numbers (sign bit = 0)</span>
+
+<span class="c"># Handle subnormal numbers (exp = 0)</span>
+<span class="k">for</span> <span class="n">mant</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>  <span class="c"># Skip mant=0 as it represents zero</span>
+    <span class="c"># For subnormals: 0.mantissa * 2^(1-bias)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">mant</span><span class="o">/</span><span class="mi">8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mi">7</span><span class="p">)</span>  <span class="c"># 1-bias = 1-7 = -6</span>
+    <span class="n">numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<span class="c"># Add normal numbers close to subnormals (exp = 1)</span>
+<span class="k">for</span> <span class="n">mant</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>  <span class="c"># Include all mantissa combinations</span>
+    <span class="c"># For normals: 1.mantissa * 2^(exp-bias)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">mant</span><span class="o">/</span><span class="mi">8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mi">7</span><span class="p">)</span>  <span class="c"># exp=1, bias=7</span>
+    <span class="n">numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<span class="c"># Handle normal numbers</span>
+<span class="k">for</span> <span class="n">exp</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>  <span class="c"># exponents from 7 to 10</span>
+    <span class="c"># For each exponent, generate all possible mantissa combinations</span>
+    <span class="k">for</span> <span class="n">mant</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>  <span class="c"># 3 bits = 8 combinations</span>
+        <span class="c"># Calculate the value: 1.mantissa * 2^(exp-bias)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">mant</span><span class="o">/</span><span class="mi">8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">exp</span><span class="o">-</span><span class="mi">7</span><span class="p">)</span>
+        <span class="n">numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">8.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s">'x'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'FP8 E4M3 Numbers between 1 and 8'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Value'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>  <span class="c"># Remove y-axis ticks</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c"># Plot numbers between smallest normal and largest subnormal</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+<span class="c"># Find smallest normal and largest subnormal</span>
+<span class="n">smallest_normal</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">penultimate_normal</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mi">7</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">7</span><span class="o">/</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">largest_subnormal</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mi">7</span><span class="p">)</span> <span class="o">*</span> <span class="mi">7</span><span class="o">/</span><span class="mi">8</span>
+
+<span class="c"># Add vertical lines to mark these values</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">smallest_normal</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'--'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">f</span><span class="s">'Smallest Normal: {smallest_normal:.6f}'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">largest_subnormal</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'g'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'--'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">f</span><span class="s">'Largest Subnormal: {largest_subnormal:.6f}'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">penultimate_normal</span><span class="o">*</span><span class="mf">1.1</span><span class="p">)</span>  <span class="c"># Show region around transition</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s">'x'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'FP8 E4M3 Numbers: Transition from Normal to Subnormal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Value'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>  <span class="c"># Remove y-axis ticks</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<p><img src="/images/blog/mixed-precision/fp/fp_10_0.png" alt="png" /></p>
+
+<p><img src="/images/blog/mixed-precision/fp/fp_10_1.png" alt="png" /></p>
+
+<p>We clearly see that the precision (step sizes) decreases with the scale. In addition, we can also spot the smooth and uniform transition of representable numbers to \( 0 \).</p>
+
+<h3 id="special-cases-zero-infinity-and-subnormals">Special Cases: Zero, Infinity, and Subnormals</h3>
+
+<p>The IEEE 754 standard reserves certain bit patterns for special values. The value of the exponent bits is key to distinguishing these cases.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Exponent Bits</strong></th>
+      <th><strong>Mantissa Bits</strong></th>
+      <th><strong>Represents</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>All 0s</td>
+      <td>All 0s</td>
+      <td><strong>Zero</strong> (<code class="highlighter-rouge">+0</code> or <code class="highlighter-rouge">-0</code>, depending on the sign bit)</td>
+    </tr>
+    <tr>
+      <td>All 0s</td>
+      <td>Non-zero</td>
+      <td><strong>Subnormal Numbers</strong>. Represented as \( (-1)^S \times (0.M)_2 \times 2^{1 - \text{bias}} \)</td>
+    </tr>
+    <tr>
+      <td>All 1s</td>
+      <td>All 0s</td>
+      <td><strong>Infinity</strong> (<code class="highlighter-rouge">+inf</code> or <code class="highlighter-rouge">-inf</code>)</td>
+    </tr>
+    <tr>
+      <td>All 1s</td>
+      <td>Non-zero</td>
+      <td>NaN (Not a Number)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="unequal-spacing-a-concrete-example-with-fp8-e4m3">Unequal Spacing: A Concrete Example with FP8 E4M3</h3>
+
+<p><em>Thanks to <a href="https://puneetkdokania.github.io/">Puneet Dokania</a> for providing feedback. This detailed walkthrough should help anyone trying to grasp FP representation.</em></p>
+
+<p>Let’s work through a concrete example to understand how step sizes vary across different scales in floating-point representation. We’ll use the FP8 E4M3 format, which has 1 sign bit, 4 exponent bits, and 3 mantissa bits.</p>
+
+<p><strong>Understanding the format:</strong></p>
+<ul>
+  <li><strong>Exponent bits (EEEE)</strong>: 4 bits with bias = 2³ - 1 = 7</li>
+  <li><strong>Mantissa bits (MMM)</strong>: 3 bits, giving us 8 possible values (0 through 7)</li>
+  <li><strong>Largest exponent</strong>: EEEE = 1110₂ = 14 (1111₂ is reserved for NaN/infinity)</li>
+</ul>
+
+<p><strong>Step size calculation:</strong>
+The step size at any given exponent is determined by the contribution of the least significant mantissa bit:
+\[
+\text{Step size} = 2^{(\text{exponent} - \text{bias})} \times 2^{-\text{num_mantissa_bits}}
+\]</p>
+
+<p>For FP8 E4M3, this becomes:
+\[
+\text{Step size} = 2^{(\text{exponent} - 7)} \times 2^{-3} = 2^{(\text{exponent} - 10)}
+\]</p>
+
+<p><strong>Let’s trace through the mantissa arrangements:</strong>
+With 3 mantissa bits, we have 8 possible combinations (000₂ through 111₂):</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Binary</th>
+      <th>Fraction</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>000₂</td>
+      <td>0/8</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <td>001₂</td>
+      <td>1/8</td>
+      <td>0.125</td>
+    </tr>
+    <tr>
+      <td>010₂</td>
+      <td>2/8</td>
+      <td>0.250</td>
+    </tr>
+    <tr>
+      <td>011₂</td>
+      <td>3/8</td>
+      <td>0.375</td>
+    </tr>
+    <tr>
+      <td>100₂</td>
+      <td>4/8</td>
+      <td>0.500</td>
+    </tr>
+    <tr>
+      <td>101₂</td>
+      <td>5/8</td>
+      <td>0.625</td>
+    </tr>
+    <tr>
+      <td>110₂</td>
+      <td>6/8</td>
+      <td>0.750</td>
+    </tr>
+    <tr>
+      <td>111₂</td>
+      <td>7/8</td>
+      <td>0.875</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p>Thus, in FP8 E4M3, at any given exponent, there are exactly 8 representable numbers, each separated by a step size of 2⁻³ = 0.125 times the scale factor.</p>
+</blockquote>
+
+<p><strong>Step sizes across the range:</strong></p>
+<ul>
+  <li>
+    <p><strong>Largest exponent (14)</strong>: Step size = 2^(14-10) = 2⁴ = 16
+The representable numbers at this scale are:
+\[
+2^{14} \times (1.000, 1.125, 1.250, 1.375, 1.500, 1.625, 1.750, 1.875)
+\]
+Which gives us: 16384, 18432, 20480, 22528, 24576, 26624, 28672, 30720</p>
+
+    <p>Notice that each number is <strong>16,384 units apart</strong> - a massive step size!</p>
+  </li>
+  <li>
+    <p><strong>Smallest exponent (1)</strong>: Step size = 2^(1-10) = 2⁻⁹ ≈ 0.00195
+The representable numbers at this scale are:
+\[
+2^{-6} \times (1.000, 1.125, 1.250, 1.375, 1.500, 1.625, 1.750, 1.875)
+\]
+Which gives us: 0.015625, 0.017578, 0.019531, 0.021484, 0.023438, 0.025391, 0.027344, 0.029297</p>
+
+    <p>Here each number is only <strong>0.001953 units apart</strong> - much finer precision!</p>
+  </li>
+  <li>
+    <p><strong>Subnormal numbers (exponent 0)</strong>: Step size = 2^(1-7-3) = 2⁻⁹ ≈ 0.00195
+The representable numbers are:
+\[
+2^{-6} \times (0.125, 0.250, 0.375, 0.500, 0.625, 0.750, 0.875)
+\]
+Which gives us: 0.001953, 0.003906, 0.005859, 0.007813, 0.009766, 0.011719, 0.013672</p>
+
+    <p>Even finer spacing near zero!</p>
+  </li>
+</ul>
+
+<p>This demonstrates the <strong>unequal spacing</strong> characteristic of floating-point: numbers near zero are much more densely packed than large numbers. The step size grows exponentially with the magnitude, which is why we can represent both very small and very large numbers with the same number of bits.</p>
+
+<h3 id="arithmetic-with-subnormals">Arithmetic with Subnormals</h3>
+
+<p>Operations involving subnormals often require special handling in hardware:
+When performing arithmetic operations with subnormal numbers, the process typically involves three steps:</p>
+
+<ol>
+  <li>Normalize the subnormal numbers to regular floating-point form</li>
+  <li>Execute the arithmetic operation</li>
+  <li>Denormalize the result back to subnormal form if needed</li>
+</ol>
+
+<p>This additional processing introduces both latency and energy overhead. To mitigate these performance impacts, many systems, particularly in machine learning applications, implement a “flush-to-zero” (FTZ) mode. In FTZ mode, any subnormal number is automatically converted to zero before the operation begins.</p>
+
+<p>NVIDIA’s CUDA platform, however, offers efficient support for FMA (Fused Multiply-Add) operations on subnormal numbers. Other operations on subnormals might require specialized kernels and run slower. For more details on NVIDIA’s approach to mixed precision and FMA operations, you can refer to their <a href="https://developer.nvidia.com/blog/mixed-precision-programming-cuda-8/">blog post on mixed precision programming</a>.</p>
+
+<blockquote>
+  <p>One thing to keep in mind when using reduced precision is that because the normalized range of FP16 is smaller, the probability of generating subnormal numbers (also known as denormals) increases. Therefore it’s important that NVIDIA GPUs implement FMA operations on subnormal numbers with full performance. Some processors do not, and performance can suffer. (Note: you may still see benefits from enabling “flush to zero”. See the post “CUDA Pro Tip: Flush Denormals with Confidence”.) – <a href="https://developer.nvidia.com/blog/mixed-precision-programming-cuda-8/">Mixed Precision Programming Blog, NVIDIA</a></p>
+</blockquote>
+
+<h3 id="precision-bias-towards-0">Precision bias towards 0</h3>
+
+<p>One interesting aspect of IEEE 754 floating-point representation is the <strong>asymmetric distribution</strong> of representable numbers around zero.</p>
+
+<blockquote>
+  <p>The format allocate <strong>significantly more bit patterns to values closer to zero</strong> than to larger numbers.</p>
+</blockquote>
+
+<p>This is because the exponent field in IEE 754 format is centered around a bias - expeonents below the bias respresent small magnitudes (less than 1) and above the bias represent larger values (greater than 1).</p>
+
+<p>This design choice becomes particularly evident in deep learning. During model training, a significant portion of the computation involves values much smaller than 1. This is visually confirmed by Figure 3 from <a href="https://arxiv.org/abs/1710.03740">Mixed Precision Training by Narang et al.</a><d-cite key="micikevicius2017mixed"></d-cite><d-cite key="micikevicius2017mixed"></d-cite>:</p>
+
+<p><img src="/images/blog/mixed-precision/fp/hist.png" alt="Histogram of gradient values in FP16" /></p>
+
+<p>As the figure shows, the lower half of FP16’s range is densely populated with values. The upper half—which represents much larger numbers—is rarely used during training. While the original paper introduces this observation in the context of loss scaling (which we’ll explore in the next post), it also highlights a broader point:</p>
+
+<blockquote>
+  <p>Floating-point formats are <strong>intentionally designed to offer higher resolution near zero</strong>, where most computations actually happen.</p>
+</blockquote>
+
+<p>This precision bias benefits not only deep learning but also many other fields, like scientific computing and signal processing, where small values dominate and accuracy in the low range is essential.</p>
+
+<h2 id="what-is-overflow-and-underflow">What is Overflow and Underflow?</h2>
+
+<p>Every floating-point format has a limited representable range. For example, in the <code class="highlighter-rouge">float32</code> (IEEE 754 single precision) format, the range of positive values is approximately:</p>
+
+<p>\[
+[1.4 \times 10^{-45},\ 3.4 \times 10^{38}]
+\]</p>
+
+<p>As we saw earlier, not all real numbers within this range can be represented exactly—e.g., <code class="highlighter-rouge">0.1</code> is only approximated.</p>
+
+<p>But there are also numbers outside this range that cannot be represented at all:</p>
+
+<ul>
+  <li>
+    <p><strong>Overflow</strong> occurs when a value exceeds the maximum representable value. The result is typically stored as <code class="highlighter-rouge">inf</code> (infinity), or triggers an error depending on the system.</p>
+  </li>
+  <li>
+    <p><strong>Underflow</strong> occurs when a value is smaller (in magnitude) than the smallest representable <strong>positive</strong> number. These values are either:</p>
+
+    <ul>
+      <li>Rounded to zero, or</li>
+      <li>Represented as subnormals if the format supports it (as we discussed earlier).</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>Underflow doesn’t usually cause crashes, but overflow often does, especially if not handled gracefully.</p>
+</blockquote>
+
+<h2 id="what-are-different-types-of-representation">What are different types of representation?</h2>
+
+<p>Standard representations are FP64, FP32, FP16, BF16 (Brain-Float), FP8 E4M3, FP8 E5M2.</p>
+
+<p>These representations differ in their total number of bits, the bits for exponent, and the bits for mantissa. They all have one dedicated bit for sign at the beginning.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Format</th>
+      <th>Total Bits</th>
+      <th>Exponent Bits</th>
+      <th>Mantissa Bits</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>FP64</td>
+      <td>64</td>
+      <td>11</td>
+      <td>52</td>
+    </tr>
+    <tr>
+      <td>FP32</td>
+      <td>32</td>
+      <td>8</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <td>FP16</td>
+      <td>16</td>
+      <td>5</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <td>BF16</td>
+      <td>16</td>
+      <td>8</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td>FP8 E4M3</td>
+      <td>8</td>
+      <td>4</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>FP8 E5M2</td>
+      <td>8</td>
+      <td>5</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><a href="https://huggingface.co/spaces/nanotron/ultrascale-playbook?section=fp16_and_bf16_training">For a better understanding of differences between FP16 and BF16, read here.</a></p>
+
+<p>Let’s look at their characteristics :</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Code from: https://medium.com/data-science/pytorch-native-fp8-fedc06f1c9f7</span>
+<span class="kn">import</span> <span class="nn">torch</span> 
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+
+<span class="n">f32_type</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span>
+<span class="n">f16_type</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float16</span>
+<span class="n">bf16_type</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bfloat16</span>
+<span class="n">fp8_e4m3_type</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float8_e4m3fn</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">[</span><span class="n">f32_type</span><span class="p">,</span> <span class="n">f16_type</span><span class="p">,</span> <span class="n">bf16_type</span><span class="p">,</span> <span class="n">fp8_e4m3_type</span><span class="p">]:</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span> <span class="c"># See here for finfo: https://docs.pytorch.org/docs/stable/type_info.html</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+        <span class="n">info</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="n">info</span><span class="o">.</span><span class="n">bits</span><span class="p">,</span>
+        <span class="n">info</span><span class="o">.</span><span class="nb">max</span><span class="p">,</span>
+        <span class="n">info</span><span class="o">.</span><span class="nb">min</span><span class="p">,</span>
+        <span class="n">info</span><span class="o">.</span><span class="n">smallest_normal</span><span class="p">,</span>
+        <span class="n">info</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span>
+    <span class="p">])</span>
+
+
+<span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Format"</span><span class="p">,</span> <span class="s">"Total Bits"</span><span class="p">,</span> <span class="s">"Max"</span><span class="p">,</span> <span class="s">"Min"</span><span class="p">,</span> <span class="s">"Smallest Normal"</span><span class="p">,</span> <span class="s">"Eps"</span><span class="p">]</span> <span class="c">#, "Max Exp", "Min Exp", "Min Subnormal", "Max Subnormal"]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Format           Total Bits              Max               Min    Smallest Normal          Eps
+-------------  ------------  ---------------  ----------------  -----------------  -----------
+float32                  32      3.40282e+38      -3.40282e+38        1.17549e-38  1.19209e-07
+float16                  16  65504            -65504                  6.10352e-05  0.000976562
+bfloat16                 16      3.38953e+38      -3.38953e+38        1.17549e-38  0.0078125
+float8_e4m3fn             8    448              -448                  0.015625     0.125
+</code></pre></div></div>
+
+<p>We’ve already seen that more mantissa bits lead to finer granularity, i.e., a smaller step size between two representable numbers in a given format. The <code class="highlighter-rouge">Eps</code> values in the table above represent the smallest distinguishable difference from 1.0—mathematically, this is the contribution from the Least Significant Bit (LSB) or the last mantissa bit and equals \( 2^{-m} \), where \( m \) is the number of mantissa bits.</p>
+
+<blockquote>
+  <p>In simple terms, if a number smaller than <code class="highlighter-rouge">Eps</code> is added to 1.0, the result will still be 1.0 due to rounding.</p>
+</blockquote>
+
+<p>Naturally, <strong>low-precision formats</strong> like FP8, which have fewer mantissa bits, <strong>suffer from coarse granularity</strong>. This can lead to numerical instability, especially when representing small gradients or performing subtle updates during training.</p>
+
+<p>To mitigate these issues, special training frameworks are required that can compensate for the reduced precision. This is what we will explore in the next post: <a href="(/blog/2025/06/mixed-precision-mp)">Understanding Mixed-Precision Training Techniques</a>.</p>
+
+<h2 id="appendix">Appendix</h2>
+
+<h3 id="how-to-check-binary-representation-behind-the-floating-point-numbers">How to check binary representation behind the floating point numbers?</h3>
+
+<p>This is a neat trick that I recently learned while debugging mixed-precision arithmetic. We can use PyTorch’s <code class="highlighter-rouge">.view()</code> method to perform a <strong>“reinterpret cast”</strong>, a technique systems programmers often use in C++.</p>
+
+<p>Most PyTorch users only use <code class="highlighter-rouge">view()</code> to change the <em>shape</em> of a tensor (similar to <code class="highlighter-rouge">reshape</code>). However, it has a secondary “superpower”: it can reinterpret the <strong>datatype</strong> of the data in memory without changing the actual bits.</p>
+
+<p>This allows us to peek under the hood and see exactly how a floating-point number is stored in IEEE 754 format.</p>
+
+<h4 id="1-the-pytorch-way-using-view">1. The PyTorch Way: Using <code class="highlighter-rouge">.view()</code></h4>
+
+<p>To see the bits of a <code class="highlighter-rouge">float32</code>, we view it as an <code class="highlighter-rouge">int32</code>. The memory stays the same, but PyTorch now treats those 32 bits as an integer, which we can easily print in binary. It stops caring about what the bits “mean” mathematically (exponent, mantissa, sign). In contrast, if you tried to use <code class="highlighter-rouge">.to(torch.int32)</code>, PyTorch would perform a <em>mathematical</em> conversion, rounding <code class="highlighter-rouge">0.01</code> down to <code class="highlighter-rouge">0</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c"># Create a float32 tensor</span>
+<span class="n">val</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c"># "Reinterpret" the bits as a 32-bit integer</span>
+<span class="c"># We use .item() to get the Python integer out, then format it.</span>
+<span class="c"># :032b means "32 bits wide, padded with zeros"</span>
+<span class="n">binary_str</span> <span class="o">=</span> <span class="n">f</span><span class="s">"{s.view(torch.int32).item():032b}"</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Decimal: {val}"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Binary:  {binary_str}"</span><span class="p">)</span>
+
+<span class="c"># Output:</span>
+<span class="c"># Decimal: 0.01</span>
+<span class="c"># Binary:  00111100001000111101011100001010</span>
+</code></pre></div></div>
+
+<p>This trick works for other precisions too, which is essential for comparing <code class="highlighter-rouge">float16</code> vs <code class="highlighter-rouge">bfloat16</code>. Just remember to mask the output for 16-bit types so Python doesn’t print extra sign bits:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For float16 (Half Precision), view as int16</span>
+<span class="n">s_fp16</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"FP16: {s_fp16.view(torch.int16).item() &amp; 0xffff:016b}"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="2-the-python-way-using-struct">2. The Python Way: Using <code class="highlighter-rouge">struct</code></h4>
+
+<p>What if you aren’t using PyTorch? Standard Python <code class="highlighter-rouge">float</code> objects are actually 64-bit doubles (similar to C’s <code class="highlighter-rouge">double</code>). Python doesn’t have a built-in <code class="highlighter-rouge">view</code> method or <code class="highlighter-rouge">bin()</code> for floats, so we have to use the <code class="highlighter-rouge">struct</code> module to manipulate the bytes directly.</p>
+
+          
+          <!-- Series Navigation -->
+            <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+          </div>
+          </d-article>
+          <d-appendix>
+            <d-footnote-list></d-footnote-list>
+            <d-citation-list></d-citation-list>
+          </d-appendix>
+          <d-bibliography src="/vendor/bibliography/llm.bib"></d-bibliography>
+          <script src="https://giscus.app/client.js"
+              data-repo="pg2455/pg2455.github.io"
+              data-repo-id="MDEwOlJlcG9zaXRvcnk3MTMxMzI3MQ=="
+              data-category="General"
+              data-category-id="DIC_kwDOBEAnd84CqnG0"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="light_high_contrast"
+              data-lang="en"
+              data-loading="lazy"
+              crossorigin="anonymous"
+              async>
+          </script>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/share-popover.js"></script>
+
+  <footer class="fixed-bottom-footer">
+    <div class="jumbotron mt-0" id="footer-container">
+      Powered by <a href="http://jekyllrb.com">Jekyll</a>, blog template adapted from <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+    </div>
+  </footer>
+
+  <script src="/js/distill.js"></script>
+</body>
+
+
+  <script src="/js/sp.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/vendor/js/jquery.min.js"></script>
+  <script src="/vendor/js/bootstrap.min.js"></script>
+  <script src="/vendor/js/anchor.min.js"></script>
+  <script src="/vendor/js/jquery.toc.js"></script>
+
+  <!-- Prism.js core and Python language support -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+
+  <script type="text/javascript">
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-187458159-1', 'auto');
+   ga('send', 'pageview');
+
+   $("#toc").toc({
+       'headings': 'h2,h3'
+   });
+   anchors.add('h2,h3');
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if there is a hash in the URL
+        const hash = window.location.hash;
+        if (hash) {
+            // Find the element that matches the hash
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                // Add the section-highlight class to the element
+                targetElement.classList.add('section-highlight');
+                
+                // If there are collapsible sections related to this hash, open them
+                const relatedSections = ['lessons', 'practical', 'objective'];
+                relatedSections.forEach(section => {
+                    const elem = document.getElementById(section + '_' + hash.slice(1));
+                    if (elem) {
+                        elem.style.display = 'block'; // Change display style to 'block' to show the section
+                    }
+                });
+
+                // Set a timeout to remove the highlight after 5 seconds
+                setTimeout(() => {
+                    targetElement.classList.remove('section-highlight');
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        }
+    });
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+    // Only add button if code block has a class starting with 'language-'
+    var hasLanguageClass = Array.from(codeBlock.classList).some(function(cls) {
+      return cls.startsWith('language-');
+    });
+    if (!hasLanguageClass) {
+      return;
+    }
+    // Create the button
+    var button = document.createElement('button');
+    button.className = 'copy-code-btn';
+    button.type = 'button';
+    button.title = 'Copy to clipboard';
+    // Clipboard SVG icon
+    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+    // Create a wrapper for positioning
+    var pre = codeBlock.parentNode;
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    button.addEventListener('click', function() {
+      var text = codeBlock.innerText;
+      navigator.clipboard.writeText(text).then(function() {
+        button.innerHTML = '✓';
+        setTimeout(function() {
+          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        }, 1200);
+      });
+    });
+  });
+});
+</script>
+
+</body>
+
+</html>

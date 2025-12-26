@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tensor Parallelism</title>
+
+  <meta name="author" content="Prateek Gupta" />
+  <meta name="description" content="Prateek Gupta | Personal Website" />
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="/vendor/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d7c6b63fdf.js" crossorigin="anonymous"></script>
+  <link href="/vendor/css/academicons.min.css" rel="stylesheet">
+  <link href="/vendor/pygments/monokai.css" rel="stylesheet">
+  <link href="/css/bamos.css" rel="stylesheet">
+  <link href="/css/updates.css" rel="stylesheet">
+  <link href="/css/sharingbuttons.css" rel="stylesheet">
+  <link href="/css/pgupta.css" rel="stylesheet">
+
+  <!-- Prism.js CSS (default theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+
+  <!-- MathJax -->
+  
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams',
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[','\\]']],
+        packages: {'[+]': ['ams']},
+        processEscapes: true
+      },
+      svg: {
+          fontCache: 'global'
+      }
+    };
+  </script>
+
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+
+  <script src="/vendor/js/distillpub/template.v2.js"></script>
+  <script src="/vendor/js/distillpub/transforms.v2.js"></script>
+  
+
+  
+  <style type="text/css">
+    h3, h2, h1 {
+  padding-top: 0!important;
+}
+
+  </style>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div class="navbar navbar-default">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="navbar-header">
+						  <a href="/" class="navbar-brand">
+                  <div>
+                      <img src="/images/me-face.png" class="img-circle"></img>
+                      Prateek Gupta
+                  </div>
+              </a>
+						<button class="navbar-toggle" type="button" data-toggle="collapse"
+                    data-target="#navbar-main">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="navbar-collapse collapse" id="navbar-main">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="/">About</a>
+							</li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      Teaching <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/teaching/tutorials">Tutorials</a></li>
+                      <li><a href="/teaching/courses">Courses</a></li>
+                      <li><a href="/teaching/hackathons">Hackathons</a></li>
+                  </ul>
+              </li>
+              
+  							<li>
+  								<a href="/blog/">Blog</a>
+  							</li>
+              
+						</ul>
+						<ul class="nav navbar-nav navbar-right" style="font-size: 1.5em">
+							<li>
+								<a href="http://github.com/pg2455" target="_blank" class="social-icon">
+									<i class="fab fa-github"></i></a>
+							</li>
+              <li>
+                <a href="https://scholar.google.com/citations?user=fvn0COgAAAAJ" target="_blank" class="social-icon">
+                  <i class="ai ai-google-scholar"></i></a>
+              </li>
+							<li>
+								<a href="http://twitter.com/pguptacs" target="_blank" class="social-icon">
+									<i class="fab fa-x-twitter"></i></a>
+							</li>
+              <li>
+                <a href="http://www.linkedin.com/in/link2prateek" target="_blank" class="social-icon">
+                  <i class="fab fa-linkedin"></i></a>
+              </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  <head>
+  <link rel="stylesheet" href="/css/distill.css">
+</head>
+
+<body>
+  <div class="distill-flex-container">
+    <aside class="distill-toc-sidebar">
+      <my-toc></my-toc>
+    </aside>
+    <main class="distill-main-content">
+      <div class="row">
+        <div class="col-md">
+          <d-title>
+            <h1>Tensor Parallelism</h1>
+            <p>Toy setting to understand Tensor Parallelism.</p>
+            <p>
+              <span class="meta-date" style="color: #888; font-size: 0.9em;">
+                <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 0.3em;"></i>July  8, 2025
+              </span>
+              
+            </p>
+          </d-title>
+          <!-- Mobile TOC Accordion (no duplicate heading) -->
+          <div class="mobile-toc-container" id="mobile-toc-container" style="margin-bottom: 18px; margin-top: 18px;">
+            <button class="mobile-toc-toggle-btn" id="mobile-toc-toggle-btn" aria-controls="mobile-toc-content" aria-expanded="false" style="margin-bottom: 0;">
+              Table of Contents <span style="float:right;">&#x25BC;</span>
+            </button>
+            <div class="mobile-toc-content" id="mobile-toc-content" style="background: #f8f9fb; border-top: 1px solid #eee; border-radius: 0 0 6px 6px; margin-top: 0;">
+              <my-toc></my-toc>
+            </div>
+          </div>
+          <d-article>
+            <!-- Summary Block -->
+          
+          <!-- Series Navigation -->
+          <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+              <span style="float:left"><i class="fas fa-2x fa-arrow-left"></i> &thinsp; <a style="text-decoration: none" href="/blog/2025/07/distributed-training-1"><em>Data Parallelism</a></em></span>
+            
+
+            
+              <span style="float:right"><a style="text-decoration: none" href="/blog/2025/07/distributed-training-3"><em>Pipeline Parallelism</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            
+          </div>
+          
+          <hr style="margin: 0 0 0 0; padding-top: 0; padding-bottom: 2px; border-top: 2px solid #e0e0e0;">
+          
+            <!-- Start of Selection -->
+<div style="background-color: rgba(245, 245, 204, 0.5); padding: 10px; border-radius: 8px; border: 1px solid #e0e0b0;">
+  <p>This is the third part of the <a href="/blog/2025/06/distributed-training-0">Distributed Training for Dummies</a> series.</p>
+
+  <p>The code for this series is available in the <a href="https://github.com/pg2455/distributed_training_for_dummies">Distributed Training For Dummies</a> GitHub repository. The design of much of the code is inspired by the picotron library. While the code itself contains detailed comments, here I will walk through key code blocks to provide a quick and basic understanding of how to implement some distributed training techniques. To start setting up the environment, you can visit the <a href="https://github.com/pg2455/distributed_training_for_dummies">GitHub repository</a> or follow the detailed walkthrough <a href="blog/2025/distributed-training-dist-0/#setting-up-the-environment">here</a>.</p>
+
+  <p><strong>Note:</strong> There are highly efficient libraries available, such as Megatron and DeepSpeed, which are specifically optimized for distributed training. I recommend using them whenever possible.</p>
+
+</div>
+<!-- End of Selection -->
+<p><br /></p>
+
+<p><strong>Reference section in the book:</strong> <a href="https://huggingface.co/spaces/nanotron/ultrascale-playbook?section=tensor_parallelism">Explore HuggingFace’s Tensor Parallelism section here.</a></p>
+
+<p>Training neural networks requires storing model parameters, gradients, optimizer states, and activations in memory. Among these, activations can be particularly memory-intensive, since the outputs of all intermediate operations must be stored to enable backpropagation. In fact, activation memory typically grows quadratically with model depth and width.</p>
+
+<p>To reduce activation memory usage, one practice is to discard some activations during the forward pass and recompute them during the backpropagation. This is called <strong>activation checkpointing</strong>. Another option is to <strong>offload activations to disk or CPU memory</strong> at the cost of I/O overhead.</p>
+
+<p>An alternative strategy is to cleverly distribute activations across devices by parallelizing key operations like matrix multiplications. This is called <strong>Tensor Parallelism</strong>.</p>
+
+<p>Consider a typical linear layer in a neural network:</p>
+
+<ul>
+  <li>Let \( X \in \mathbb{R}^{S \times C_{\text{in}}} \) be the input matrix, where
+    <ul>
+      <li>\( C_{in} \) the number of input channels</li>
+      <li>\( S \) is the input sequence length.</li>
+    </ul>
+  </li>
+  <li>Let \( W \in \mathbb{R}^{C_{\text{in}} \times C_{\text{out}}} \) be the weight matrix, where \( C_{out} \) is the number of output channels.</li>
+</ul>
+
+<p>The matrix multiplication:</p>
+
+<p>\[
+XW \in \mathbb{R}^{S \times C_{\text{out}}}
+\]</p>
+
+<p>produces the output activations. However, when \( W \) is large, storing it – and the corresponding activations needed for the backward pass – can exceed the memory limits of a single device.</p>
+
+<p>To address this, we shard the weight matrix \( W \) and parallelize the matmul operation across multiple devices. We can shard \( W \) in two ways – either column-wise, known as <strong>column linear parallelism</strong>, or row-wise, known as <strong>row linear parallelism</strong>.</p>
+
+<h2 id="column-linear-parallelism">Column Linear Parallelism</h2>
+<p>Split \( W \) along its output dimension:</p>
+
+<p>\[
+  W = [W_1, W_2, \dots, W_n], \quad W_i \in \mathbb{R}^{C_{\text{in}} \times \frac{C_{\text{out}}}{n}}
+  \]</p>
+
+<p><strong>Broadcast</strong> \( X \in \mathbb{R}^{S \times C_{\text{in}}} \) to all devices.</p>
+
+<p>Each device computes:</p>
+
+<p>\[
+  XW_i \in \mathbb{R}^{S \times \frac{C_{\text{out}}}{n}}
+  \]</p>
+
+<p><strong>Gather</strong> (concatenate) the results in their respective indices to obtain \( XW \in \mathbb{R}^{S \times C_{\text{out}}} \)</p>
+
+<h2 id="row-linear-parallelism">Row Linear Parallelism</h2>
+
+<p><strong>Shard</strong> \( W \) along its input dimension:</p>
+
+<p>\[
+  W = \begin{bmatrix} W_1 \ W_2 \ \vdots \ W_n \end{bmatrix}, \quad W_i \in \mathbb{R}^{\frac{C_{\text{in}}}{n} \times C_{\text{out}}}
+  \]</p>
+
+<p><strong>Scatter</strong> (shard) \( X \) across devices \( X_i \in \mathbb{R}^{S \times \frac{C_{\text{in}}}{n}} \), and compute:</p>
+
+<p>\[
+  X_i W_i \in \mathbb{R}^{S \times C_{\text{out}}}
+  \]</p>
+
+<p><strong>All Reduce:</strong> The partial results are summed to obtain the final output.</p>
+
+<h2 id="column-linear-followed-by-row-linear">Column Linear followed by Row Linear</h2>
+
+<p>Notice that the output of Column Linear Parallelism consists of chunks of the full output tensor along the output (outer) dimension, which are typically gathered at the end to reconstruct the complete result. In contrast, Row Linear Parallelism begins by sharding the input tensor along its input (outer) dimension, distributing the workload across devices from the start.</p>
+
+<p>This pairing creates a natural pipeline: the column-parallel output is already in the right format to serve as the row-parallel input—eliminating the need for inter-device communication between the two operations.</p>
+
+<p>This design enables the common Feedforward → Activation → Feedforward pattern—used in MLP blocks and multi-head attention—to execute without communicating intermediate activations across devices, improving efficiency and reducing latency.</p>
+
+<h2 id="using-tensor-parallelism-for-mlp">Using Tensor Parallelism for MLP</h2>
+
+<p>Given: \( X \in \mathbb{R}^{S \times C_{\text{in}}} \), \( W \in \mathbb{R}^{C_{\text{in}} \times C_{\text{out}}^w} \), \( Y \in \mathbb{R}^{C_{\text{out}}^w \times C_{\text{out}}^y} \)</p>
+
+<p><strong>In a two layer MLP</strong>, we are interested in computing \( \sigma(X W) Y \) using TP across two processors. This will be the sequence of operations.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation Sequence</th>
+      <th>Communication Operation</th>
+      <th>Processor 1</th>
+      <th>Processor 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><strong>Broadcast</strong></td>
+      <td>\( X \in \mathbb{R}^{S \times C_{\text{in}}} \)</td>
+      <td>\( X \in \mathbb{R}^{S \times C_{\text{in}}} \)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong>Shard</strong> Weights for Column Linear (No Communication Needed; <strong>Weights Pre-allocated</strong>)</td>
+      <td>\( W_1 \in \mathbb{R}^{C_{\text{in}} \times C_{\text{out}_1}^w} \)</td>
+      <td>\( W_2 \in \mathbb{R}^{C_{\text{in}} \times C_{\text{out}_2}^w} \)</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><strong>Column Linear</strong> (local matmul)</td>
+      <td>\( X W_1 \in \mathbb{R}^{S \times C_{\text{out}_1}^w} \)</td>
+      <td>\( X W_2 \in \mathbb{R}^{S \times C_{\text{out}_2}^w} \)</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><strong>No communication (activation)</strong></td>
+      <td>\( \sigma(X W_1) \in \mathbb{R}^{S \times C_{\text{out}_1}^w} \)</td>
+      <td>\( \sigma(X W_2) \in \mathbb{R}^{S \times C_{\text{out}_2}^w} \)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong>Shard</strong> weights for Row Linear (No Communication Needed; <strong>Weights Pre-allocated</strong>)</td>
+      <td>\( Y_1 \in \mathbb{R}^{C_{\text{out}1}^w \times C_{\text{out}}^y} \)</td>
+      <td>\( Y_2 \in \mathbb{R}^{C_{\text{out}2}^w \times C_{\text{out}}^y} \)</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><strong>Row Linear</strong> (local matmul)</td>
+      <td>\( \sigma(X W_1) Y_1 \in \mathbb{R}^{S \times C_{\text{out}}^y} \)</td>
+      <td>\( \sigma(X W_2) Y_2 \in \mathbb{R}^{S \times C_{\text{out}}^y} \)</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><strong>All-Gather</strong></td>
+      <td>\( [\sigma(X W_1) Y_1,\, \sigma(X W_2) Y_2] \in \mathbb{R}^{S \times C_{\text{out}}^y} \)</td>
+      <td>\( [\sigma(X W_1) Y_1,\, \sigma(X W_2) Y_2] \in \mathbb{R}^{S \times C_{\text{out}}^y} \)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="using-tensor-parallelism-for-self-attention">Using Tensor Parallelism for Self-Attention</h2>
+
+<p>In the attention mechanism, computation is fully parallelized by distributing the workload across multiple heads, with each head being completely independent. This allows each GPU to perform its own computations using these heads without the need for inter-GPU communication. Once self-attention is computed, the outputs from these heads are processed through a row-parallel output projection, creating a partial view of the self-attention output. These partial outputs are then combined to form the final result. Let’s explore this process with two GPUs.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation Sequence</th>
+      <th>Communication Operation</th>
+      <th><strong>Processor 1</strong> (GPU 0)</th>
+      <th><strong>Processor 2</strong> (GPU 1)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><strong>Broadcast</strong> activations</td>
+      <td>\( X \in \mathbb{R}^{S \times d_{\text{model}}} \)</td>
+      <td>\( X \in \mathbb{R}^{S \times d_{\text{model}}} \)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong>Shard weights for column‑parallel QKV</strong> (pre‑allocated, no comm)</td>
+      <td>\( W_{qkv}^{(0)} \in \mathbb{R}^{d_{\text{model}} \times \tfrac{3d_{\text{model}}}{2}} \)</td>
+      <td>\( W_{qkv}^{(1)} \in \mathbb{R}^{d_{\text{model}} \times \tfrac{3d_{\text{model}}}{2}} \)</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><strong>Column Linear</strong> (local matmul)</td>
+      <td>\( [Q,K,V]^{(0)} = X\,W_{qkv}^{(0)} \)</td>
+      <td>\( [Q,K,V]^{(1)} = X\,W_{qkv}^{(1)} \)</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><strong>No communication</strong>: scaled‑dot‑product softmax on local heads</td>
+      <td>\( H^{(0)} = \operatorname{Softmax}\bigl(Q^{(0)}K^{(0)\top}/\sqrt{d_h}\bigr)V^{(0)} \)</td>
+      <td>\( H^{(1)} = \operatorname{Softmax}\bigl(Q^{(1)}K^{(1)\top}/\sqrt{d_h}\bigr)V^{(1)} \)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong>Shard weights for row‑parallel output</strong> (pre‑allocated, no comm)</td>
+      <td>\( W_{o}^{(0)} \in \mathbb{R}^{\tfrac{d_{\text{model}}}{2} \times d_{\text{model}}} \)</td>
+      <td>\( W_{o}^{(1)} \in \mathbb{R}^{\tfrac{d_{\text{model}}}{2} \times d_{\text{model}}} \)</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><strong>Row Linear</strong> (local matmul)</td>
+      <td>\( Z^{(0)} = H^{(0)} W_{o}^{(0)} \in \mathbb{R}^{S \times d_{\text{model}}} \)</td>
+      <td>\( Z^{(1)} = H^{(1)} W_{o}^{(1)} \in \mathbb{R}^{S \times d_{\text{model}}} \)</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><strong>All‑Reduce (sum)</strong></td>
+      <td>\( Z = Z^{(0)} + Z^{(1)} \)</td>
+      <td>\( Z = Z^{(0)} + Z^{(1)} \)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="tensor-parallelism-in-code">Tensor Parallelism in code</h2>
+
+<p>To run this example at your end, launch the following command</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RUN_MODE=tensor_parallel docker-compose up --build
+</code></pre></div></div>
+
+<p>Let’s review the key operations in the <a href="https://github.com/pg2455/distributed_training_for_dummies/blob/main/tensor_parallel/train.py"><code class="highlighter-rouge">train.py</code></a> file, which employs Tensor Parallelism (TP) to train a three-layer MLP model.</p>
+
+<h3 id="sharding-the-linear-layer">Sharding the Linear Layer</h3>
+
+<p><strong>Sharding in <code class="highlighter-rouge">ColumnParallelLinear</code>:</strong> In <strong>column linear parallelism</strong>, we shard the weight matrix column-wise. We calculate the size of the weight matrix assigned to each rank. 
+In this implementation, the master weight is initialized on each process, and the corresponding segment is retained. Alternatively, initialization and distribution can be achieved using a scatter operation.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ColumnParallelLinear</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_features</span><span class="p">,</span> <span class="n">out_features</span><span class="p">,</span> <span class="n">tp_rank</span><span class="p">,</span> <span class="n">gather_outputs</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="c"># ...</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tp_world_size</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_features_per_rank</span> <span class="o">=</span> <span class="n">out_features</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">tp_world_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">out_features_per_rank</span><span class="p">,</span> <span class="n">in_features</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">out_features_per_rank</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># ... initialize and shard master_weight ...</span>
+        <span class="n">weight_list</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">master_weight</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_features_per_rank</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">weight_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tp_rank</span><span class="p">]</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>In <strong>row parallelism</strong>, the rows of the weight matrix are distributed across devices, with each device managing a portion of the input weights. <strong>Sharding in <code class="highlighter-rouge">RowParallelLinear</code></strong> is quite similar to the <code class="highlighter-rouge">ColumnParallelLinear</code> layer, with the primary difference being the dimension along which sharding occurs.</p>
+
+<h3 id="distributed-primitives-in-the-forward-pass">Distributed Primitives in the Forward Pass</h3>
+
+<p>After sharding, we need to ensure that each device gets the right data and that outputs are combined correctly. This is where our distributed communication primitives come in.</p>
+
+<p>In <strong>ColumnParallelLinear Forward</strong>, <code class="highlighter-rouge">Copy.apply(x)</code> ensures all ranks have the same input.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="c"># Each rank gets a copy of the input tensor</span>
+    <span class="n">input_broadcasted</span> <span class="o">=</span> <span class="n">Copy</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c"># note the distribution is used as a PyTorch operation</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">input_broadcasted</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span>
+</code></pre></div></div>
+
+<p>In <strong>RowParallelLinear Forward</strong>, <code class="highlighter-rouge">Reduce.apply(...)</code> sums partial outputs from all ranks so each gets the full result.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+    <span class="c"># Input is already sharded</span>
+    <span class="n">output_parallel</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">Reduce</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="n">output_parallel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tp_rank</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
+</code></pre></div></div>
+
+<h3 id="communication-primitives-as-pytorch-modules">Communication Primitives as PyTorch modules</h3>
+
+<p>In distributed training, using each communication primitive as a PyTorch operation simplifies code management. For instance, the <code class="highlighter-rouge">Copy</code> primitive (below) is a custom autograd function that facilitates both forward and backward communication. In this setup, the <code class="highlighter-rouge">forward</code> function is a no-op since the input is already broadcasted, whereas the <code class="highlighter-rouge">backward</code> function aggregates the gradients from all devices to ensure accurate updates.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Copy</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+        <span class="c"># Forward: just return the input (broadcast handled outside)</span>
+        <span class="k">return</span> <span class="nb">input</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
+        <span class="c"># Backward: sum gradients across all ranks</span>
+        <span class="n">dist</span><span class="o">.</span><span class="n">all_reduce</span><span class="p">(</span><span class="n">grad_output</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">dist</span><span class="o">.</span><span class="n">ReduceOp</span><span class="o">.</span><span class="n">SUM</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">grad_output</span>
+</code></pre></div></div>
+
+<p>The full code, including the <code class="highlighter-rouge">Gather</code> and <code class="highlighter-rouge">Reduce</code> primitives, model definition, and training loop, is available in the repo. Dive in to see how everything fits together!</p>
+
+          
+          <!-- Series Navigation -->
+            <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+              <span style="float:left"><i class="fas fa-2x fa-arrow-left"></i> &thinsp; <a style="text-decoration: none" href="/blog/2025/07/distributed-training-1"><em>Data Parallelism</a></em></span>
+            
+
+            
+              <span style="float:right"><a style="text-decoration: none" href="/blog/2025/07/distributed-training-3"><em>Pipeline Parallelism</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            
+          </div>
+          </d-article>
+          <d-appendix>
+            <d-footnote-list></d-footnote-list>
+            <d-citation-list></d-citation-list>
+          </d-appendix>
+          <d-bibliography src="/vendor/bibliography/llm.bib"></d-bibliography>
+          <script src="https://giscus.app/client.js"
+              data-repo="pg2455/pg2455.github.io"
+              data-repo-id="MDEwOlJlcG9zaXRvcnk3MTMxMzI3MQ=="
+              data-category="General"
+              data-category-id="DIC_kwDOBEAnd84CqnG0"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="light_high_contrast"
+              data-lang="en"
+              data-loading="lazy"
+              crossorigin="anonymous"
+              async>
+          </script>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/share-popover.js"></script>
+
+  <footer class="fixed-bottom-footer">
+    <div class="jumbotron mt-0" id="footer-container">
+      Powered by <a href="http://jekyllrb.com">Jekyll</a>, blog template adapted from <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+    </div>
+  </footer>
+
+  <script src="/js/distill.js"></script>
+</body>
+
+
+  <script src="/js/sp.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/vendor/js/jquery.min.js"></script>
+  <script src="/vendor/js/bootstrap.min.js"></script>
+  <script src="/vendor/js/anchor.min.js"></script>
+  <script src="/vendor/js/jquery.toc.js"></script>
+
+  <!-- Prism.js core and Python language support -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+
+  <script type="text/javascript">
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-187458159-1', 'auto');
+   ga('send', 'pageview');
+
+   $("#toc").toc({
+       'headings': 'h2,h3'
+   });
+   anchors.add('h2,h3');
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if there is a hash in the URL
+        const hash = window.location.hash;
+        if (hash) {
+            // Find the element that matches the hash
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                // Add the section-highlight class to the element
+                targetElement.classList.add('section-highlight');
+                
+                // If there are collapsible sections related to this hash, open them
+                const relatedSections = ['lessons', 'practical', 'objective'];
+                relatedSections.forEach(section => {
+                    const elem = document.getElementById(section + '_' + hash.slice(1));
+                    if (elem) {
+                        elem.style.display = 'block'; // Change display style to 'block' to show the section
+                    }
+                });
+
+                // Set a timeout to remove the highlight after 5 seconds
+                setTimeout(() => {
+                    targetElement.classList.remove('section-highlight');
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        }
+    });
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+    // Only add button if code block has a class starting with 'language-'
+    var hasLanguageClass = Array.from(codeBlock.classList).some(function(cls) {
+      return cls.startsWith('language-');
+    });
+    if (!hasLanguageClass) {
+      return;
+    }
+    // Create the button
+    var button = document.createElement('button');
+    button.className = 'copy-code-btn';
+    button.type = 'button';
+    button.title = 'Copy to clipboard';
+    // Clipboard SVG icon
+    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+    // Create a wrapper for positioning
+    var pre = codeBlock.parentNode;
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    button.addEventListener('click', function() {
+      var text = codeBlock.innerText;
+      navigator.clipboard.writeText(text).then(function() {
+        button.innerHTML = '✓';
+        setTimeout(function() {
+          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        }, 1200);
+      });
+    });
+  });
+});
+</script>
+
+</body>
+
+</html>

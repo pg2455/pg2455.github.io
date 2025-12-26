@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Physics of Surprise</title>
+
+  <meta name="author" content="Prateek Gupta" />
+  <meta name="description" content="Prateek Gupta | Personal Website" />
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="/vendor/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d7c6b63fdf.js" crossorigin="anonymous"></script>
+  <link href="/vendor/css/academicons.min.css" rel="stylesheet">
+  <link href="/vendor/pygments/monokai.css" rel="stylesheet">
+  <link href="/css/bamos.css" rel="stylesheet">
+  <link href="/css/updates.css" rel="stylesheet">
+  <link href="/css/sharingbuttons.css" rel="stylesheet">
+  <link href="/css/pgupta.css" rel="stylesheet">
+
+  <!-- Prism.js CSS (default theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+
+  <!-- MathJax -->
+  
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams',
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[','\\]']],
+        packages: {'[+]': ['ams']},
+        processEscapes: true
+      },
+      svg: {
+          fontCache: 'global'
+      }
+    };
+  </script>
+
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+
+  <script src="/vendor/js/distillpub/template.v2.js"></script>
+  <script src="/vendor/js/distillpub/transforms.v2.js"></script>
+  
+
+  
+  <style type="text/css">
+    h3, h2, h1 {
+  padding-top: 0!important;
+}
+
+  </style>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div class="navbar navbar-default">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="navbar-header">
+						  <a href="/" class="navbar-brand">
+                  <div>
+                      <img src="/images/me-face.png" class="img-circle"></img>
+                      Prateek Gupta
+                  </div>
+              </a>
+						<button class="navbar-toggle" type="button" data-toggle="collapse"
+                    data-target="#navbar-main">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="navbar-collapse collapse" id="navbar-main">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="/">About</a>
+							</li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      Teaching <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/teaching/tutorials">Tutorials</a></li>
+                      <li><a href="/teaching/courses">Courses</a></li>
+                      <li><a href="/teaching/hackathons">Hackathons</a></li>
+                  </ul>
+              </li>
+              
+  							<li>
+  								<a href="/blog/">Blog</a>
+  							</li>
+              
+						</ul>
+						<ul class="nav navbar-nav navbar-right" style="font-size: 1.5em">
+							<li>
+								<a href="http://github.com/pg2455" target="_blank" class="social-icon">
+									<i class="fab fa-github"></i></a>
+							</li>
+              <li>
+                <a href="https://scholar.google.com/citations?user=fvn0COgAAAAJ" target="_blank" class="social-icon">
+                  <i class="ai ai-google-scholar"></i></a>
+              </li>
+							<li>
+								<a href="http://twitter.com/pguptacs" target="_blank" class="social-icon">
+									<i class="fab fa-x-twitter"></i></a>
+							</li>
+              <li>
+                <a href="http://www.linkedin.com/in/link2prateek" target="_blank" class="social-icon">
+                  <i class="fab fa-linkedin"></i></a>
+              </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  <head>
+  <link rel="stylesheet" href="/css/distill.css">
+</head>
+
+<body>
+  <div class="distill-flex-container">
+    <aside class="distill-toc-sidebar">
+      <my-toc></my-toc>
+    </aside>
+    <main class="distill-main-content">
+      <div class="row">
+        <div class="col-md">
+          <d-title>
+            <h1>The Physics of Surprise</h1>
+            <p></p>
+            <p>
+              <span class="meta-date" style="color: #888; font-size: 0.9em;">
+                <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 0.3em;"></i>December 10, 2025
+              </span>
+              
+            </p>
+          </d-title>
+          <!-- Mobile TOC Accordion (no duplicate heading) -->
+          <div class="mobile-toc-container" id="mobile-toc-container" style="margin-bottom: 18px; margin-top: 18px;">
+            <button class="mobile-toc-toggle-btn" id="mobile-toc-toggle-btn" aria-controls="mobile-toc-content" aria-expanded="false" style="margin-bottom: 0;">
+              Table of Contents <span style="float:right;">&#x25BC;</span>
+            </button>
+            <div class="mobile-toc-content" id="mobile-toc-content" style="background: #f8f9fb; border-top: 1px solid #eee; border-radius: 0 0 6px 6px; margin-top: 0;">
+              <my-toc></my-toc>
+            </div>
+          </div>
+          <d-article>
+            <!-- Summary Block -->
+          
+          <!-- Series Navigation -->
+          <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+              <span style="float:right"><a style="text-decoration: none" href="/blog/2025/12/maxwell-2"><em>The Guessing Game</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            
+          </div>
+          
+          <hr style="margin: 0 0 0 0; padding-top: 0; padding-bottom: 2px; border-top: 2px solid #e0e0e0;">
+          
+            <div style="background-color: rgba(245, 245, 204, 0.5); padding: 10px; border-radius: 8px; border: 1px solid #e0e0b0;">
+  <p>This series of posts explores the deep connections between <strong>Probability, Information, and Energy</strong>. We will discover that “knowing” something is a physical act, and that the mathematical distributions we see in nature (like the Bell curve or Power laws) are actually the result of physical systems optimizing their energy under uncertainty.</p>
+
+  <p>This series is divided into three parts:</p>
+
+  <ul>
+    <li>
+      <p><strong>The Physics of Surprise:</strong> In this post, we look at the famous “Maxwell’s Demon” paradox to prove that information and energy are interconvertible.</p>
+    </li>
+    <li>
+      <p><strong>The Guessing Game:</strong> We will then formalize this using the Principle of Maximum Entropy, building a mathematical framework to predict the state of the world given limited data.</p>
+    </li>
+    <li>
+      <p><strong>Different Games and Their Winners:</strong> Finally, we will use that framework to derive familiar probability distributions—from the Gaussian to Fat-tailed distributions—by tweaking the rules of the game.</p>
+    </li>
+  </ul>
+</div>
+
+<p>In pure mathematics, we study probabilities in isolation: dice rolls and coin flips exist in a vacuum. But in the physical world, probability is not free. It is tightly coupled with the fundamental concepts of Energy and Entropy. To see this, we must start with the basic unit that maps probability into physical space: <strong>Surprise</strong>.</p>
+
+<p>Using the literal meaning of the word, we can intuit how “surprise” corresponds to doing physical things. Knowing something requires flipping a bit or decreasing surprise (e.g., a 50/50 probability changes to a certainty of 1 or 0). This reduction of surprise is not abstract; the act consumes useful energy and releases it as heat, creating an irreversible change in the physical world.</p>
+
+<!-- In this post, I will walk through the hypothetical experiment: Maxwell's Demon which shows to prove that surprise and energy are interconvertible. In the next post, we will explore the mathematical forms of this surprise (Shannon vs. Tsallis) to see how different systems quantify this freedom.  -->
+
+<h2 id="maxwells-demon">Maxwell’s Demon</h2>
+
+<p>To realize this, let’s study the famous paradox: <strong>Maxwell’s Demon</strong>. Maxwell proposed a thought experiment:</p>
+<ul>
+  <li>An enclosed container is filled with gas, with atoms moving randomly.</li>
+  <li>A partition separates Chamber A and Chamber B, connected by a tiny door operated by a “Demon.”</li>
+</ul>
+
+<p>The Demon’s goal is to create order (low surprise) from chaos (high surprise). The Demon watches the molecules and records their speeds in its memory.</p>
+<ol>
+  <li>When a fast molecule approaches from B, it opens the door to let it into A.</li>
+  <li>When a slow molecule approaches from A, it opens the door to let it into B.</li>
+</ol>
+
+<p><em>Note: We assume the demon is ideal and extremely effective at measuring bits without friction. We assume the mechanical act of opening the door is reversible and requires 0 energy. In contrast, we know that biological humans are very inefficient at processing bits.</em></p>
+
+<p>Over time, Chamber A becomes hot and Chamber B becomes cold. The Demon has successfully “un-mixed” the gas, creating order out of randomness. This temperature gradient can be used to do work on the environment, effectively creating a “perpetual motion machine.” We know from the Second Law of Thermodynamics that this is impossible. For decades, the question was: <em>Where is the energy released or used in this system?</em> Clearly, energy is required to create order, but the cost isn’t in the frictionless door.</p>
+
+<div style="display: flex; flex-direction: column; align-items: center; margin: 0.5em; margin-bottom:0.25em;">
+  <p><img class="img-fluid rounded z-depth-1" src="/images/blog/maxwell/demon.png" alt="Tool Calling Illustration" style="width: 75%; height: auto; border: 2px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.10); display: block; margin: 0 auto;" /></p>
+</div>
+
+<p>In 1981, Rolf Landauer at IBM proposed the “Information is Energy” paradigm that solved the riddle. If the demon had infinite memory, yes, we would have a perpetual motion machine. However, a real demon must have limited memory capacity. This finite memory is exactly what prevents the demon from breaking the laws of physics. It has to <strong>pay for the work through information processing</strong>.</p>
+
+<p>Let’s trace the “Surprise”:</p>
+
+<ol>
+  <li><strong>Copying (The “Free” Part):</strong> When the Demon records “This molecule is Fast,” it copies the state of the world into its brain. Ideally, this measurement doesn’t strictly require energy. The Demon simply moves the “Surprise” from the box into its own memory. The box gets cleaner (less surprise), but the brain gets messy (more surprise, i.e., random scribbles of measurements). Because we are just moving the mess, not destroying it, no energy is theoretically consumed yet.</li>
+  <li><strong>The Bottleneck:</strong> The Demon has finite memory. Eventually, its brain fills up. To continue the process, it must erase old data to make room for new measurements. It has to reset its bits back to “0”.</li>
+  <li><strong>Deletion (The Cost):</strong> Ideally, copying is reversible, but deletion is irreversible because it maps multiple states to a single state. To scrub the memory clean, the Demon must consume useful energy (like burning food or using a battery). This energy is used to force the bits back to 0 (reset), and the “mess” is ejected as heat (disordered energy) into the room.</li>
+</ol>
+
+<p>This is the core of <strong>Landauer’s Principle</strong>: erasing one bit of information releases at least $kT\ln2$ joules of heat. This proves that information and energy are not separate entities; they are kept in the same ledger.</p>
+
+<p><strong>Does this mean the Demon created order without energy <em>before</em> it had to delete its memory?</strong> Yes. Physics allows you to move Surprise around for free; it only charges you to destroy it.</p>
+<ul>
+  <li>Before sorting, the gas has high surprise and the memory has low surprise.</li>
+  <li>After sorting, the gas has low surprise while the memory has high surprise.</li>
+  <li>The total surprise didn’t drop, so no energy was typically used up.</li>
+  <li>Finally, when the Demon deletes its memory, energy is consumed from its fuel source and released as heat.</li>
+</ul>
+
+<p><strong>Blank memory is a resource.</strong> It acts like a “Surprise Sponge” that needs emptying once it is full. You can use this resource to do work for free only until the sponge is saturated. It is like a credit card: you can buy order now, but you must pay for it later when you hit your limit.</p>
+
+<blockquote>
+  <p><strong>Thus, we have established that reducing surprise or processing information requires energy.</strong></p>
+</blockquote>
+
+<hr />
+
+<p>What follows is my contemplation of a few processes in this world that appear to be realistic versions of Maxwell’s Demon.</p>
+
+<h2 id="the-silicon-demon-ai">The Silicon Demon (AI)</h2>
+
+<p>We can view modern AI not just as software, but as the industrialization of Maxwell’s Demon: a “Silicon Demon.”</p>
+
+<p>Humanity is the gas container: we are full of questions, uncertainty, and high surprise. The AI model is the Maxwell’s Demon (an LLM running on a GPU). The model opens the “door” (predicts the next token) to sort our chaotic questions into ordered answers. LLMs are mathematically trained to minimize the entropy (surprise) of the next token:</p>
+
+<p>\[
+Loss = -\log P(\text{next_token} \mid \text{history})
+\]</p>
+
+<p>The “Silicon Demon” consumes massive amounts of electricity. Data centers currently consume about 2-3% of the world’s electricity. If we power them with fossil fuels, we are digging up stored energy and releasing CO2. We are locally reducing the surprise of humanity (answering questions), but globally increasing the temperature of the planet via waste heat.</p>
+
+<p>Therefore, the race for “AGI” is fundamentally a race to find the most energy-efficient way to convert Joules into Bits. To build a sustainable Silicon Demon, we are solving an optimization problem: <strong>Minimize Energy Consumption while Maximizing Effectiveness.</strong></p>
+
+<ol>
+  <li>We need Demons that consume <strong>less, cleaner energy</strong> per bit of surprise reduced.</li>
+  <li>We need <strong>architectures that do more with less</strong>. A Demon that simply memorizes the speed of every molecule (or every sentence on the internet) uses too much memory and energy.</li>
+  <li><strong>Intelligence is compression.</strong> A “Smart” Demon doesn’t memorize the data; it finds the patterns (e.g., the laws of physics, the grammar of language). For example, storing the rule \(F=ma\) takes less memory than memorizing 1,000 apples falling on earth. By <strong>compressing the world’s uncertainty into a small, efficient set of rules, the Demon saves energy.</strong> It clears its memory of noise and keeps only the signal.</li>
+</ol>
+
+<h2 id="life-as-maxwells-demon">Life as Maxwell’s Demon</h2>
+
+<p>If we accept that reducing surprise requires energy, then intelligence is simply the efficiency of that conversion. Consider our own experience. We are constantly bombarded by a chaotic storm of sensory inputs: millions of photons hitting our retina, vibrations shaking our eardrums. To the universe, this is high surprise noise. Our brain acts as a biological Maxwell’s Demon. It consumes glucose (fuel) to filter this sensory data, discarding irrelevant noise and collapsing uncertainty into concepts. We are physically burning energy to ‘make sense’ of the world.</p>
+
+          
+          <!-- Series Navigation -->
+            <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+              <span style="float:right"><a style="text-decoration: none" href="/blog/2025/12/maxwell-2"><em>The Guessing Game</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            
+          </div>
+          </d-article>
+          <d-appendix>
+            <d-footnote-list></d-footnote-list>
+            <d-citation-list></d-citation-list>
+          </d-appendix>
+          <d-bibliography src="/vendor/bibliography/llm.bib"></d-bibliography>
+          <script src="https://giscus.app/client.js"
+              data-repo="pg2455/pg2455.github.io"
+              data-repo-id="MDEwOlJlcG9zaXRvcnk3MTMxMzI3MQ=="
+              data-category="General"
+              data-category-id="DIC_kwDOBEAnd84CqnG0"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="light_high_contrast"
+              data-lang="en"
+              data-loading="lazy"
+              crossorigin="anonymous"
+              async>
+          </script>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/share-popover.js"></script>
+
+  <footer class="fixed-bottom-footer">
+    <div class="jumbotron mt-0" id="footer-container">
+      Powered by <a href="http://jekyllrb.com">Jekyll</a>, blog template adapted from <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+    </div>
+  </footer>
+
+  <script src="/js/distill.js"></script>
+</body>
+
+
+  <script src="/js/sp.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/vendor/js/jquery.min.js"></script>
+  <script src="/vendor/js/bootstrap.min.js"></script>
+  <script src="/vendor/js/anchor.min.js"></script>
+  <script src="/vendor/js/jquery.toc.js"></script>
+
+  <!-- Prism.js core and Python language support -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+
+  <script type="text/javascript">
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-187458159-1', 'auto');
+   ga('send', 'pageview');
+
+   $("#toc").toc({
+       'headings': 'h2,h3'
+   });
+   anchors.add('h2,h3');
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if there is a hash in the URL
+        const hash = window.location.hash;
+        if (hash) {
+            // Find the element that matches the hash
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                // Add the section-highlight class to the element
+                targetElement.classList.add('section-highlight');
+                
+                // If there are collapsible sections related to this hash, open them
+                const relatedSections = ['lessons', 'practical', 'objective'];
+                relatedSections.forEach(section => {
+                    const elem = document.getElementById(section + '_' + hash.slice(1));
+                    if (elem) {
+                        elem.style.display = 'block'; // Change display style to 'block' to show the section
+                    }
+                });
+
+                // Set a timeout to remove the highlight after 5 seconds
+                setTimeout(() => {
+                    targetElement.classList.remove('section-highlight');
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        }
+    });
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+    // Only add button if code block has a class starting with 'language-'
+    var hasLanguageClass = Array.from(codeBlock.classList).some(function(cls) {
+      return cls.startsWith('language-');
+    });
+    if (!hasLanguageClass) {
+      return;
+    }
+    // Create the button
+    var button = document.createElement('button');
+    button.className = 'copy-code-btn';
+    button.type = 'button';
+    button.title = 'Copy to clipboard';
+    // Clipboard SVG icon
+    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+    // Create a wrapper for positioning
+    var pre = codeBlock.parentNode;
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    button.addEventListener('click', function() {
+      var text = codeBlock.innerText;
+      navigator.clipboard.writeText(text).then(function() {
+        button.innerHTML = '✓';
+        setTimeout(function() {
+          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        }, 1200);
+      });
+    });
+  });
+});
+</script>
+
+</body>
+
+</html>

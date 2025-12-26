@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Distributed Training for Dummies</title>
+
+  <meta name="author" content="Prateek Gupta" />
+  <meta name="description" content="Prateek Gupta | Personal Website" />
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="/vendor/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d7c6b63fdf.js" crossorigin="anonymous"></script>
+  <link href="/vendor/css/academicons.min.css" rel="stylesheet">
+  <link href="/vendor/pygments/monokai.css" rel="stylesheet">
+  <link href="/css/bamos.css" rel="stylesheet">
+  <link href="/css/updates.css" rel="stylesheet">
+  <link href="/css/sharingbuttons.css" rel="stylesheet">
+  <link href="/css/pgupta.css" rel="stylesheet">
+
+  <!-- Prism.js CSS (default theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+
+  <!-- MathJax -->
+  
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams',
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[','\\]']],
+        packages: {'[+]': ['ams']},
+        processEscapes: true
+      },
+      svg: {
+          fontCache: 'global'
+      }
+    };
+  </script>
+
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+
+  <script src="/vendor/js/distillpub/template.v2.js"></script>
+  <script src="/vendor/js/distillpub/transforms.v2.js"></script>
+  
+
+  
+  <style type="text/css">
+    h3, h2, h1 {
+  padding-top: 0!important;
+}
+
+  </style>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div class="navbar navbar-default">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="navbar-header">
+						  <a href="/" class="navbar-brand">
+                  <div>
+                      <img src="/images/me-face.png" class="img-circle"></img>
+                      Prateek Gupta
+                  </div>
+              </a>
+						<button class="navbar-toggle" type="button" data-toggle="collapse"
+                    data-target="#navbar-main">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="navbar-collapse collapse" id="navbar-main">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="/">About</a>
+							</li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      Teaching <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/teaching/tutorials">Tutorials</a></li>
+                      <li><a href="/teaching/courses">Courses</a></li>
+                      <li><a href="/teaching/hackathons">Hackathons</a></li>
+                  </ul>
+              </li>
+              
+  							<li>
+  								<a href="/blog/">Blog</a>
+  							</li>
+              
+						</ul>
+						<ul class="nav navbar-nav navbar-right" style="font-size: 1.5em">
+							<li>
+								<a href="http://github.com/pg2455" target="_blank" class="social-icon">
+									<i class="fab fa-github"></i></a>
+							</li>
+              <li>
+                <a href="https://scholar.google.com/citations?user=fvn0COgAAAAJ" target="_blank" class="social-icon">
+                  <i class="ai ai-google-scholar"></i></a>
+              </li>
+							<li>
+								<a href="http://twitter.com/pguptacs" target="_blank" class="social-icon">
+									<i class="fab fa-x-twitter"></i></a>
+							</li>
+              <li>
+                <a href="http://www.linkedin.com/in/link2prateek" target="_blank" class="social-icon">
+                  <i class="fab fa-linkedin"></i></a>
+              </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  <head>
+  <link rel="stylesheet" href="/css/distill.css">
+</head>
+
+<body>
+  <div class="distill-flex-container">
+    <aside class="distill-toc-sidebar">
+      <my-toc></my-toc>
+    </aside>
+    <main class="distill-main-content">
+      <div class="row">
+        <div class="col-md">
+          <d-title>
+            <h1>Distributed Training for Dummies</h1>
+            <p></p>
+            <p>
+              <span class="meta-date" style="color: #888; font-size: 0.9em;">
+                <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 0.3em;"></i>July  8, 2025
+              </span>
+              
+            </p>
+          </d-title>
+          <!-- Mobile TOC Accordion (no duplicate heading) -->
+          <div class="mobile-toc-container" id="mobile-toc-container" style="margin-bottom: 18px; margin-top: 18px;">
+            <button class="mobile-toc-toggle-btn" id="mobile-toc-toggle-btn" aria-controls="mobile-toc-content" aria-expanded="false" style="margin-bottom: 0;">
+              Table of Contents <span style="float:right;">&#x25BC;</span>
+            </button>
+            <div class="mobile-toc-content" id="mobile-toc-content" style="background: #f8f9fb; border-top: 1px solid #eee; border-radius: 0 0 6px 6px; margin-top: 0;">
+              <my-toc></my-toc>
+            </div>
+          </div>
+          <d-article>
+            <!-- Summary Block -->
+          
+          <!-- Series Navigation -->
+          <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+              <span style="float:right"><a style="text-decoration: none" href="/blog/2025/07/distributed-training-1"><em>Data Parallelism</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            
+          </div>
+          
+          <hr style="margin: 0 0 0 0; padding-top: 0; padding-bottom: 2px; border-top: 2px solid #e0e0e0;">
+          
+            <div style="background-color: rgba(245, 245, 204, 0.5); padding: 10px; border-radius: 8px; border: 1px solid #e0e0b0;">
+  <p>After enjoying the <a href="https://huggingface.co/spaces/nanotron/ultrascale-playbook">Ultra Scale Playbook</a><d-cite key="ultrascale_playbook"></d-cite><d-cite key="ultrascale_playbook"></d-cite>, I really wanted to understand how different types of parallelism are implemented programmatically. The accompanying <a href="https://github.com/huggingface/picotron">picotron</a> library was quite useful, but it gradually integrates various forms of parallelism, which left me wanting a clearer separation. So I developed standalone scripts for Data Parallelism (DP), Tensor Parallelism (TP), and Pipeline Parallelism (PP) to explore and deepen my understanding. This series guides you through these concepts and the code I created to experiment with them.</p>
+
+  <p>The code for this series is available in the <a href="https://github.com/pg2455/distributed_training_for_dummies">Distributed Training For Dummies</a> GitHub repository. The design of much of the code is inspired by the <code class="highlighter-rouge">picotron</code> library. While the code itself contains detailed comments, here I will walk through key code blocks to provide a quick and basic understanding of how to implement these strategies. To start setting up the environment, you can visit the <a href="https://github.com/pg2455/distributed_training_for_dummies">GitHub repository</a> or follow the detailed walkthrough in this post.</p>
+
+  <p><strong>Note:</strong> There are highly efficient libraries available, such as Megatron and DeepSpeed, which are specifically optimized for distributed training. I recommend using them whenever possible.</p>
+
+</div>
+<p><br /></p>
+
+<p>Just learning how many parameters today’s large language models (LLMs) have gives me chills. What fascinated me even more was discovering that many of their <strong>emergent capabilities</strong> arise simply from <strong>scaling them up</strong>. That curiosity sparked a deeper question: <em>How have researchers and engineers actually managed to train such massive neural networks, sometimes across thousands of GPUs?</em></p>
+
+<p>Fortunately, resources like the <a href="https://huggingface.co/spaces/nanotron/ultrascale-playbook">Ultra Scale Playbook</a><d-cite key="ultrascale_playbook"></d-cite><d-cite key="ultrascale_playbook"></d-cite> do a phenomenal job of explaining these ideas. Reading it made me want to explore the concepts more deeply, <em>but</em> in toy settings, that don’t require access to massive GPU clusters. Could I play with these ideas using just <strong>one CPU</strong>?</p>
+
+<p>This blog series is my attempt to do just that. I’ll break down the basic concepts and gradually build up to the point where you can understand how these large-scale training strategies work in practice. You’re also welcome to get hands-on with the accompanying code in the <a href="https://github.com/pg2455/distributed_training_for_dummies">Distributed Training For Dummies</a> GitHub repository.</p>
+
+<h2 id="communication-vs-computation-vs-memory">Communication vs Computation vs Memory</h2>
+
+<p>Maximizing the efficiency of a distributed training setup requires carefully balancing trade-offs across three key dimensions:</p>
+
+<ul>
+  <li>
+    <p><strong>Computation throughput:</strong> The number of floating point operations per second (FLOPs) your model requires. This is bounded by the computational capacity of your hardware (e.g., GPUs or TPUs).</p>
+  </li>
+  <li>
+    <p><strong>Communication overhead:</strong> The amount of data that must be exchanged across devices, constrained by the bandwidth and latency of interconnects (e.g., NVLink, Ethernet, Infiniband).</p>
+  </li>
+  <li>
+    <p><strong>Memory usage:</strong> The memory required to store inputs, outputs, model weights, and gradients. This is often the first bottleneck when scaling up model sizes or batch sizes.</p>
+  </li>
+</ul>
+
+<p>Over the years, innovations across all three of these areas have contributed to the impressive capabilities of today’s LLMs.
+For example, attention mechanisms like <a href="https://arxiv.org/abs/1911.02150">multi-query attention</a><d-cite key="shazeer2019fast"></d-cite> and <a href="https://arxiv.org/pdf/2305.13245">group-query attention</a><d-cite key="ainslie2023gqa"></d-cite> reduce the computational cost of self-attention while preserving performance.
+Similarly, <strong>FlashAttention</strong> optimizes GPU usage by fusing operations to minimize memory access latency and reduce communication between memory hierarchies.</p>
+
+<p>In this series, we’ll explore strategies for training large neural networks using distributed computing, aiming to improve efficiency across computation, communication, and memory, focusing on three key paradigms:</p>
+
+<ul>
+  <li><strong>Data Parallelism</strong></li>
+  <li><strong>Tensor Parallelism</strong></li>
+  <li><strong>Pipeline Parallelism</strong></li>
+</ul>
+
+<p>Each concept will be introduced through toy examples—training a simple MLP - simulated on a single machine with distributed capabilities. These examples aim to illustrate the ideas without needing access to thousands of GPUs.</p>
+
+<h2 id="throughput-vs-latency">Throughput vs Latency</h2>
+
+<p>Two performance metrics often come up in distributed training: <strong>throughput</strong> and <strong>latency</strong>.</p>
+
+<ul>
+  <li>
+    <p><strong>Throughput</strong> refers to the volume of useful work completed per unit time—such as FLOPs, samples processed per second, or bytes transferred per second. Maximizing throughput means keeping compute units busy with meaningful operations as consistently as possible.</p>
+  </li>
+  <li>
+    <p><strong>Latency</strong> measures the time it takes to complete a single unit of work—for example, the time taken to process one batch of data through the model. Minimizing latency involves reducing communication delays and using faster compute hardware.</p>
+  </li>
+</ul>
+
+<blockquote>
+  <p>In practice, distributed training pipelines aim to <strong><em>overlap communication with computation</em></strong> to maximize throughput and minimize latency.</p>
+</blockquote>
+
+<h2 id="communication-primitives">Communication primitives</h2>
+
+<p>Distributed training uses a set of standard <strong>communication operations</strong> to move data between processes—whether across cores within a node or between nodes in a cluster. These data transfers are governed by the underlying hardware (e.g., PCIe, NVLink, Ethernet), each with its own bandwidth constraints that determine how much data can be moved per unit time.</p>
+
+<p>During neural network training, I find it helpful to treat these communication operations conceptually like any other <code class="highlighter-rouge">torch.nn.functional</code> operation—they’re just transformations on data. For instance, broadcasting data to 4 processes is functionally similar to an identity operation during the forward pass: all processes receive the same data. 
+While the <strong>forward pass</strong> is often easy to follow, the <strong>backward pass</strong> can be less intuitive. For example, when broadcasting is used in the forward pass (i.e., copying data), the backward pass must <strong>sum gradients</strong> from all the receiving processes—since each received a copy.</p>
+
+<p>Below is a list of common communication primitives used in distributed training, along with what each operation does and what to expect during the forward and backward passes:</p>
+
+<h3 id="1-one-to-one-point-to-point">1. One-to-One (Point-to-Point)</h3>
+<p><em>(In the backward pass, the data movement is also one-to-one)</em></p>
+<ul>
+  <li><strong>Send/Receive</strong>
+    <ul>
+      <li>Direct communication between two processes, where one process sends a tensor and another receives it.</li>
+      <li><strong>PyTorch:</strong> <a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.send"><code class="highlighter-rouge">torch.distributed.send</code></a>, <a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.recv"><code class="highlighter-rouge">torch.distributed.recv</code></a></li>
+      <li><strong>Forward Pass:</strong> The tensor is sent from one process and received by another. If you think of this as a module, it acts as an identity operation for the sender and receiver.</li>
+      <li><strong>Backward Pass:</strong> Gradients are not automatically communicated; you must manually send/receive gradients if needed. The backward pass is also an identity unless.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="2-one-to-many">2. One-to-Many</h3>
+<p><em>(In the backward pass, the data movement is typically many-to-one)</em></p>
+
+<ul>
+  <li><strong>Broadcast</strong>
+    <ul>
+      <li><strong>Description:</strong> One process (the root) sends the same tensor to all other processes. Commonly used to synchronize model parameters at the start of training.</li>
+      <li><strong>PyTorch:</strong> <a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.broadcast"><code class="highlighter-rouge">torch.distributed.broadcast</code></a></li>
+      <li><strong>Forward Pass:</strong> The root’s tensor is copied to all other processes. It is simply an identity operation.</li>
+      <li><strong>Backward Pass:</strong> Gradients from all processes are summed (reduced) back to the root. This ensures the root receives the total gradient from all workers.</li>
+    </ul>
+  </li>
+  <li><strong>Scatter</strong>
+    <ul>
+      <li><strong>Description:</strong> The root process splits a tensor into chunks and sends each chunk to a different process. Useful for distributing input data.</li>
+      <li><strong>PyTorch:</strong> <a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.scatter"><code class="highlighter-rouge">torch.distributed.scatter</code></a></li>
+      <li><strong>Forward Pass:</strong> Each process receives a different chunk of the tensor from the root. Functionally, this acts as an identity operation—but applied to individual chunks rather than the entire tensor.</li>
+      <li><strong>Backward Pass:</strong> Gradients from all processes are gathered back to the root, but not summed—each gradient is placed in the corresponding position in the root’s tensor.  Again, this acts like an identity function over chunks.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="3-many-to-one">3. Many-to-One</h3>
+<p><em>(In the backward pass, the data movement is typically one-to-many)</em></p>
+
+<ul>
+  <li><strong>Gather</strong>
+    <ul>
+      <li><strong>Description:</strong> Each process sends its local tensor (a chunk of a larger whole) to the root process, which assembles them into a single, larger tensor. This is effectively the reverse of a scatter.</li>
+      <li><strong>PyTorch:</strong> <a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.gather"><code class="highlighter-rouge">torch.distributed.gather</code></a></li>
+      <li><strong>Forward Pass:</strong> The root collects tensors from all processes and concatenates them.  Functionally, this behaves like an identity operation over the constituent chunks.</li>
+      <li><strong>Backward Pass:</strong> The root’s gradient is split and scattered back to the original processes, so each process receives the gradient corresponding to its original input. Again, this acts like an identity over the chunks.</li>
+    </ul>
+  </li>
+  <li><strong>Reduce</strong>
+    <ul>
+      <li><strong>Description:</strong> All processes send their tensor to the root, which aggregates them using a specified operation (e.g., sum, max). Commonly used for aggregating results or gradients.</li>
+      <li><strong>PyTorch:</strong> <a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.reduce"><code class="highlighter-rouge">torch.distributed.reduce</code></a></li>
+      <li><strong>Forward Pass:</strong> The root receives the aggregated tensor. The aggregation operation (e.g., sum) defines the forward behavior.</li>
+      <li><strong>Backward Pass:</strong> The root’s gradient is broadcast to all processes, so each process receives the same gradient. This makes the backward pass functionally equivalent to an identity operation across processes.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="4-many-to-many-collective">4. Many-to-Many (Collective)</h3>
+<p><em>(In the backward pass, the data movement is also many-to-many)</em></p>
+
+<ul>
+  <li>
+    <p><strong>All-Gather</strong></p>
+
+    <ul>
+      <li><strong>Description:</strong> Similar to <code class="highlighter-rouge">gather</code>, but <em>every</em> process acts as the gatherer. Each process collects tensors from all others and ends up with the full concatenated result. All processes have the same output.</li>
+      <li><strong>PyTorch:</strong> <a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.all_gather"><code class="highlighter-rouge">torch.distributed.all_gather</code></a></li>
+      <li><strong>Forward Pass:</strong>  Each process gathers tensors from all other processes and concatenates them. The subtle point is that each process already knows which chunk it contributed, and receives the others in a fixed order. Since all processes perform the same operation, they all hold the full tensor after the gather.</li>
+      <li><strong>Backward Pass:</strong> No communication is needed. Instead, each process slices the gradient of the full tensor to retain only the part corresponding to its original input. This is not a no-op—it involves a local slicing operation but avoids any data transfer.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>All-Reduce</strong></p>
+
+    <ul>
+      <li><strong>Description:</strong> Similar to <code class="highlighter-rouge">reduce</code>, but all processes participate equally. Each process contributes its tensor, and all end up with the aggregated result (e.g., sum, mean).</li>
+      <li><strong>PyTorch:</strong> <a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.all_reduce"><code class="highlighter-rouge">torch.distributed.all_reduce</code></a></li>
+      <li><strong>Forward Pass:</strong> All processes receive the result of applying the reduction operation (e.g., sum) across all inputs.</li>
+      <li><strong>Backward Pass:</strong> The same reduction is applied to gradients. All processes receive the aggregated gradient. The operation is symmetric in forward and backward.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>All-to-All</strong></p>
+
+    <ul>
+      <li><strong>Description:</strong> Each process splits its tensor into chunks and sends a unique chunk to every other process. Simultaneously, it receives one chunk from each of them. Unlike <code class="highlighter-rouge">all-gather</code> or <code class="highlighter-rouge">all-reduce</code>, where all processes end up with the same result, <code class="highlighter-rouge">all-to-all</code> results in each process having a <em>different</em> output.</li>
+      <li><strong>PyTorch:</strong> <a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.all_to_all"><code class="highlighter-rouge">torch.distributed.all_to_all</code></a></li>
+      <li><strong>Forward Pass:</strong> Each process sends chunks of its tensor to all other processes and receives a chunk from each. The output is a rearranged tensor composed of parts from every peer.</li>
+      <li><strong>Backward Pass:</strong> The pattern is reversed: each process sends back gradients for the chunks it received and receives gradients for the chunks it originally sent. This mirrors the <code class="highlighter-rouge">all-to-all</code> structure in reverse. PyTorch autograd handles this routing internally when using native ops.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Note:</strong> In practice, PyTorch’s autograd system automatically computes the correct backward operation for these collectives.</p>
+
+<h3 id="summary-table">Summary Table</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Data Movement</th>
+      <th>Operation</th>
+      <th>PyTorch Function &amp; Docs</th>
+      <th>Forward Pass</th>
+      <th>Backward Pass</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- One-to-One -->
+    <tr style="background-color: #f6f8fa;">
+      <td rowspan="1"><b>One-to-One</b></td>
+      <td>Send/Receive</td>
+      <td><a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.send">send</a>, <a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.recv">recv</a></td>
+      <td>Tensor sent from one process and received by another (identity for sender/receiver)</td>
+      <td>Gradients not automatically communicated; typically identity unless custom logic</td>
+    </tr>
+    <!-- One-to-Many -->
+    <tr style="background-color: #ffffff;">
+      <td rowspan="2"><b>One-to-Many</b></td>
+      <td>Broadcast</td>
+      <td><a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.broadcast">broadcast</a></td>
+      <td>Root's tensor copied to all others</td>
+      <td>Gradients from all processes are summed (reduced) to root</td>
+    </tr>
+    <tr style="background-color: #ffffff;">
+      <td>Scatter</td>
+      <td><a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.scatter">scatter</a></td>
+      <td>Each process receives a chunk from root</td>
+      <td>Gradients gathered back to root, placed in corresponding positions</td>
+    </tr>
+    <!-- Many-to-One -->
+    <tr style="background-color: #f6f8fa;">
+      <td rowspan="2"><b>Many-to-One</b></td>
+      <td>Gather</td>
+      <td><a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.gather">gather</a></td>
+      <td>Root collects and concatenates tensors</td>
+      <td>Root's gradient split and scattered back to original processes</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td>Reduce</td>
+      <td><a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.reduce">reduce</a></td>
+      <td>Root receives aggregated tensor</td>
+      <td>Root's gradient broadcast to all processes</td>
+    </tr>
+    <!-- Many-to-Many -->
+    <tr style="background-color: #ffffff;">
+      <td rowspan="3"><b>Many-to-Many</b></td>
+      <td>All-Gather</td>
+      <td><a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.all_gather">all_gather</a></td>
+      <td>Each process collects and concatenates tensors from all others</td>
+      <td>Each process retains gradient for its original chunk</td>
+    </tr>
+    <tr style="background-color: #ffffff;">
+      <td>All-Reduce</td>
+      <td><a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.all_reduce">all_reduce</a></td>
+      <td>All receive aggregated tensor</td>
+      <td>Aggregation performed on gradients, all receive result</td>
+    </tr>
+    <tr style="background-color: #ffffff;">
+      <td>All-to-All</td>
+      <td><a href="https://pytorch.org/docs/stable/distributed.html#torch.distributed.all_to_all">all_to_all</a></td>
+      <td>Each receives set of chunks from all others</td>
+      <td>Each receives gradients for chunks it originally sent</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="setting-up-the-environment">Setting up the environment</h2>
+
+<p>To simulate a distributed computing infrastructure on a single machine, there are two main options:</p>
+
+<ol>
+  <li>
+    <p><strong>Use <code class="highlighter-rouge">torchrun --nproc_per_node=2</code> to launch your training code.</strong><br />
+When running on a CPU, this command will create two separate processes. If you are using the latest version of PyTorch, the distributed package comes bundled with it, so you don’t need to install anything extra. Otherwise, you can install <a href="https://pytorch.org/get-started/locally/">PyTorch</a>.</p>
+  </li>
+  <li>
+    <p><strong>Set up a Docker environment to spin up multiple processes.</strong>  You can configure a Docker setup with  multiple worker containers, each running the same training script.
+By creating a training script that includes communication primitives, you can simulate distributed training with much finer control than the previous option.</p>
+  </li>
+</ol>
+
+<p>To set up the docker environment, follow the steps in this <a href="https://github.com/pg2455/distributed_training_for_dummies">repository</a>.</p>
+
+<p>Specifically, we will simulate an environment with two machines accessible at <code class="highlighter-rouge">MASTER_ADDR:MASTER_PORT</code>. Each worker is assigned a rank, which can be referenced in the script. All variables defined in the <code class="highlighter-rouge">environment</code> section will be accessible in the script via the <code class="highlighter-rouge">os.getenv</code> function. Our <code class="highlighter-rouge">docker-compose.yaml</code> will look like this:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">worker0</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span> <span class="s">.</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">RANK=0</span>
+      <span class="pi">-</span> <span class="s">WORLD_SIZE=2</span>
+      <span class="pi">-</span> <span class="s">MASTER_ADDR=worker0</span>
+      <span class="pi">-</span> <span class="s">MASTER_PORT=12355</span>
+      <span class="pi">-</span> <span class="s">RUN_MODE=${RUN_MODE}</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">distnet</span>
+  <span class="na">worker1</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span> <span class="s">.</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">RANK=1</span>
+      <span class="pi">-</span> <span class="s">WORLD_SIZE=2</span>
+      <span class="pi">-</span> <span class="s">MASTER_ADDR=worker0</span>
+      <span class="pi">-</span> <span class="s">MASTER_PORT=12355</span>
+      <span class="pi">-</span> <span class="s">RUN_MODE=${RUN_MODE}</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">distnet</span>
+<span class="na">networks</span><span class="pi">:</span>
+  <span class="na">distnet</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<h2 id="example-1-broadcast-and-all-gather-operations">Example 1: Broadcast and All-Gather operations</h2>
+
+<p>In the following example, we will simulate a scenario where:</p>
+<ul>
+  <li>One worker creates a tensor of numbers.</li>
+  <li>This tensor is broadcast to all workers.</li>
+  <li>Each worker takes a chunk of the data, performs a simple computation, and then all results are gathered back together on all the devices.</li>
+</ul>
+
+<p>To run the example at your end, launch the following command</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RUN_MODE=comm docker-compose up --build
+</code></pre></div></div>
+
+<p><strong>Initialization:</strong> The script will initialize the Distributed Process Group (<code class="highlighter-rouge">dist.init_process_group</code>) to set up communication between all workers so they can share data.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">dist</span><span class="o">.</span><span class="n">init_process_group</span><span class="p">(</span>
+        <span class="n">backend</span><span class="o">=</span><span class="s">'gloo'</span><span class="p">,</span> <span class="c"># this backend is suitable for CPU-based training; for GPU-based training, use 'nccl'</span>
+        <span class="n">init_method</span><span class="o">=</span><span class="n">f</span><span class="s">'tcp://{master_addr}:{master_port}'</span><span class="p">,</span>
+        <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span>
+        <span class="n">world_size</span><span class="o">=</span><span class="n">world_size</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Broadcasting:</strong> We use broadcasting operation (<code class="highlighter-rouge">broadcast</code>) to send data from rank \( 0 \) to other workers. 
+Only rank \( 0 \) creates the data; broadcast ensures everyone gets the same tensor.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">full_data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">full_data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="nb">long</span><span class="p">)</span>
+    
+    <span class="n">dist</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">full_data</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Local computation:</strong> Each worker takes a slice of the data and does a simple computation.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">chunk_size</span> <span class="o">=</span> <span class="n">full_data</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">//</span> <span class="n">world_size</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">rank</span> <span class="o">*</span> <span class="n">chunk_size</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">chunk_size</span>
+    <span class="n">local_data</span> <span class="o">=</span> <span class="n">full_data</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="nb">float</span><span class="p">()</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Rank {rank} full data: {full_data}"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Rank {rank} received data: {local_data}"</span><span class="p">)</span>
+
+    <span class="n">local_result</span> <span class="o">=</span> <span class="n">local_data</span> <span class="o">*</span> <span class="p">(</span><span class="n">rank</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Rank {rank} local result: {local_result}"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>All Gather:</strong> Finally, each worker sends its result to all others, so everyone ends up with the full output (<code class="highlighter-rouge">all_gather</code>).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">gathered_results</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">local_result</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">world_size</span><span class="p">)]</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">all_gather</span><span class="p">(</span><span class="n">gathered_results</span><span class="p">,</span> <span class="n">local_result</span><span class="p">)</span>
+    <span class="n">full_result</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">gathered_results</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Rank {rank} final gathered result: {full_result}"</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Running the above script, will return print statements from the individual worker which you can idenitfy by their <code class="highlighter-rouge">RANK</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>distributed_training_for_dummies-worker1-1  | Rank 1 full data: tensor([37, 38, 39, 40])
+distributed_training_for_dummies-worker1-1  | Rank 1 received data: tensor([39., 40.])
+distributed_training_for_dummies-worker1-1  | Rank 1 local result: tensor([78., 80.])
+distributed_training_for_dummies-worker1-1  | Rank 1 local_result shape: torch.Size([2])
+distributed_training_for_dummies-worker1-1  | Rank 1 final gathered result: tensor([37., 38., 78., 80.])
+distributed_training_for_dummies-worker0-1  | Rank 0 full data: tensor([37, 38, 39, 40])
+distributed_training_for_dummies-worker0-1  | Rank 0 received data: tensor([37., 38.])
+distributed_training_for_dummies-worker0-1  | Rank 0 local result: tensor([37., 38.])
+distributed_training_for_dummies-worker0-1  | Rank 0 local_result shape: torch.Size([2])
+distributed_training_for_dummies-worker0-1  | Rank 0 final gathered result: tensor([37., 38., 78., 80.])
+distributed_training_for_dummies-worker1-1 exited with code 0
+distributed_training_for_dummies-worker0-1 exited with code 0
+</code></pre></div></div>
+
+<h2 id="example-2-using-distributed-dataloader-in-pytorch-for-distributed-training">Example 2: Using Distributed Dataloader in PyTorch for distributed training</h2>
+
+<p>We instantiate a distributed dataloader to enable batch distribution in distributed training. Each worker processes a unique subset of the dataset, ensuring no overlap, and communicates with other workers only as needed—typically during gradient synchronization or evaluation aggregation.</p>
+
+<p>To run the example at your end, launch the following command:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RUN_MODE=train docker-compose up --build
+</code></pre></div></div>
+
+<p><strong>Distributed Dataloader:</strong> After setting up a process group for communication across workers (using <code class="highlighter-rouge">dist.init_process_group</code>), each worker loads a unique subset of the data using a distributed sampler.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c"># Create dataset</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">SimpleDataset</span><span class="p">()</span>
+    
+    <span class="c"># Create distributed sampler</span>
+    <span class="n">sampler</span> <span class="o">=</span> <span class="n">DistributedSampler</span><span class="p">(</span>
+        <span class="n">dataset</span><span class="p">,</span>
+        <span class="n">num_replicas</span><span class="o">=</span><span class="n">world_size</span><span class="p">,</span>
+        <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="c"># this is how the sampler distributes microbatches across devices</span>
+        <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">seed</span><span class="o">=</span><span class="mi">42</span>  <span class="c"># Use same seed for reproducibility</span>
+    <span class="p">)</span>
+    
+    <span class="c"># Create dataloader</span>
+    <span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+        <span class="n">dataset</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">sampler</span><span class="o">=</span><span class="n">sampler</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Local computation:</strong> Each worker processes its own batch and simulates a computation.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>  <span class="c"># Run for 2 epochs</span>
+        <span class="n">sampler</span><span class="o">.</span><span class="n">set_epoch</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>  <span class="c"># Important for shuffling!</span>
+        
+        <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+            <span class="c"># Simulate computation</span>
+            <span class="n">local_result</span> <span class="o">=</span> <span class="n">data</span> <span class="o">*</span> <span class="p">(</span><span class="n">rank</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>All Gather:</strong> Finally, each worker sends its result to all others, so everyone ends up with the full output.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            <span class="c"># Gather results</span>
+            <span class="n">gathered_results</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">local_result</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">world_size</span><span class="p">)]</span>
+            <span class="n">dist</span><span class="o">.</span><span class="n">all_gather</span><span class="p">(</span><span class="n">gathered_results</span><span class="p">,</span> <span class="n">local_result</span><span class="p">)</span>
+            
+            <span class="n">full_result</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">gathered_results</span><span class="p">)</span>
+            
+            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Rank {rank}, Epoch {epoch}, Batch {batch_idx}"</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Local data: {data}"</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Local result: {local_result}"</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Gathered result: {full_result}"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Running the above script will print statements from each worker, which you can identify by their <code class="highlighter-rouge">RANK</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>distributed_training_for_dummies-worker1-1  | Rank 1, Epoch 0, Batch 0
+distributed_training_for_dummies-worker1-1  | Local data: tensor([618,  68, 215, 585])
+distributed_training_for_dummies-worker1-1  | Local result: tensor([1236,  136,  430, 1170])
+distributed_training_for_dummies-worker1-1  | Gathered result: tensor([ 542,  816,   94,   60, 1236,  136,  430, 1170])
+distributed_training_for_dummies-worker1-1  | Rank 1, Epoch 1, Batch 0
+distributed_training_for_dummies-worker1-1  | Local data: tensor([148, 575, 935, 343])
+distributed_training_for_dummies-worker1-1  | Local result: tensor([ 296, 1150, 1870,  686])
+distributed_training_for_dummies-worker1-1  | Gathered result: tensor([ 588,  223,  689,  932,  296, 1150, 1870,  686])
+distributed_training_for_dummies-worker0-1  | Rank 0, Epoch 0, Batch 0
+distributed_training_for_dummies-worker0-1  | Local data: tensor([542, 816,  94,  60])
+distributed_training_for_dummies-worker0-1  | Local result: tensor([542, 816,  94,  60])
+distributed_training_for_dummies-worker0-1  | Gathered result: tensor([ 542,  816,   94,   60, 1236,  136,  430, 1170])
+distributed_training_for_dummies-worker0-1  | Rank 0, Epoch 1, Batch 0
+distributed_training_for_dummies-worker0-1  | Local data: tensor([588, 223, 689, 932])
+distributed_training_for_dummies-worker0-1  | Local result: tensor([588, 223, 689, 932])
+distributed_training_for_dummies-worker0-1  | Gathered result: tensor([ 588,  223,  689,  932,  296, 1150, 1870,  686])
+distributed_training_for_dummies-worker1-1 exited with code 0
+distributed_training_for_dummies-worker0-1 exited with code 0
+</code></pre></div></div>
+
+<p>In the upcoming posts, I’ll walk through the code implementations of Data Parallelism, Tensor Parallelism, and Pipeline Parallelism.</p>
+
+          
+          <!-- Series Navigation -->
+            <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+              <span style="float:right"><a style="text-decoration: none" href="/blog/2025/07/distributed-training-1"><em>Data Parallelism</a> &thinsp; </em><i class="fas fa-2x fa-arrow-right"></i></span>
+            
+          </div>
+          </d-article>
+          <d-appendix>
+            <d-footnote-list></d-footnote-list>
+            <d-citation-list></d-citation-list>
+          </d-appendix>
+          <d-bibliography src="/vendor/bibliography/llm.bib"></d-bibliography>
+          <script src="https://giscus.app/client.js"
+              data-repo="pg2455/pg2455.github.io"
+              data-repo-id="MDEwOlJlcG9zaXRvcnk3MTMxMzI3MQ=="
+              data-category="General"
+              data-category-id="DIC_kwDOBEAnd84CqnG0"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="light_high_contrast"
+              data-lang="en"
+              data-loading="lazy"
+              crossorigin="anonymous"
+              async>
+          </script>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/share-popover.js"></script>
+
+  <footer class="fixed-bottom-footer">
+    <div class="jumbotron mt-0" id="footer-container">
+      Powered by <a href="http://jekyllrb.com">Jekyll</a>, blog template adapted from <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+    </div>
+  </footer>
+
+  <script src="/js/distill.js"></script>
+</body>
+
+
+  <script src="/js/sp.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/vendor/js/jquery.min.js"></script>
+  <script src="/vendor/js/bootstrap.min.js"></script>
+  <script src="/vendor/js/anchor.min.js"></script>
+  <script src="/vendor/js/jquery.toc.js"></script>
+
+  <!-- Prism.js core and Python language support -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+
+  <script type="text/javascript">
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-187458159-1', 'auto');
+   ga('send', 'pageview');
+
+   $("#toc").toc({
+       'headings': 'h2,h3'
+   });
+   anchors.add('h2,h3');
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if there is a hash in the URL
+        const hash = window.location.hash;
+        if (hash) {
+            // Find the element that matches the hash
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                // Add the section-highlight class to the element
+                targetElement.classList.add('section-highlight');
+                
+                // If there are collapsible sections related to this hash, open them
+                const relatedSections = ['lessons', 'practical', 'objective'];
+                relatedSections.forEach(section => {
+                    const elem = document.getElementById(section + '_' + hash.slice(1));
+                    if (elem) {
+                        elem.style.display = 'block'; // Change display style to 'block' to show the section
+                    }
+                });
+
+                // Set a timeout to remove the highlight after 5 seconds
+                setTimeout(() => {
+                    targetElement.classList.remove('section-highlight');
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        }
+    });
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+    // Only add button if code block has a class starting with 'language-'
+    var hasLanguageClass = Array.from(codeBlock.classList).some(function(cls) {
+      return cls.startsWith('language-');
+    });
+    if (!hasLanguageClass) {
+      return;
+    }
+    // Create the button
+    var button = document.createElement('button');
+    button.className = 'copy-code-btn';
+    button.type = 'button';
+    button.title = 'Copy to clipboard';
+    // Clipboard SVG icon
+    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+    // Create a wrapper for positioning
+    var pre = codeBlock.parentNode;
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    button.addEventListener('click', function() {
+      var text = codeBlock.innerText;
+      navigator.clipboard.writeText(text).then(function() {
+        button.innerHTML = '✓';
+        setTimeout(function() {
+          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        }, 1200);
+      });
+    });
+  });
+});
+</script>
+
+</body>
+
+</html>

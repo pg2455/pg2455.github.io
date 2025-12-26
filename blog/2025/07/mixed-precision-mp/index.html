@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Understanding Mixed-Precision Training</title>
+
+  <meta name="author" content="Prateek Gupta" />
+  <meta name="description" content="Prateek Gupta | Personal Website" />
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="/vendor/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d7c6b63fdf.js" crossorigin="anonymous"></script>
+  <link href="/vendor/css/academicons.min.css" rel="stylesheet">
+  <link href="/vendor/pygments/monokai.css" rel="stylesheet">
+  <link href="/css/bamos.css" rel="stylesheet">
+  <link href="/css/updates.css" rel="stylesheet">
+  <link href="/css/sharingbuttons.css" rel="stylesheet">
+  <link href="/css/pgupta.css" rel="stylesheet">
+
+  <!-- Prism.js CSS (default theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+
+  <!-- MathJax -->
+  
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams',
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[','\\]']],
+        packages: {'[+]': ['ams']},
+        processEscapes: true
+      },
+      svg: {
+          fontCache: 'global'
+      }
+    };
+  </script>
+
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+
+  <script src="/vendor/js/distillpub/template.v2.js"></script>
+  <script src="/vendor/js/distillpub/transforms.v2.js"></script>
+  
+
+  
+  <style type="text/css">
+    h3, h2, h1 {
+  padding-top: 0!important;
+}
+
+  </style>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div class="navbar navbar-default">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="navbar-header">
+						  <a href="/" class="navbar-brand">
+                  <div>
+                      <img src="/images/me-face.png" class="img-circle"></img>
+                      Prateek Gupta
+                  </div>
+              </a>
+						<button class="navbar-toggle" type="button" data-toggle="collapse"
+                    data-target="#navbar-main">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="navbar-collapse collapse" id="navbar-main">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="/">About</a>
+							</li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      Teaching <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/teaching/tutorials">Tutorials</a></li>
+                      <li><a href="/teaching/courses">Courses</a></li>
+                      <li><a href="/teaching/hackathons">Hackathons</a></li>
+                  </ul>
+              </li>
+              
+  							<li>
+  								<a href="/blog/">Blog</a>
+  							</li>
+              
+						</ul>
+						<ul class="nav navbar-nav navbar-right" style="font-size: 1.5em">
+							<li>
+								<a href="http://github.com/pg2455" target="_blank" class="social-icon">
+									<i class="fab fa-github"></i></a>
+							</li>
+              <li>
+                <a href="https://scholar.google.com/citations?user=fvn0COgAAAAJ" target="_blank" class="social-icon">
+                  <i class="ai ai-google-scholar"></i></a>
+              </li>
+							<li>
+								<a href="http://twitter.com/pguptacs" target="_blank" class="social-icon">
+									<i class="fab fa-x-twitter"></i></a>
+							</li>
+              <li>
+                <a href="http://www.linkedin.com/in/link2prateek" target="_blank" class="social-icon">
+                  <i class="fab fa-linkedin"></i></a>
+              </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  <head>
+  <link rel="stylesheet" href="/css/distill.css">
+</head>
+
+<body>
+  <div class="distill-flex-container">
+    <aside class="distill-toc-sidebar">
+      <my-toc></my-toc>
+    </aside>
+    <main class="distill-main-content">
+      <div class="row">
+        <div class="col-md">
+          <d-title>
+            <h1>Understanding Mixed-Precision Training</h1>
+            <p></p>
+            <p>
+              <span class="meta-date" style="color: #888; font-size: 0.9em;">
+                <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 0.3em;"></i>July 24, 2025
+              </span>
+              
+            </p>
+          </d-title>
+          <!-- Mobile TOC Accordion (no duplicate heading) -->
+          <div class="mobile-toc-container" id="mobile-toc-container" style="margin-bottom: 18px; margin-top: 18px;">
+            <button class="mobile-toc-toggle-btn" id="mobile-toc-toggle-btn" aria-controls="mobile-toc-content" aria-expanded="false" style="margin-bottom: 0;">
+              Table of Contents <span style="float:right;">&#x25BC;</span>
+            </button>
+            <div class="mobile-toc-content" id="mobile-toc-content" style="background: #f8f9fb; border-top: 1px solid #eee; border-radius: 0 0 6px 6px; margin-top: 0;">
+              <my-toc></my-toc>
+            </div>
+          </div>
+          <d-article>
+            <!-- Summary Block -->
+          
+          <!-- Series Navigation -->
+          <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+          </div>
+          
+            <div style="background-color: rgba(245, 245, 204, 0.5); padding: 10px; border-radius: 8px; border: 1px solid #e0e0b0;">
+  <p>Several clever innovations have made it feasible to train large language models (LLM) with hundreds of billions of parameters, some even reaching 600B. However, there’s also increasing pressure to make them efficient to train and use for inference.</p>
+
+  <p>One area that has proven especially impactful is <strong>mixed-precision training</strong>, a technique where certain model parameters are stored and computed in lower precision formats (like FP8), while others remain in higher precision formats (like FP16 or FP32). For example, the FP8 format is used in certain modules of <a href="https://arxiv.org/abs/2412.19437">DeepSeek models</a><d-cite key="liu2024deepseek"></d-cite><d-cite key="liu2024deepseek"></d-cite>. Notably, FP8 has a much coarser precision (with the multiplicative step size of 0.125) compared to FP16 (0.000976562) or BF16 (0.0078125).</p>
+
+  <p>This led me to wonder: <em>How is it even possible to train something as intelligent as a large language model using such low-precision numbers?</em> What does it mean to “compress” intelligence into fewer bits?</p>
+
+  <p>To explore this, I first dove into the fundamentals of <a href="/blog/2025/06/mixed-precision-fp/">floating point representation</a>. In this post, I cover the techniques that make mixed-precision training possible.</p>
+</div>
+
+<h2 id="why-use-mixed-precision">Why Use Mixed Precision?</h2>
+
+<p>When it comes to training LLMs, memory becomes a major bottleneck. There are typically five components that consume significant memory:</p>
+
+<ul>
+  <li><strong>Weights:</strong> The model’s parameters.</li>
+  <li><strong>Gradients:</strong> Computed during backpropagation for each parameter.</li>
+  <li><strong>Optimizer states:</strong> For optimizers like Adam, this includes the first and second moments (mean and variance) for each parameter.</li>
+  <li><strong>Activations:</strong> Intermediate hidden states stored during the forward pass to compute gradients later.</li>
+</ul>
+
+<p>To reduce memory pressure, mixed precision training has become a widely adopted strategy. There are three compelling reasons to adopt it:</p>
+
+<ol>
+  <li>Matrix multiplications and other <strong>operations execute significantly faster</strong> in lower precision formats</li>
+  <li>When training across multiple GPUs, lower precision means fewer bytes to transfer, leading to <strong>faster data communication</strong></li>
+  <li>Reduced precision parameters require <strong>less memory</strong>, allowing for larger models or batch sizes</li>
+</ol>
+
+<blockquote>
+  <p>Quantization (converting high precision to low precision) is used in both training and inference. However, this post will focus specifically on mixed precision during the training phase, not inference.</p>
+</blockquote>
+
+<h2 id="origins-of-mixed-precision-training">Origins of Mixed-Precision Training</h2>
+
+<p>The original <a href="https://arxiv.org/abs/1710.03740">Mixed Precision Training</a><d-cite key="micikevicius2017mixed"></d-cite><d-cite key="micikevicius2017mixed"></d-cite><d-cite key="micikevicius2017mixed"></d-cite> paper challenged the conventional wisdom that models must be trained in the standard FP32 (single precision) format.
+The authors demonstrated that models could be trained using parameters and computations in lower precision, specifically FP16 format. 
+However, directly training in lower precision leads to issues like underflow/overflow, where sufficiently small values become 0 (which would have been non-zero in higher precision) and large values become <code class="highlighter-rouge">inf</code>.</p>
+
+<p>Figure 3 of the paper illustrates the distribution of gradient values, revealing that many gradient values fall below the representable range of FP16 format.</p>
+
+<p><img src="/images/blog/mixed-precision/mp/hist.png" /></p>
+
+<p>Since the paper’s publication, significant progress has been made in making mixed precision training practical. 
+For instance, Deepseek-V3 recently trained their LLMs using FP8 format for certain operations.</p>
+
+<h2 id="what-to-store-in-lower-precision-format">What to Store in Lower Precision Format?</h2>
+
+<p>Choosing which components of a model to store in lower versus higher precision depends on several practical considerations:</p>
+<ul>
+  <li><strong>Memory Usage:</strong> Parameters or intermediate tensors that consume a large amount of memory, such as activations, are often good candidates for lower precision storage.</li>
+  <li><strong>Byte Transfer:</strong> When data transfer becomes a bottleneck, using lower precision formats helps by reducing the volume of bytes transmitted.</li>
+  <li><strong>Compute Density:</strong> For operations dominated by matrix multiplications (e.g., attention or MLPs), using lower precision inputs with higher precision accumulation can strike a balance between efficiency and accuracy.</li>
+</ul>
+
+<blockquote>
+  <p>Ultimately, the decision of which components require higher precision is empirical and model-specific.</p>
+</blockquote>
+
+<p>As an example, Deepseek outlines their heuristics in section 3.3.1 of their <a href="https://arxiv.org/abs/2412.19437">technical report</a><d-cite key="liu2024deepseek"></d-cite><d-cite key="liu2024deepseek"></d-cite>:</p>
+
+<blockquote>
+  <p>Despite the efficiency advantage of the FP8 format, certain operators still require a higher precision due to their sensitivity to low-precision computations. Besides, some low-cost operators can also utilize a higher precision with a negligible overhead to the overall training cost. For this reason, after careful investigations, we maintain the original precision (e.g., BF16 or FP32) for the following components: the embedding module, the output head, MoE gating modules, normalization operators, and attention operators. These targeted retentions of high precision ensure stable training dynamics for DeepSeek-V3.</p>
+</blockquote>
+
+<p><strong>Note:</strong> Each new numerical format typically requires custom low-level code to handle its specific operations and optimizations. Efficient mixed-precision arithmetic operations require specialized hardware and software implementations.</p>
+
+<h2 id="components-of-mixed-precision-training">Components of Mixed-Precision Training</h2>
+
+<p>From all my readings, I’ve learnt that there are four main concepts that enable reliable mixed-precision training:</p>
+
+<p>In all my readings, I have decoded four basic concepts that are needed to enable MPT. These are</p>
+<ul>
+  <li><strong>Maintain a higher-precision copy of model weights.</strong> Even if weights are used in lower precision during computation, an FP32 (or higher) master copy is maintained to preserve numerical stability during updates.</li>
+  <li><strong>Use loss scaling to prevent gradient underflow.</strong> Scaling up the loss before backpropagation ensures that gradients remain above the minimum representable value in lower precision formats like FP16 or FP8.</li>
+  <li><strong>Perform computations in lower precision, but accumulate in higher precision.</strong> Matrix multiplications and other operations use low precision for inputs, but the results are accumulated in higher precision buffers (e.g., FP32) to reduce rounding errors.</li>
+  <li><strong>Carefully cast from higher to lower precision with input-aware strategies.</strong> When converting tensors to lower precision, the distribution of the input must be considered to avoid overflows and information loss.</li>
+</ul>
+
+<h2 id="master-weights">Master Weights</h2>
+<p>Master weights are high-precision copies of model parameters (typically stored in FP32). During training, while the forward and backward passes operate on lowrer-precision weights (e.g., FP16 or BF16), all gradient updates area applied to the master weights. That is, the lower-precision gradients are accumulated into the high-precision master weights to preserve numerical accuracy. After each optimizer step, these master weights are cast back to lower precision (e.g., FP16 or FP8) for use in the next forward and backward passes.</p>
+
+<blockquote>
+  <p>Recall from our <a href="/blog/2025/06/mixed-precision-fp/">previous discussion on floating-point representation</a>: the number of mantissa bits determines the precision, i.e., the step size between two representable numbers at a given scale. Specifically, it exhbits coarser step sizes (lower precision) at higher magnitudes (as shown in the<a href="/blog/2025/06/mixed-precision-fp/#even-spacing-between-two-scales">number line plot</a>).</p>
+</blockquote>
+
+<p>This matters during training. Consider a case when a particular weight parameter \( W_i \) is large, e.g., around 5. If we represent this in lower formats like FP8, the representable numbers in FP8 around 5 have a coarser step size. This means that any update \( \Delta W_i \) that is less than the step size is as good as no update because it leaves the weight unchanged.</p>
+
+<blockquote>
+  <p>In a low-precision format, the magnitude of \( W_i \) might cause the fine-grained update \( \Delta W_i \) to be completely lost, i.e., the value doesn’t change at all. The lower precision simply lacks the granularity to represent such a small update at that scale.</p>
+</blockquote>
+
+<p><strong>Under the hood:</strong> Learning rate multiplication further reduces the magnitude of the weight update, increasing the risk of underflow in low-precision formats. To avoid this, the update is not written to a low-precision buffer. Instead, it is applied directly to the high-precision master weights, ensuring that small updates are not lost due to limited numerical resolution.</p>
+
+<h2 id="loss-scaling">Loss Scaling</h2>
+
+<p>When training with FP16, gradients can become so small that they fall below the representable range of the format. To solve this, the <a href="https://arxiv.org/abs/1710.03740">Mixed Precision Training</a><d-cite key="micikevicius2017mixed"></d-cite><d-cite key="micikevicius2017mixed"></d-cite><d-cite key="micikevicius2017mixed"></d-cite> paper introduced a clever trick: <strong>scale the loss before backpropagation</strong>. They recommended multiplying by a power of 2 before backpropagation. This automatically scales up the gradients to stay within FP16’s representable range.</p>
+
+<p>The process has two key steps:</p>
+
+<ul>
+  <li><strong>Scale the loss</strong> before backward pass to avoid underflow.</li>
+  <li><strong>Unscale the gradients</strong> just before the optimizer step.</li>
+</ul>
+
+<p>This approach maintains numerical stability while enabling efficient FP16 training.</p>
+
+<p>Here’s how it looks in PyTorch:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span> 
+<span class="n">LOSS_SCALE</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">6</span>
+
+<span class="c"># Create a simple model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c"># Convert model to half precision</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">half</span><span class="p">()</span> <span class="c"># FP16 format </span>
+
+<span class="c"># Create master weights in full precision</span>
+<span class="n">model_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">]</span>
+<span class="n">master_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="nb">float</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model_params</span><span class="p">]</span> <span class="c"># FP32 format</span>
+
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">master_params</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="bp">True</span>
+
+
+<span class="c"># define optimizer on master weights</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">master_params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+<span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+<span class="c"># compute loss on dummy data</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">model</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">)),</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="c"># compute gradients</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">LOSS_SCALE</span><span class="p">)</span> <span class="c"># this will compute gradients on half precision model</span>
+
+<span class="c"># At the time of update, copy gradients from half precision model to master weights</span>
+<span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">master</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">model_params</span><span class="p">,</span> <span class="n">master_params</span><span class="p">):</span>
+    <span class="n">master</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy_</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+
+<span class="c"># scale down gradients by loss scale</span>
+<span class="k">if</span> <span class="n">LOSS_SCALE</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">master_params</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">grad</span> <span class="o">/</span> <span class="n">LOSS_SCALE</span>
+
+<span class="c"># W - lr * \Delta W</span>
+<span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span> <span class="c"># this will update master weights in full precision</span>
+
+
+<span class="c"># Cast the master params (FP32) to model params (FP16)</span>
+<span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">master</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">model_params</span><span class="p">,</span> <span class="n">master_params</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy_</span><span class="p">(</span><span class="n">master</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<h2 id="accumulation-precision">Accumulation Precision</h2>
+
+<p>Many operations in MPT involve low-precision inputs (e.g., FP8 or GP16) that are accumulated in higher precision (e.g., FP16 or FP32). This requires specialized hardware and low-level optimizations to handle such operations efficiently.</p>
+
+<p>Modern NVIDIA GPUs (starting with the Volta architecture like the V100) feature specialized tensor cores designed for matrix operations in various precision formats. In contrast, older GPUs relied solely on CUDA cores optimized for FP32 computations.</p>
+
+<p>Matrix multiplication operations, which form the backbone of neural networks, involve numerous fused multiply-add operations. For instance, in a typical transformer architecture, the MLP layers process 4096-dimensional vectors, resulting in several thousands of such operations per layer.</p>
+
+<blockquote>
+  <p>Accumulating results in low-precision formats can significantly magnify numerical errors.</p>
+</blockquote>
+
+<p>Empirical findings from DeepSeek indicate that accumulating FP8 products into FP16 buffers can already introduce up to 2% absolute error. If accumulation were performed in FP8 itself, the error would be much worse.</p>
+
+<p>To mitigate this, compute-intensive operations are designed to accumulate in higher-precision registers, which are then cast down to lower precision after accumulation.
+In practice, PyTorch natively supports these operations for 16-bit formats (e.g., FP16, BF16). Support for 8-bit formats like FP8 is still experimental and evolving as of this writing.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">torch.cuda.amp</span> <span class="kn">import</span> <span class="n">autocast</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">autocast</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">):</span>
+    <span class="c"># the inputs will be in FP16 and the output will be in FP32 accumulation which will be cast down to FP16</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span> <span class="c"># accumulation into FP32 registers</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>torch.float16
+</code></pre></div></div>
+
+<h2 id="quantization">Quantization</h2>
+
+<p>The term “quantization” comes up in three main contexts:</p>
+
+<ul>
+  <li>
+    <p><strong>Pre-training (e.g., mixed-precision training):</strong> This is the focus of this post.</p>
+  </li>
+  <li>
+    <p><strong>Quantization-Aware Training (QAT):</strong> This is a <strong>post-training method</strong> to adapt the pre-trained model to quantized weights. By simulating the effects of quantization during the post-training process, QAT helps the model adapt to the lower precision. It is often quite difficult due to non-differentiable operations like rounding to integers. Tricks like Straight-Through Estimators are used to pass the gradients through such operations. Read more about this <a href="https://wandb.ai/byyoung3/Generative-AI/reports/Quantization-Aware-Training-QAT-A-step-by-step-guide-with-PyTorch--VmlldzoxMTk2NTY2Mw#:~:text=In%20practice%2C%20PTQ%20is%20often,non%2Ddifferentiable%20operations%20in%20QAT">here</a><d-cite key="wandbxxxxhere"></d-cite><d-cite key="wandbxxxxhere"></d-cite><d-cite key="wandbxxxxhere"></d-cite>.</p>
+  </li>
+  <li>
+    <p><strong>Post-Training Quantization (PTQ):</strong> There is no training involved. It shrinks the model by converting its weights from 32-bit floating-point numbers to smaller 8-bit or 4-bit integers. The results of integer arithmetic are dequantized for operations requiring higher precisions such as layernorm and softmax.</p>
+  </li>
+</ul>
+
+<h3 id="quantization-in-mixed-precision-training">Quantization in Mixed-Precision Training</h3>
+
+<p>Let’s have a look at the MLP module in <a href="https://arxiv.org/abs/2412.19437">Deepseek-V3 Report</a><d-cite key="liu2024deepseek"></d-cite><d-cite key="liu2024deepseek"></d-cite><d-cite key="liu2024deepseek"></d-cite>.</p>
+
+<p><img src="/images/blog/mixed-precision/mp/mlp-v3.png" /></p>
+
+<p>The image above shows the mixed-precision GEMM (Generalized Matrix Multiplication) operations for MLP module in the Deepseek-V3 architecture. 
+The yellow boxes correspond to matrix multiplication, where (X) is the matrix multiply and (\( \Sigma \)) is the accumulation operation in higher precision (FP32). 
+<code class="highlighter-rouge">FProp</code> is the forward propagation operation while <code class="highlighter-rouge">Wgrad</code> is the backpropagation operation to obtain \( \Delta W \), and the <code class="highlighter-rouge">Dgrad</code> is the backpropagation operation to obtain \( \Delta x \). 
+Everytime there is “To BF16” or “To FP8”, there is <strong>quantization</strong> taking place. 
+Thus, the inputs and weights are being quantized to FP8 format for matrix-multiply operations.</p>
+
+<p><strong>What does quantization involve technically?</strong></p>
+
+<p>In simple terms, quantization is converting inputs from higher precision to lower precision.</p>
+
+<p>This can be done in three ways:</p>
+
+<p><strong>Naive or elementwise:</strong> Simply downcast by rounding the input to the nearest representatable value in the target format. For example, converting input from FP16 (which can represent large numbers) to FP8 E4M3 (which has a smaller range). 
+This has serious limitations:</p>
+<ul>
+  <li><strong>Underflow:</strong> Very small values become zero</li>
+  <li><strong>Overflow:</strong> Values outside the representable range becomes <code class="highlighter-rouge">NaN</code> or <code class="highlighter-rouge">inf</code>.</li>
+  <li><strong>Precision loss:</strong> Fine-grained differences are lost.</li>
+</ul>
+
+<p>Here is a simple code to illustrate such loss in precision:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+
+<span class="c"># Initialize random numbers in FP32 format</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Original FP32 tensor:"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c"># Downcast to FP16</span>
+<span class="n">x_bf16</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">bfloat16</span><span class="p">)</span>
+
+<span class="n">x_fp16</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+
+<span class="c"># Downcast to FP8 using torch's FP8 format</span>
+<span class="c"># Note: torch.float8_e4m3fn is available in newer PyTorch versions</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">x_fp8</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float8_e4m3fn</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">AttributeError</span><span class="p">:</span>
+    <span class="c"># Fallback for older PyTorch versions</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"torch.float8_e4m3fn not available, using FP16 as approximation"</span><span class="p">)</span>
+    <span class="n">x_fp8</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+
+<span class="c"># Create table for comparison</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s">'FP32'</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()],</span>
+    <span class="p">[</span><span class="s">'BF16'</span><span class="p">,</span> <span class="o">*</span><span class="n">x_bf16</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()],</span>
+    <span class="p">[</span><span class="s">'FP16'</span><span class="p">,</span> <span class="o">*</span><span class="n">x_fp16</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()],</span>
+    <span class="p">[</span><span class="s">'FP8-E4M3'</span><span class="p">,</span> <span class="o">*</span><span class="n">x_fp8</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+<span class="p">]</span>
+
+<span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">"data type"</span><span class="p">,</span> <span class="s">"x1"</span><span class="p">,</span> <span class="s">"x2"</span><span class="p">,</span> <span class="s">"x3"</span><span class="p">,</span> <span class="s">"x4"</span><span class="p">]</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">tabulate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s">"grid"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Comparison of different precision formats (loss of precision):"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+
+<span class="c">## For large values</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+<span class="n">x_fp8</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float8_e4m3fn</span><span class="p">)</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s">'FP32'</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()],</span>
+    <span class="p">[</span><span class="s">'FP8-E4M3'</span><span class="p">,</span> <span class="o">*</span><span class="n">x_fp8</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+<span class="p">]</span>
+
+<span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">"data type"</span><span class="p">,</span> <span class="s">"x1"</span><span class="p">,</span> <span class="s">"x2"</span><span class="p">,</span> <span class="s">"x3"</span><span class="p">,</span> <span class="s">"x4"</span><span class="p">]</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">tabulate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s">"grid"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Comparison of different precision formats (Overflow):"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+<span class="c">## For very small values</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.001</span>
+<span class="n">x_fp8</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float8_e4m3fn</span><span class="p">)</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s">'FP32'</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()],</span>
+    <span class="p">[</span><span class="s">'FP8-E4M3'</span><span class="p">,</span> <span class="o">*</span><span class="n">x_fp8</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+<span class="p">]</span>
+
+<span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">"data type"</span><span class="p">,</span> <span class="s">"x1"</span><span class="p">,</span> <span class="s">"x2"</span><span class="p">,</span> <span class="s">"x3"</span><span class="p">,</span> <span class="s">"x4"</span><span class="p">]</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">tabulate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s">"grid"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Comparison of different precision formats (underflow):"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Original FP32 tensor:
+tensor([[-1.5104],
+        [ 0.4128],
+        [-0.3485],
+        [-1.1759]])
+
+Comparison of different precision formats (loss of precision):
++-------------+----------+----------+-----------+----------+
+| data type   |       x1 |       x2 |        x3 |       x4 |
++=============+==========+==========+===========+==========+
+| FP32        | -1.51039 | 0.412776 | -0.348471 | -1.17588 |
++-------------+----------+----------+-----------+----------+
+| BF16        | -1.50781 | 0.412109 | -0.347656 | -1.17969 |
++-------------+----------+----------+-----------+----------+
+| FP16        | -1.51074 | 0.412842 | -0.348389 | -1.17578 |
++-------------+----------+----------+-----------+----------+
+| FP8-E4M3    | -1.5     | 0.40625  | -0.34375  | -1.125   |
++-------------+----------+----------+-----------+----------+
+
+Comparison of different precision formats (Overflow):
++-------------+---------+--------+---------+---------+
+| data type   |      x1 |     x2 |      x3 |      x4 |
++=============+=========+========+=========+=========+
+| FP32        | 2438.37 | -440.6 | 857.116 | 129.765 |
++-------------+---------+--------+---------+---------+
+| FP8-E4M3    |  nan    | -448   | nan     | 128     |
++-------------+---------+--------+---------+---------+
+
+Comparison of different precision formats (underflow):
++-------------+-------------+--------------+-------------+------------+
+| data type   |          x1 |           x2 |          x3 |         x4 |
++=============+=============+==============+=============+============+
+| FP32        | 0.000719602 | -0.000107368 | 0.000573265 | 0.00208493 |
++-------------+-------------+--------------+-------------+------------+
+| FP8-E4M3    | 0           | -0           | 0           | 0.00195312 |
++-------------+-------------+--------------+-------------+------------+
+</code></pre></div></div>
+
+<p>In this example, we observe that as we transition toward lower-precision formats like FP8, the ability to accurately represent values degrades significantly. The numbers gradually lose their representational fidelity, especially for smaller magnitudes.</p>
+
+<p>Can we do better?</p>
+
+<p><strong>Input-aware Quantization</strong>: During the forward pass, quantization typically involves converting a tensor from a higher precision format to a lower one (e.g., FP32 → FP8). However, we can make more effective use of the limited dynamic range of the lower-precision format by dynamically scaling the input tensor.</p>
+
+<p>A common technique is to <strong>normalize the tensor by dividing it by the maximum absolute value</strong> in the input. This rescales the values to lie within the representable range of the target format (e.g., \([-1, 1]\) for symmetric quantization), allowing us to preserve relative structure and avoid saturation. After the quantized operation is performed, we simply <strong>rescale the output by multiplying it with the inverse of the original scaling factor</strong>.</p>
+
+<p>Because accumulation is done in higher precision (e.g., FP16 or FP32), the descaling step does not introduce significant error, and overall numerical stability is maintained.</p>
+
+<p>For example, with \( X \) as the input tensor in FP32 and \( W \) being the weights in FP16, and we accumulate results in FP32 format,
+\[
+s = \frac{1}{max(|X|)} \qquad X’ = ( X \times s )_{FP16} \qquad Y_{FP32} = (X’W)_{FP16} \times \frac{1}{s},
+\]</p>
+
+<p>where \( s \) is the scaling factor based on the maximum absolute value, \( X’ \) is the scaled input tensor, and \( Y \) is the final result after de-scaling.</p>
+
+<p>Let’s see this in practice:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># casting</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+
+<span class="n">prod_fp32</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">scaled_quantization</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="nb">abs</span><span class="p">()</span><span class="o">.</span><span class="nb">max</span><span class="p">()</span>
+    <span class="n">x_</span><span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">scale</span>
+    <span class="k">return</span> <span class="n">x_</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="p">),</span> <span class="n">scale</span>
+
+
+<span class="n">x_bf16</span><span class="p">,</span> <span class="n">scale_x</span> <span class="o">=</span> <span class="n">scaled_quantization</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">bfloat16</span><span class="p">)</span>
+<span class="n">w_bf16</span><span class="p">,</span> <span class="n">scale_w</span> <span class="o">=</span> <span class="n">scaled_quantization</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">bfloat16</span><span class="p">)</span>
+<span class="n">prod_bf16</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">x_bf16</span> <span class="o">*</span> <span class="n">w_bf16</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">scale_x</span> <span class="o">*</span> <span class="n">scale_w</span><span class="p">)</span> <span class="o">**</span> <span class="o">-</span><span class="mi">1</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"FP32: {prod_fp32}, BF16: {prod_bf16}, Error: {abs(prod_fp32 - prod_bf16) / abs(prod_fp32) * 100: .2f}</span><span class="si">%</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FP32: -0.4669240713119507, BF16: -0.46617451310157776, Error:  0.16%
+</code></pre></div></div>
+
+<p><strong>Finegrained Quantization or microscaling Quantizatio</strong>: When we naively take the entire tensor and squish all the values in the range [-1, 1], we risk losing significant precision <strong>when there are outliers in the input</strong>. A single large outlier forces all other values to be compressed into a much smaller range, reducing their representational precision. In this case, we can opt for finegrained quantization, where smaller parts of tensors are quantized indepdently. This is what is done in Deepseek-V3 (Figure 7).</p>
+
+<h3 id="quantization-in-post-training-quantization-detour">Quantization in Post-Training Quantization (detour)</h3>
+
+<p>Post-Training Quantization (PTQ) focuses on optimizing models for inference. Since inference only involves forward passes—with no need to store activations for backward propagation—quantization becomes more straightforward and memory-efficient.</p>
+
+<p>PTQ typically quantizes weights to low-precision formats such as <strong>INT8</strong> or <strong>INT4</strong>, mapping floating-point values to integer ranges like [-128, 127] or [-8, 7]. This significant reduction in precision raises a natural question: <strong><em>How does the model retain accuracy with such coarse representations?</em></strong></p>
+
+<p>The answer lies in the quantization pipeline: All matrix multiplications and dot products are performed using <strong>integer arithmetic</strong>, and the results are <strong>accumulated into INT32</strong> for precision. These accumulated results are then <strong>dequantized back to FP32 or FP16</strong> using learned or static scaling factors. This dequantization step recovers the necessary dynamic range for subsequent computation.</p>
+
+<blockquote>
+  <p>This process introduces a potential loss in accuracy due to rounding errors and limited representation, it is often acceptable for inference workloads where latency and memory are critical.</p>
+</blockquote>
+
+<p>The pipeline typically follows this pattern:</p>
+
+<ul>
+  <li>After integer computations, results are dequantized for non-linear operations (e.g., ReLU, softmax), which require floating-point precision.</li>
+  <li>If further operations are also quantized, the outputs may be re-quantized back to integer format to retain the memory and compute efficiency throughout the network.</li>
+</ul>
+
+<p><strong>Common Quantization Strategies:</strong> Several quantization schemes have emerged to balance compression and accuracy:</p>
+
+<ul>
+  <li><strong>Absolute Max Scaling</strong></li>
+  <li><strong>Zero-point Quantization</strong></li>
+  <li><strong>LLM.int8() Quantization</strong></li>
+  <li><strong>Activation-Aware Quantization</strong></li>
+  <li><strong>SmoothQuant</strong></li>
+  <li><strong>ZeroQuant / xTC (by DeepSpeed)</strong></li>
+</ul>
+
+<p>You can explore these methods in more detail in <a href="https://medium.com/@lmpo/understanding-model-quantization-for-llms-1573490d44ad">this overview article</a><d-cite key="mediumxxxxhere"></d-cite><d-cite key="mediumxxxxhere"></d-cite><d-cite key="mediumxxxxhere"></d-cite>.</p>
+
+<blockquote>
+  <p><strong>Update:</strong> I’ve also compiled <a href="/blog/2025/06/ptq/">notes on Post-Training Quantization methods</a> to survey the current landscape of PTQ techniques used for large language models.</p>
+</blockquote>
+
+          
+          <!-- Series Navigation -->
+            <div style="display:inline-block; font-size: large; padding-bottom: 30px;">
+            
+
+            
+          </div>
+          </d-article>
+          <d-appendix>
+            <d-footnote-list></d-footnote-list>
+            <d-citation-list></d-citation-list>
+          </d-appendix>
+          <d-bibliography src="/vendor/bibliography/llm.bib"></d-bibliography>
+          <script src="https://giscus.app/client.js"
+              data-repo="pg2455/pg2455.github.io"
+              data-repo-id="MDEwOlJlcG9zaXRvcnk3MTMxMzI3MQ=="
+              data-category="General"
+              data-category-id="DIC_kwDOBEAnd84CqnG0"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="light_high_contrast"
+              data-lang="en"
+              data-loading="lazy"
+              crossorigin="anonymous"
+              async>
+          </script>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/share-popover.js"></script>
+
+  <footer class="fixed-bottom-footer">
+    <div class="jumbotron mt-0" id="footer-container">
+      Powered by <a href="http://jekyllrb.com">Jekyll</a>, blog template adapted from <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+    </div>
+  </footer>
+
+  <script src="/js/distill.js"></script>
+</body>
+
+
+  <script src="/js/sp.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/vendor/js/jquery.min.js"></script>
+  <script src="/vendor/js/bootstrap.min.js"></script>
+  <script src="/vendor/js/anchor.min.js"></script>
+  <script src="/vendor/js/jquery.toc.js"></script>
+
+  <!-- Prism.js core and Python language support -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+
+  <script type="text/javascript">
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-187458159-1', 'auto');
+   ga('send', 'pageview');
+
+   $("#toc").toc({
+       'headings': 'h2,h3'
+   });
+   anchors.add('h2,h3');
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if there is a hash in the URL
+        const hash = window.location.hash;
+        if (hash) {
+            // Find the element that matches the hash
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                // Add the section-highlight class to the element
+                targetElement.classList.add('section-highlight');
+                
+                // If there are collapsible sections related to this hash, open them
+                const relatedSections = ['lessons', 'practical', 'objective'];
+                relatedSections.forEach(section => {
+                    const elem = document.getElementById(section + '_' + hash.slice(1));
+                    if (elem) {
+                        elem.style.display = 'block'; // Change display style to 'block' to show the section
+                    }
+                });
+
+                // Set a timeout to remove the highlight after 5 seconds
+                setTimeout(() => {
+                    targetElement.classList.remove('section-highlight');
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        }
+    });
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+    // Only add button if code block has a class starting with 'language-'
+    var hasLanguageClass = Array.from(codeBlock.classList).some(function(cls) {
+      return cls.startsWith('language-');
+    });
+    if (!hasLanguageClass) {
+      return;
+    }
+    // Create the button
+    var button = document.createElement('button');
+    button.className = 'copy-code-btn';
+    button.type = 'button';
+    button.title = 'Copy to clipboard';
+    // Clipboard SVG icon
+    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+    // Create a wrapper for positioning
+    var pre = codeBlock.parentNode;
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    button.addEventListener('click', function() {
+      var text = codeBlock.innerText;
+      navigator.clipboard.writeText(text).then(function() {
+        button.innerHTML = '✓';
+        setTimeout(function() {
+          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23272e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        }, 1200);
+      });
+    });
+  });
+});
+</script>
+
+</body>
+
+</html>
